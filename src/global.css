@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 400 14px Roboto, sans-serif;
+  background: #f0f0f5;
+  -webkit-font-smoothing: antialiased;
+}
+
+input, button, textarea {
+  font: 400 16px Roboto, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+form input {
+  width: 100%;
+  height: 40px;
+  color: #333;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  padding: 0 16px;
+  margin-top: 16px;
+}
+
+.button {
+  width: 100%;
+  height: 60px;
+  background: #71181a;
+  border: 0;
+  border-radius: 8px;
+  color: #FFF;
+  font-weight: 700;
+  margin-top: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 60px;
+  transition: filter 0.2s;
+}
+
+.button:hover {
+  filter: brightness(80%);
+}
+
+.UserName {
+  font-size: 20px;
+  margin-left: 24px;
+  margin-top: 50px;
+}
+
+/******** Antigo Site *************/
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+.trigger:hover {
+  color: #f88b0e;
+}
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, .2);
+  margin: 16px;
+  color: #fff;
+  text-align: center;
+  padding-top: 2%;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+  background-color: #f88b0e;
+}
+
+.buttonRed {
+  color: #fff;
+  background-color: #ea2c2c;
+  border-color: #ea2c2c
+}
+
+.buttonRed:hover, .buttonRed:focus {
+  color: #fff;
+  background-color: #ec6969;
+  border-color: #ec6969
+}
+
+.buttonGreen {
+  color: #fff;
+  background-color: #13a54b;
+  border-color: #13a54b
+}
+
+.buttonGreen:hover, .buttonGreen:focus {
+  color: #fff;
+  background-color: #54b87a;
+  border-color: #54b87a
+}
+
+.buttonBlue {
+  color: #fff;
+  background-color: #3c3fe0;
+  border-color: #3c3fe0
+}
+
+.buttonBlue:hover, .buttonBlue:focus {
+  color: #fff;
+  background-color: #3d60d3;
+  border-color: #3d60d3
+}
+
+.buttonOrange {
+  color: #fff;
+  background-color: #f88b0e;
+  border-color: #f88b0e
+}
+
+.buttonOrange:hover, .buttonOrange:focus {
+  color: #fff;
+  background-color: #f3a449;
+  border-color: #f3a449
+}
+
+.buttonYellow {
+  color: #fff;
+  background-color: #b2b410;
+  border-color: #b2b410
+}
+
+.buttonYellow:hover, .buttonYellow:focus {
+  color: #fff;
+  background-color: #bdb113;
+  border-color: #bdb113
+}
+
+.buttonPurple {
+  color: #fff;
+  background-color: #8c03fc;
+  border-color: #8c03fc
+}
+
+.buttonPurple:hover, .buttonPurple:focus {
+  color: #fff;
+  background-color: #a375c9;
+  border-color: #a375c9
+}
+
+.gridTitle {
+  font-weight: 800
+}
+
+.producaoSubprodutos .ant-row-flex:not(:last-child), .producaoProducoes {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #e8e8e8
+}
+
+.bold {
+  font-weight: 600
+}
+
+.ant-modal-close-x {
+  text-align: right;
+  width: 75px;
+}

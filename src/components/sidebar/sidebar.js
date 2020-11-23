@@ -1,0 +1,593 @@
+import React from 'react';
+import 'antd/dist/antd.css';
+import { Route, Link, Redirect } from 'react-router-dom';
+
+import { Layout, Menu } from 'antd';
+import {
+  RightSquareOutlined,
+  DashboardOutlined,
+  PlusOutlined,
+  ExportOutlined,
+  ShoppingCartOutlined,
+  BarcodeOutlined,
+  FileExcelOutlined,
+  UserOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { FaCouch, FaWarehouse } from 'react-icons/fa';
+import { FiPackage } from 'react-icons/fi';
+
+import logo from '../../assets/logo.png';
+
+//////////////////////////////////////////////////////////////////
+//REGISTER
+import Profile from '../../pages/Profile';
+import PCP from '../../pages/PCP';
+
+import FactorySector from '../../pages/RH/FactorySector';
+import ProductionLine from '../../pages/ProductionLine';
+import SubProduct from '../../pages/SubProduct';
+import Colors from '../../pages/ProductColor';
+import Product from '../../pages/Product';
+import Client from '../../pages/Client';
+
+//REGISTER
+//////////////////////////////////////////////////////////////////
+import ExpeditionWarehouse from '../../pages/Expedition/Warehouse';
+import ExpeditionStreet from '../../pages/Expedition/Street';
+import ExpeditionInput from '../../pages/Expedition/Input';
+import ExpeditionOutput from '../../pages/Expedition/Output';
+import ExpeditionStock from '../../pages/Expedition/Stock';
+import ExpeditionLaunch from '../../pages/Expedition/Launch';
+import ExpeditionChange from '../../pages/Expedition/Change';
+
+//////////////////////////////////////////////////////////////////
+//WMS - RAW MATERIAL
+import WmsRawSupplier from '../../pages/WmsRawMaterial/Register/Supplier';
+import WmsRawUnMeasure from '../../pages/WmsRawMaterial/Register/UnMeasure';
+import WmsRawWarehouse from '../../pages/WmsRawMaterial/Register/Warehouse';
+import WmsRawPosition from '../../pages/WmsRawMaterial/Register/Position';
+import WmsRawMaterial from '../../pages/WmsRawMaterial/Register/RawMaterial';
+
+import WmsRawEntry from '../../pages/WmsRawMaterial/Operation/Entry';
+import WmsRawExit from '../../pages/WmsRawMaterial/Operation/Exit';
+import WmsRawStorage from '../../pages/WmsRawMaterial/Operation/Storage';
+
+import WmsRawSearchStorage from '../../pages/WmsRawMaterial/Search/SearchStorage';
+import WmsRawMaterialSearchEntry from '../../pages/WmsRawMaterial/Search/SearchEntry';
+import WmsRawResumeExit from '../../pages/WmsRawMaterial/Search/ResumeExit';
+import WmsRawMaterialPCP from '../../pages/WmsRawMaterial/Search/PCP';
+
+//WMS - RAW MATERIAL
+//////////////////////////////////////////////////////////////////
+
+////////////////////// RH ////////////////////////
+import FactoryArea from '../../pages/RH/FactoryArea';
+import FactoryFunction from '../../pages/RH/FactoryFunction';
+import Company from '../../pages/RH/Company';
+import Employee from '../../pages/RH/Employee';
+import Drop from '../../pages/Drop';
+import ProductionReport from '../../pages/ProductionReport';
+
+import './style.css';
+
+const userName = localStorage.getItem('userName');
+
+const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
+
+const routes = [
+  {
+    path: '/PCP',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PCP />,
+  },
+
+  {
+    path: '/factory-sector',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <FactorySector />,
+  },
+  {
+    path: '/production-line',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ProductionLine />,
+  },
+  {
+    path: '/sub-product',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <SubProduct />,
+  },
+  {
+    path: '/color',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Colors />,
+  },
+  {
+    path: '/product',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Product />,
+  },
+  {
+    path: '/client',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Client />,
+  },
+
+  //WMS RAW MATERIAL
+  {
+    path: '/wmsRawSupplier',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawSupplier />,
+  },
+  {
+    path: '/wmsRawUnMeasure',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawUnMeasure />,
+  },
+  {
+    path: '/wmsRawWarehouse',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawWarehouse />,
+  },
+  {
+    path: '/wmsRawPosition',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawPosition />,
+  },
+  {
+    path: '/wmsRawMaterial',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawMaterial />,
+  },
+  {
+    path: '/wmsRawEntry',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawEntry />,
+  },
+  {
+    path: '/wmsRawExit',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawExit />,
+  },
+  {
+    path: '/wmsRawStorage',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawStorage />,
+  },
+  {
+    path: '/wmsRawStorage/Search',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawSearchStorage />,
+  },
+
+  {
+    path: '/wmsRawExit/Resume',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawResumeExit />,
+  },
+  //WMS RAW MATERIAL
+  {
+    path: '/profile',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Profile />,
+  },
+
+  //WMS RAW MATERIAL
+
+  //WMS RAW MATERIAL
+  //Expedição
+  {
+    path: '/expedition/warehouse',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionWarehouse />,
+  },
+  {
+    path: '/expedition/street',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionStreet />,
+  },
+  {
+    path: '/expedition/input',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionInput />,
+  },
+  {
+    path: '/expedition/output',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionOutput />,
+  },
+  {
+    path: '/expedition/stock',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionStock />,
+  },
+  {
+    path: '/expedition/launch',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionLaunch />,
+  },
+
+  {
+    path: '/expedition/change',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionChange />,
+  },
+  //////////////// RH  //////////////////////
+  {
+    path: '/company',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Company />,
+  },
+  {
+    path: '/factory/sector',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <FactorySector />,
+  },
+  {
+    path: '/factory/area',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <FactoryArea />,
+  },
+  {
+    path: '/factory/function',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <FactoryFunction />,
+  },
+  {
+    path: '/employee',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Employee />,
+  },
+  {
+    path: '/drop',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Drop />,
+  },
+  {
+    path: '/production/report',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ProductionReport />,
+  },
+  {
+    path: '/wmsRawMaterial/Search/entry',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawMaterialSearchEntry />,
+  },
+  {
+    path: '/wmsRawMaterial/pcp',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <WmsRawMaterialPCP />,
+  },
+];
+
+class App extends React.Component {
+  state = {
+    collapsed: false,
+  };
+
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
+  render() {
+    const isAuthenticated =
+      (localStorage.getItem('userId') !== null &&
+        localStorage.getItem('acess_level') === '1') ||
+      localStorage.getItem('acess_level') === '4';
+
+    if (!isAuthenticated) {
+      return <Redirect to="/" />;
+    }
+
+    function handleLogout(e) {
+      localStorage.clear();
+
+      return <Redirect to="/" />;
+    }
+
+    return (
+      <div>
+        <Layout style={{ height: '100%' }}></Layout>
+        <Sider
+          trigger={null}
+          style={{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }}
+          collapsible
+          collapsed={this.state.collapsed}
+        >
+          {localStorage.getItem('acess_level') === '1' && (
+            <div
+              className="logo"
+              style={{ textAlign: 'center', paddingTop: '0.48rem' }}
+            >
+              Painel Administrativo
+            </div>
+          )}
+          {localStorage.getItem('acess_level') === '4' && (
+            <div
+              className="logo"
+              style={{ textAlign: 'center', paddingTop: '0.48rem' }}
+            >
+              Painel Almoxarifado
+            </div>
+          )}
+
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            {localStorage.getItem('acess_level') === '1' && (
+              <Menu.Item key="1" icon={<DashboardOutlined />}>
+                <Link to="/profile">Dashboard</Link>
+              </Menu.Item>
+            )}
+            {localStorage.getItem('acess_level') === '1' && (
+              <Menu.Item
+                key="2"
+                icon={
+                  <span className="anticon anticon-bank">
+                    <FaCouch color="#fff" size={16} />
+                  </span>
+                }
+              >
+                <Link to="/pcp">Produção</Link>
+              </Menu.Item>
+            )}
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu
+                key="pcpCadastros"
+                title="Cadastros"
+                icon={<PlusOutlined />}
+              >
+                <Menu.Item key="4" icon={<RightSquareOutlined />}>
+                  <Link to="/production-Line">Linha de produção</Link>
+                </Menu.Item>
+
+                <Menu.Item key="7" icon={<RightSquareOutlined />}>
+                  <Link to="/sub-product">Subproduto</Link>
+                </Menu.Item>
+
+                <Menu.Item key="8" icon={<RightSquareOutlined />}>
+                  <Link to="/color">Cores</Link>
+                </Menu.Item>
+
+                <Menu.Item key="9" icon={<RightSquareOutlined />}>
+                  <Link to="/client">Clientes</Link>
+                </Menu.Item>
+
+                <Menu.Item key="10" icon={<RightSquareOutlined />}>
+                  <Link to="/product">Produtos</Link>
+                </Menu.Item>
+              </SubMenu>
+            )}
+            <SubMenu
+              key="WnsInsumos"
+              title="Almoxarifado"
+              icon={
+                <span className="anticon anticon-bank">
+                  <FiPackage size={16} color="#fff" />
+                </span>
+              }
+            >
+              {localStorage.getItem('acess_level') === '1' && (
+                <SubMenu
+                  key="WnsInsumosCadastros"
+                  title="Cadastros"
+                  icon={<PlusOutlined />}
+                >
+                  <Menu.Item key="11" icon={<RightSquareOutlined />}>
+                    <Link to="/wmsRawWarehouse">Almoxarifados</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="12" icon={<RightSquareOutlined />}>
+                    <Link to="/wmsRawSupplier">Fornecedores</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="15" icon={<RightSquareOutlined />}>
+                    <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="13" icon={<RightSquareOutlined />}>
+                    <Link to="/wmsRawMaterial">Insumos</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="14" icon={<RightSquareOutlined />}>
+                    <Link to="/wmsRawPosition">Posições</Link>
+                  </Menu.Item>
+                </SubMenu>
+              )}
+
+              {localStorage.getItem('acess_level') === '4' ||
+                (localStorage.getItem('acess_level') === '1' && (
+                  <SubMenu
+                    key="WnsInsumosOperacao"
+                    title="Operações"
+                    icon={<ShoppingCartOutlined />}
+                  >
+                    <Menu.Item key="16" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawEntry">Entradas</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="17" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawStorage">Armazenagens</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="18" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawExit">Saídas</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                ))}
+
+              <SubMenu
+                key="WnsInsumosSearches"
+                title="Consultas"
+                icon={<SearchOutlined />}
+              >
+                <Menu.Item key="19" icon={<FileExcelOutlined />}>
+                  <Link to="/wmsRawStorage/Search">Estoque</Link>
+                </Menu.Item>
+
+                <Menu.Item key="21" icon={<FileExcelOutlined />}>
+                  <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
+                </Menu.Item>
+                <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                  <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
+                </Menu.Item>
+
+                <Menu.Item key="33" icon={<FileExcelOutlined />}>
+                  <Link to="/wmsRawMaterial/pcp">PCP's</Link>
+                </Menu.Item>
+              </SubMenu>
+            </SubMenu>
+
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu
+                key="expedition"
+                title="Expedição"
+                icon={
+                  <span className="anticon anticon-bank">
+                    <FaWarehouse size={16} color="#fff" />
+                  </span>
+                }
+              >
+                <SubMenu
+                  key="expeditionCadastro"
+                  title="Cadastros"
+                  icon={<PlusOutlined />}
+                >
+                  <Menu.Item key="22" icon={<RightSquareOutlined />}>
+                    <Link to="/expedition/warehouse">Almoxarifado</Link>
+                  </Menu.Item>
+                  <Menu.Item key="23" icon={<RightSquareOutlined />}>
+                    <Link to="/expedition/street">Rua</Link>
+                  </Menu.Item>
+                  <Menu.Item key="31" icon={<RightSquareOutlined />}>
+                    <Link to="/drop">Agenda do Drop</Link>
+                  </Menu.Item>
+                </SubMenu>
+                <Menu.Item key="24" icon={<BarcodeOutlined />}>
+                  <Link to="/expedition/launch">Laçamento</Link>
+                </Menu.Item>
+                <SubMenu
+                  key="ExpeditionSearches"
+                  title="Consultas"
+                  icon={<SearchOutlined />}
+                >
+                  <Menu.Item key="25" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/stock">Estoque</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/input">Entradas</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="34" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/output">Saídas</Link>
+                  </Menu.Item>
+                  <Menu.Item key="35" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/change">Troca de estoque</Link>
+                  </Menu.Item>
+                </SubMenu>
+              </SubMenu>
+            )}
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu key="rh" title="RH" icon={<UserOutlined />}>
+                <Menu.Item key="26" icon={<RightSquareOutlined />}>
+                  <Link to="/company">Empresa</Link>
+                </Menu.Item>
+
+                <Menu.Item key="27" icon={<RightSquareOutlined />}>
+                  <Link to="/factory/sector">Setor </Link>
+                </Menu.Item>
+                <Menu.Item key="28" icon={<RightSquareOutlined />}>
+                  <Link to="/factory/area">Area </Link>
+                </Menu.Item>
+                <Menu.Item key="29" icon={<RightSquareOutlined />}>
+                  <Link to="/factory/function">Função </Link>
+                </Menu.Item>
+                <Menu.Item key="30" icon={<RightSquareOutlined />}>
+                  <Link to="/employee">Funcionário </Link>
+                </Menu.Item>
+              </SubMenu>
+            )}
+            {localStorage.getItem('acess_level') === '1' && (
+              <Menu.Item key="31" icon={<FileExcelOutlined />}>
+                <Link to="/production/report">Relatório Produção </Link>
+              </Menu.Item>
+            )}
+            <Menu.Item key="40" icon={<ExportOutlined />}>
+              <Link to="/" onClick={handleLogout}>
+                Sair
+              </Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+
+        <Layout className="site-layout" style={{ marginLeft: 200 }}>
+          <Header
+            className="site-layout-background"
+            style={{ paddingTop: 20, background: '#f0f0f5', height: 100 }}
+          >
+            <img src={logo} alt="Mundo moveis" />
+            <span className="UserName">Bem vindo(a), {userName}</span>
+          </Header>
+          <Content
+            className="site-layout-background"
+            style={{
+              minHeight: 500,
+            }}
+          >
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                component={route.main}
+              />
+            ))}
+          </Content>
+        </Layout>
+      </div>
+    );
+  }
+}
+
+export default App;

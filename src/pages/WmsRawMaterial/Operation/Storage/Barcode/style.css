@@ -1,0 +1,65 @@
+.pdf-page {
+    background-color: #FFF;
+    height:100%;
+    width:210mm;
+    display: block;
+    margin: 0 auto;
+    background-color: darkgray;
+}
+.col-50{
+    flex-basis: 40%;
+    margin-left: 5%;
+}
+
+#card{
+    height: 74,25mm;
+    display: block;
+    float: left;
+    background-color: #FFF;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-radius: 0.2rem;
+}
+
+.logo{
+  align-items: center;
+  justify-content: center;
+}
+
+.table-header{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    text-decoration-color: black;
+    text-decoration-style: bold;
+}
+
+.ins{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.operation-control{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-table{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 30px;
+}
+
+.barcode{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
