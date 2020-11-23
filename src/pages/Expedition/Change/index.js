@@ -135,6 +135,19 @@ export default function ExpeditionOutput() {
     render() {
       const columns = [
         {
+          title: 'Cod. Forn',
+          dataIndex: 'code',
+          key: 'code',
+          ...this.getColumnSearchProps('code'),
+        },
+        {
+          title: 'Produto',
+          dataIndex: 'product',
+          key: 'product',
+
+          ...this.getColumnSearchProps('id'),
+        },
+        {
           title: 'Estoque antigo',
           dataIndex: 'old_name',
           key: 'old_name',
@@ -149,9 +162,9 @@ export default function ExpeditionOutput() {
         },
         {
           title: 'Código de barras',
-          dataIndex: 'code',
-          key: 'code',
-          ...this.getColumnSearchProps('code'),
+          dataIndex: 'barCode',
+          key: 'barCode',
+          ...this.getColumnSearchProps('barCode'),
         },
         {
           title: 'Alterado em:',
