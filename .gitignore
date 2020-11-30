@@ -1,2 +1,9 @@
 node_modules
 .env
+
+access level:
+1 - ADM
+2 - Bipagem na produção
+3 - Bipagem Expedição
+4 - controle Almoxarifado
+5 - Controle Capa

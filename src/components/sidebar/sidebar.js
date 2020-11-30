@@ -70,6 +70,8 @@ import Drop from '../../pages/Drop';
 import ProductionReport from '../../pages/ProductionReport';
 
 import './style.css';
+import CoverLaunch from '../../pages/Cover/Launch';
+import CoverStock from '../../pages/Cover/Stock';
 
 const userName = localStorage.getItem('userName');
 
@@ -293,6 +295,18 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <WmsRawMaterialPCP />,
   },
+  {
+    path: '/cover/launch',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverLaunch />,
+  },
+  {
+    path: '/cover/stock',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverStock />,
+  },
 ];
 
 class App extends React.Component {
@@ -515,7 +529,7 @@ class App extends React.Component {
                     <Link to="/expedition/stock">Estoque</Link>
                   </Menu.Item>
 
-                  <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                  <Menu.Item key="36" icon={<FileExcelOutlined />}>
                     <Link to="/expedition/input">Entradas</Link>
                   </Menu.Item>
 
@@ -553,6 +567,33 @@ class App extends React.Component {
                 <Link to="/production/report">Relatório Produção </Link>
               </Menu.Item>
             )}
+            <SubMenu
+              key="cover"
+              title="Controle de capas"
+              icon={<RightSquareOutlined />}
+            >
+              <SubMenu
+                key="registerCover"
+                title="Cadastros"
+                icon={<PlusOutlined />}
+              >
+                <Menu.Item key="7" icon={<RightSquareOutlined />}>
+                  <Link to="/sub-product">Subproduto</Link>
+                </Menu.Item>
+              </SubMenu>
+              <Menu.Item key="37" icon={<BarcodeOutlined />}>
+                <Link to="/cover/launch">Laçamento</Link>
+              </Menu.Item>
+              <SubMenu
+                key="ExpeditionSearches"
+                title="Consultas"
+                icon={<SearchOutlined />}
+              >
+                <Menu.Item key="38" icon={<FileExcelOutlined />}>
+                  <Link to="/cover/stock">Estoque</Link>
+                </Menu.Item>
+              </SubMenu>
+            </SubMenu>
             <Menu.Item key="40" icon={<ExportOutlined />}>
               <Link to="/" onClick={handleLogout}>
                 Sair
