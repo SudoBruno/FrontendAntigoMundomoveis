@@ -48,11 +48,10 @@
 }
 
 .profile-container ul li {
-    /* background-color: #fff; */
+    background-color: #fff;
     padding: 24px;
     border-radius: 8px;
     position: relative;
-    transition: background 0.4s;
 }
 
 .profile-container ul li:hover {
@@ -74,10 +73,6 @@
     line-height: 21px;
     color: #737380;
 } */
-
-.neno {
-    text-align: center;
-}
 
 .LineName {
     text-align: center;
