@@ -84,6 +84,17 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
+      {productionHour.production !== undefined && state.options !== undefined && (
+        <>
+          {console.log(state)}
+          <Chart
+            options={state.options}
+            series={productionHour.production}
+            type="bar"
+            height={350}
+          />
+        </>
+      )}
       <ul>
         {production.map((productionLine) => (
           <>
@@ -124,17 +135,6 @@ export default function Profile() {
           </>
         ))}
       </ul>
-      {productionHour.production !== undefined && (
-        <>
-          {console.log(state)}
-          <Chart
-            options={state.options}
-            series={productionHour.production}
-            type="bar"
-            height={350}
-          />
-        </>
-      )}
     </div>
   );
 }
