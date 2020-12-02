@@ -230,7 +230,7 @@ export default function Employee() {
   const [company, setCompany] = useState('');
   const [companys, setCompanys] = useState([]);
 
-  const [admission, setAdmission] = useState('');
+  const [admission, setAdmission] = useState(moment());
   const data = {
     admission,
     company,
@@ -322,7 +322,7 @@ export default function Employee() {
   async function handleRegister(e) {
     e.preventDefault();
     console.log(id);
-    
+
     try {
       if (id === 0) {
         try {
@@ -341,7 +341,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission();
 
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -382,7 +382,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission(moment());
         } catch (error) {
           openNotificationWithIcon(
             'error',
@@ -533,14 +533,17 @@ export default function Employee() {
                   size="large"
                   value={sectorName}
                   onChange={(e) => {
-                    setSector(e[0])
-                    setSectorName(e[1])
+                    setSector(e[0]);
+                    setSectorName(e[1]);
                   }}
                 >
                   {sectors.map((option) => {
                     return (
                       <>
-                        <Option key={option.id} value={[option.id, option.name]}>
+                        <Option
+                          key={option.id}
+                          value={[option.id, option.name]}
+                        >
                           {option.name}
                         </Option>
                       </>

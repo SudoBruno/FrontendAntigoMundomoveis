@@ -216,7 +216,8 @@ export default function PCP() {
   const [show, setShow] = useState(false);
   const [dateFinal, setDateFinal] = useState('');
   const [dateInitial, setDateInitial] = useState('');
-  const [selectProductionLine, setSelectProductionLine] = useState(1);
+  const [productionLineId, setProductionLineId] = useState(1);
+  const [productionLineName, setProductionLineName] = useState('');
   const [productionPlanControl, setProductionPlanControl] = useState([]);
   const [colors, setColors] = useState([]);
 
@@ -227,7 +228,8 @@ export default function PCP() {
     setDateFinal('');
     setDateInitial('');
     setSelectProducts([{ id: '', amount: '', color: '' }]);
-    setSelectProductionLine(1);
+    setProductionLineId(1);
+    setProductionLineName('');
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -289,14 +291,14 @@ export default function PCP() {
       selectProduct,
       dateFinal,
       dateInitial,
-      selectProductionLine,
+      selectProductionLine: productionLineId,
     };
     console.log(data);
     if (
       name == '' ||
       dateFinal == '' ||
       dateInitial == '' ||
-      selectProductionLine == 0
+      productionLineId == 0
     ) {
       setError('Este campo deve ser preenchido');
       return;
@@ -484,18 +486,21 @@ export default function PCP() {
               labelAlign={'left'}
             >
               <Select
-                showSearch
+                // showSearch
                 placeholder="Selecione"
                 size="large"
-                // value={selectSector.sector}
-                onChange={(e) => setSelectProductionLine(e)}
+                value={productionLineName}
+                onChange={(e) => {
+                  setProductionLineId(e[0]);
+                  setProductionLineName(e[1]);
+                }}
 
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {productionLines.map((option) => {
                   return (
                     <>
-                      <Option key={option.id} value={option.id}>
+                      <Option key={option.id} value={[option.id, option.name]}>
                         {option.name}
                       </Option>
                     </>
