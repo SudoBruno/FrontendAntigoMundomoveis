@@ -224,7 +224,7 @@ export default function Employee() {
   const [sectors, setSectors] = useState([]);
   const [area, setArea] = useState('');
   const [areas, setAreas] = useState([]);
-  const [factoryFunction, setFactoryFunction] = useState('');
+  const [factoryFunctionId, setFactoryFunctionId] = useState('');
   const [factoryFunctions, setFactoryFunctions] = useState([]);
 
   const [company, setCompany] = useState('');
@@ -236,7 +236,7 @@ export default function Employee() {
     company,
     area,
     sector,
-    factoryFunction,
+    factoryFunctionId,
     name,
     cpf,
     id,
@@ -306,7 +306,7 @@ export default function Employee() {
     setAdmission(response.data.admission);
     setSector(response.data.factory_sector_id);
     setArea(response.data.factory_area_id);
-    setFactoryFunction(response.data.factory_function_id);
+    setFactoryFunctionId(response.data.factory_function_id);
     setCompany(response.data.company_id);
 
     handleShow();
@@ -563,12 +563,18 @@ export default function Employee() {
                   placeholder="Selecione"
                   size="large"
                   value={area}
-                  onChange={(e) => setArea(e)}
+                  onChange={(e) => {
+                    setArea(e[0]);
+                    setArea(e[1]);
+                  }}
                 >
                   {areas.map((option) => {
                     return (
                       <>
-                        <Option key={option.id} value={option.id}>
+                        <Option
+                          key={option.id}
+                          value={(option.id, option.name)}
+                        >
                           {option.name}
                         </Option>
                       </>
@@ -589,13 +595,19 @@ export default function Employee() {
                   showSearch
                   placeholder="Selecione"
                   size="large"
-                  value={factoryFunction}
-                  onChange={(e) => setFactoryFunction(e)}
+                  value={setFactoryFunctions}
+                  onChange={(e) => {
+                    setFactoryFunctionId(e[0]);
+                    setFactoryFunctionId(e[1]);
+                  }}
                 >
                   {factoryFunctions.map((option) => {
                     return (
                       <>
-                        <Option key={option.id} value={option.id}>
+                        <Option
+                          key={option.id}
+                          value={(option.id, option.name)}
+                        >
                           {option.name}
                         </Option>
                       </>
@@ -615,12 +627,18 @@ export default function Employee() {
                   placeholder="Selecione"
                   size="large"
                   value={company}
-                  onChange={(e) => setCompany(e)}
+                  onChange={(e) => {
+                    setCompany(e[0]);
+                    setCompany(e[1]);
+                  }}
                 >
                   {companys.map((option) => {
                     return (
                       <>
-                        <Option key={option.id} value={option.id}>
+                        <Option
+                          key={option.id}
+                          value={(option.id, option.name)}
+                        >
                           {option.name}
                         </Option>
                       </>
