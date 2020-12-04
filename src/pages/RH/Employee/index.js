@@ -223,11 +223,15 @@ export default function Employee() {
   const [sectorName, setSectorName] = useState('');
   const [sectors, setSectors] = useState([]);
   const [area, setArea] = useState('');
+  const [areaName, setAreaName] = useState('');
+
   const [areas, setAreas] = useState([]);
   const [factoryFunctionId, setFactoryFunctionId] = useState('');
+  const [factoryFunctionName, setFactoryFunctionName] = useState('');
   const [factoryFunctions, setFactoryFunctions] = useState([]);
 
   const [company, setCompany] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [companys, setCompanys] = useState([]);
 
   const [admission, setAdmission] = useState(moment());
@@ -305,9 +309,13 @@ export default function Employee() {
     setPhone(response.data.phone);
     setAdmission(response.data.admission);
     setSector(response.data.factory_sector_id);
+    setSectorName(response.data.sectorName);
     setArea(response.data.factory_area_id);
+    setAreaName(response.data.factoryFunctionName);
     setFactoryFunctionId(response.data.factory_function_id);
+    setFactoryFunctionName(response.data.factoryFunctionName);
     setCompany(response.data.company_id);
+    setCompanyName(response.data.companyName);
 
     handleShow();
   }
@@ -321,7 +329,6 @@ export default function Employee() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    console.log(id);
 
     try {
       if (id === 0) {
@@ -420,9 +427,25 @@ export default function Employee() {
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setName('');
     setId(0);
-
+    setName('');
+    setCPF('');
+    setPIS('');
+    setCTPS('');
+    setSalary('');
+    setAddress('');
+    setNeighborhood('');
+    setCity('');
+    setUF('');
+    setCEP('');
+    setNumber('');
+    setResignation('');
+    setReasonResignation('');
+    setPhone('');
+    setCompanyName('');
+    setSectorName('');
+    setFactoryFunctionName('');
+    setAreaName('');
     setShow(false);
   };
 
@@ -562,10 +585,10 @@ export default function Employee() {
                   showSearch
                   placeholder="Selecione"
                   size="large"
-                  value={area}
+                  value={areaName}
                   onChange={(e) => {
                     setArea(e[0]);
-                    setArea(e[1]);
+                    setAreaName(e[1]);
                   }}
                 >
                   {areas.map((option) => {
@@ -573,7 +596,7 @@ export default function Employee() {
                       <>
                         <Option
                           key={option.id}
-                          value={(option.id, option.name)}
+                          value={[option.id, option.name]}
                         >
                           {option.name}
                         </Option>
@@ -595,10 +618,10 @@ export default function Employee() {
                   showSearch
                   placeholder="Selecione"
                   size="large"
-                  value={setFactoryFunctions}
+                  value={factoryFunctionName}
                   onChange={(e) => {
                     setFactoryFunctionId(e[0]);
-                    setFactoryFunctionId(e[1]);
+                    setFactoryFunctionName(e[1]);
                   }}
                 >
                   {factoryFunctions.map((option) => {
@@ -606,7 +629,7 @@ export default function Employee() {
                       <>
                         <Option
                           key={option.id}
-                          value={(option.id, option.name)}
+                          value={[option.id, option.name]}
                         >
                           {option.name}
                         </Option>
@@ -626,10 +649,10 @@ export default function Employee() {
                   showSearch
                   placeholder="Selecione"
                   size="large"
-                  value={company}
+                  value={companyName}
                   onChange={(e) => {
                     setCompany(e[0]);
-                    setCompany(e[1]);
+                    setCompanyName(e[1]);
                   }}
                 >
                   {companys.map((option) => {
@@ -637,7 +660,7 @@ export default function Employee() {
                       <>
                         <Option
                           key={option.id}
-                          value={(option.id, option.name)}
+                          value={[option.id, option.name]}
                         >
                           {option.name}
                         </Option>
