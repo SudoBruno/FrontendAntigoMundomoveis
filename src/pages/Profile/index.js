@@ -5,6 +5,9 @@ import GaugeChart from '../../components/index';
 import api from '../../services/api';
 import './style.css';
 import Chart from 'react-apexcharts';
+import { Row, Col } from 'antd';
+
+import DefectChart from '../../components/DefectChart';
 
 const chartStyle = {
   height: 250,
@@ -16,7 +19,7 @@ export default function Profile() {
   // let state = 0;
   const [production, setProduction] = useState([]);
   const [productionHour, setProductionHour] = useState([{}]);
-  const [state, setState] = useState({});
+  const [productionHourChart, setProductionHourChart] = useState({});
 
   const userId = localStorage.getItem('userId');
 
@@ -29,14 +32,12 @@ export default function Profile() {
   useEffect(() => {
     api.get('production/hour', {}).then((response) => {
       setProductionHour(response.data);
-
-      console.log('state', state);
     });
   }, [userId]);
 
   useEffect(() => {
     api.get('hour', {}).then((response) => {
-      setState({
+      setProductionHourChart({
         options: {
           chart: {
             type: 'bar',
@@ -84,17 +85,26 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      {productionHour.production !== undefined && state.options !== undefined && (
-        <>
-          {console.log(state)}
-          <Chart
-            options={state.options}
-            series={productionHour.production}
-            type="bar"
-            height={350}
-          />
-        </>
-      )}
+      <ul>
+        <li span={12} className="charts">
+          {productionHour.production !== undefined &&
+            productionHourChart.options !== undefined && (
+              <>
+                <h2>Produção por hora</h2>
+                <Chart
+                  options={productionHourChart.options}
+                  series={productionHour.production}
+                  type="bar"
+                  height={250}
+                />
+              </>
+            )}
+        </li>
+        <li span={12} className="charts">
+          <DefectChart />
+        </li>
+      </ul>
+
       <ul>
         {production.map((productionLine) => (
           <>
