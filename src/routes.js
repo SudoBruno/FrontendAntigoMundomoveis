@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Logon from './pages/Logon';
-
+import Xlsx from './pages/Xlsx';
 import SideBar from './components/sidebar/sidebar';
 import { isAuthenticated, Expedition } from './services/auth';
 import TagLayout from './components/TagLayout';
@@ -44,6 +44,7 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Logon} />
+        <Route path="/xlsx" exact component={Xlsx} />
         <Route path="/pcp/:id" component={TagLayout} />
         <PrivateRoute path="/wmsrm/barcode/:id" component={Barcode} />
         <PrivateRoute path="/stock/barcode/:id" component={StockBarcode} />
