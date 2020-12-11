@@ -224,7 +224,7 @@ export default function PCP() {
   const handleClose = () => {
     setName('');
     setId(0);
-    console.log(dateFinal);
+
     setDateFinal('');
     setDateInitial('');
     setSelectProducts([{ id: '', amount: '', color: '' }]);
@@ -276,7 +276,7 @@ export default function PCP() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    console.log(dateFinal < dateInitial, dateFinal, dateInitial);
+
     if (dateFinal < dateInitial) {
       openNotificationWithIcon(
         'error',
@@ -293,7 +293,7 @@ export default function PCP() {
       dateInitial,
       selectProductionLine: productionLineId,
     };
-    console.log(data);
+
     if (
       name == '' ||
       dateFinal == '' ||

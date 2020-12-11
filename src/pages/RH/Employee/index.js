@@ -293,7 +293,7 @@ export default function Employee() {
     setId(e.id);
     setName(e.name);
     let response = await api.get(`employee/${e.id}`);
-    console.log(response.data);
+
     setCPF(response.data.cpf);
     setPIS(response.data.PIS);
     setCTPS(response.data.CTPS);
@@ -831,7 +831,7 @@ export default function Employee() {
                     onChange={(date) => setResignation(date._d)}
                   />
                 )}
-                {console.log(moment(resignation, 'DD/MM/YYYY'))}
+
                 {!moment(resignation, 'DD/MM/YYYY').isValid() && (
                   <DatePicker
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
@@ -852,7 +852,6 @@ export default function Employee() {
                   onChange={(e) => setReasonResignation(e.target.value)}
                   value={reasonResignation}
                 />
-                {console.log(reasonResignation)}
               </Form.Item>
             </Col>
           </Row>

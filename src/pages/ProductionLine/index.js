@@ -228,7 +228,7 @@ export default function ProductionLine() {
 
     const response = await api.get(`production-line-sector/${e.id}`);
     setSelectSector(response.data);
-    console.log(response.data);
+
     try {
       setLastSector(response.data[0].last_sector);
     } catch (error) {
