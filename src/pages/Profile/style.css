@@ -94,3 +94,22 @@
 .charts h2 {
     text-align: center;
 }
+
+.charts {
+    min-width: 400px;
+    max-height: 290px;
+}
+
+.totalProduction {
+    align-items: center;
+    text-align: center;
+}
+
+.totalProduction p {
+    font-size: 16px;
+}
+
+.totalProduction h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
