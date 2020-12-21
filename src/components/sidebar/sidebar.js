@@ -567,6 +567,11 @@ class App extends React.Component {
                 <Link to="/production/report">Relatório Produção </Link>
               </Menu.Item>
             )}
+            {localStorage.getItem('acess_level') === '1' && (
+              <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                <Link to="/call/employee">Chamada </Link>
+              </Menu.Item>
+            )}
             <SubMenu
               key="cover"
               title="Controle de capas"
