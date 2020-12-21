@@ -190,7 +190,6 @@ export default function Entry() {
                   title="Confirmar remoção?"
                 >
                   <a href="#" style={{ marginLeft: 20 }}>
-                    {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
                 </Popconfirm>
@@ -219,7 +218,6 @@ export default function Entry() {
   const [rawMaterials, setRawMaterials] = useState([
     {
       id_rawmaterial: '',
-
       errorRawMaterial: '',
       errorQuantity: '',
     },
@@ -284,7 +282,9 @@ export default function Entry() {
   const HandleChangeRawMaterial = (value, index) => {
     var NewArray = [...rawMaterials];
 
-    NewArray[index].id_rawmaterial = value;
+    NewArray[index].id_rawmaterial = value[0];
+    NewArray[index].coefficient = value[1];
+    NewArray[index].nameRawMaterial = `${value[2]} / ${value[3]} (${value[4]})`;
     NewArray[index].errorRawMaterial = '';
 
     setRawMaterials(NewArray);
@@ -294,6 +294,10 @@ export default function Entry() {
     var NewArray = [...rawMaterials];
 
     NewArray[index].quantity = value;
+    NewArray[index].price =
+      NewArray[index].gradeValues *
+      NewArray[index].coefficient *
+      parseFloat(value.replace(',', '.'));
     NewArray[index].errorQuantity = '';
 
     setRawMaterials(NewArray);
@@ -304,6 +308,17 @@ export default function Entry() {
 
     NewArray[index].price = value;
 
+    setRawMaterials(NewArray);
+  };
+
+  const HandleChangeGradeValue = (value, index) => {
+    var NewArray = [...rawMaterials];
+
+    NewArray[index].gradeValues = value;
+    NewArray[index].price =
+      value *
+      NewArray[index].coefficient *
+      parseFloat(NewArray[index].quantity);
     setRawMaterials(NewArray);
   };
 
@@ -501,26 +516,22 @@ export default function Entry() {
         onCancel={handleClose}
         footer={[
           <Button key="back" type="default" onClick={handleClose}>
-            {' '}
             Cancelar
           </Button>,
           <Button key="submit" type="primary" onClick={handleRegister}>
-            {' '}
             Salvar
           </Button>,
         ]}
       >
         <Row gutter={24}>
           <Col span={8}>
-            <label>
-              {' '}
-              Nome do lote:
-              <span style={{ color: 'red', marginTop: 10, marginBottom: 10 }}>
-                {' '}
-                *{' '}
-              </span>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Nome da Entrada:"
+              labelAlign={'left'}
+              required
+            >
               <Input
-                style={{ marginTop: 10 }}
                 disabled={locked_entry === true ? true : false}
                 name="description"
                 placeholder="Descreva a entrada"
@@ -530,22 +541,18 @@ export default function Entry() {
                 }}
                 value={description}
               />
-              <span style={{ color: 'red', marginBottom: 10 }}>
-                {errorDescription}
-              </span>
-            </label>
+              <span style={{ color: 'red' }}>{errorDescription}</span>
+            </Form.Item>
           </Col>
 
           <Col span={8}>
-            <label>
-              {' '}
-              Número da nota:
-              <span style={{ color: 'red', marginTop: 10, marginBottom: 10 }}>
-                {' '}
-                *{' '}
-              </span>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Número da nota:"
+              labelAlign={'left'}
+              required
+            >
               <Input
-                style={{ marginTop: 10 }}
                 disabled={locked_entry === true ? true : false}
                 name="fiscalNumber"
                 placeholder="Digite o número da nota fiscal"
@@ -555,27 +562,19 @@ export default function Entry() {
                 }}
                 value={fiscalNumber}
               />
-              <span style={{ color: 'red', marginBottom: 10 }}>
-                {errorFiscalNumber}
-              </span>
-            </label>
+              <span style={{ color: 'red' }}>{errorFiscalNumber}</span>
+            </Form.Item>
           </Col>
 
           <Col span={8}>
-            <label>
-              {' '}
-              Usuário:
-              <span style={{ color: 'red', marginTop: 10, marginBottom: 10 }}>
-                {' '}
-                *{' '}
-              </span>
-              <Input
-                style={{ marginTop: 10 }}
-                disabled={true}
-                name="code"
-                value={id_user}
-              />
-            </label>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Usuário:"
+              labelAlign={'left'}
+              required
+            >
+              <Input disabled={true} name="code" value={id_user} />
+            </Form.Item>
           </Col>
         </Row>
 
@@ -585,16 +584,13 @@ export default function Entry() {
           return (
             <>
               <Row gutter={24}>
-                <Col span={14}>
-                  <label>
-                    {' '}
-                    Insumo:
-                    <span
-                      style={{ color: 'red', marginTop: 10, marginBottom: 10 }}
-                    >
-                      {' '}
-                      *{' '}
-                    </span>
+                <Col span={9}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Insumo:"
+                    labelAlign={'left'}
+                    required
+                  >
                     <Select
                       disabled={locked_entry === true ? true : false}
                       showSearch
@@ -607,13 +603,21 @@ export default function Entry() {
                           .indexOf(input.toLowerCase()) >= 0
                       }
                       onChange={(e) => HandleChangeRawMaterial(e, index)}
-                      value={selectRawMaterial.id_rawmaterial}
-                      style={{ width: '100%', marginTop: 12 }}
+                      value={selectRawMaterial.nameRawMaterial}
                     >
                       {dropRawMaterial.map((option) => {
                         return (
                           <>
-                            <Option key={option.id} value={option.id}>
+                            <Option
+                              key={option.id}
+                              value={[
+                                option.id,
+                                option.coefficient,
+                                option.ins,
+                                option.description,
+                                option.un_measure,
+                              ]}
+                            >
                               {option.ins +
                                 ' / ' +
                                 option.description +
@@ -626,23 +630,16 @@ export default function Entry() {
                       })}
                       ;
                     </Select>
-                    <span style={{ color: 'red', marginBottom: 10 }}>
-                      {selectRawMaterial.errorRawMaterial}
-                    </span>
-                  </label>
+                  </Form.Item>
                 </Col>
                 <Col span={5}>
-                  <label>
-                    {' '}
-                    Quantidade:
-                    <span
-                      style={{ color: 'red', marginTop: 10, marginBottom: 10 }}
-                    >
-                      {' '}
-                      *{' '}
-                    </span>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Quantidade:"
+                    labelAlign={'left'}
+                    required
+                  >
                     <Input
-                      disabled={locked_entry === true ? true : false}
                       name="quantity"
                       type="number"
                       max="999999999"
@@ -651,12 +648,29 @@ export default function Entry() {
                       onChange={(e) =>
                         HandleChangeQuantity(e.target.value, index)
                       }
-                      style={{ width: '100%', marginTop: 10 }}
                     />
-                  </label>
-                  <span style={{ color: 'red', marginBottom: 10 }}>
-                    {selectRawMaterial.errorQuantity}
-                  </span>
+                  </Form.Item>
+                </Col>
+                <Col span={5}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Valor unitário do insumo"
+                    labelAlign={'left'}
+                    required
+                  >
+                    <Input
+                      disabled={locked_entry === true ? true : false}
+                      name="price"
+                      type="number"
+                      min="0"
+                      max="999999999"
+                      step="0.01"
+                      value={selectRawMaterial.gradeValues}
+                      onChange={(e) => {
+                        HandleChangeGradeValue(e.target.value, index);
+                      }}
+                    />
+                  </Form.Item>
                 </Col>
 
                 <Col span={5}>
@@ -672,6 +686,7 @@ export default function Entry() {
                       min="0"
                       max="999999999"
                       step="0.01"
+                      disabled
                       value={selectRawMaterial.price}
                       onChange={(e) => HandleChangePrice(e.target.value, index)}
                       style={{ width: '80%', marginRight: '5%' }}
@@ -692,7 +707,7 @@ export default function Entry() {
                       disabled={locked_entry === true ? true : false}
                       key="primary"
                       title="Novo insumo"
-                      style={{ width: '95%' }}
+                      style={{ width: '100%' }}
                       onClick={handleAddClick}
                     >
                       <PlusOutlined />

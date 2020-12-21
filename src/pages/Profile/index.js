@@ -20,6 +20,7 @@ export default function Profile() {
   const [production, setProduction] = useState([]);
   const [productionHour, setProductionHour] = useState([{}]);
   const [productionHourChart, setProductionHourChart] = useState({});
+  const [totalProduction, setTotalProduction] = useState({});
 
   const userId = localStorage.getItem('userId');
 
@@ -32,6 +33,11 @@ export default function Profile() {
   useEffect(() => {
     api.get('production/hour', {}).then((response) => {
       setProductionHour(response.data);
+    });
+  }, [userId]);
+  useEffect(() => {
+    api.get('production/total', {}).then((response) => {
+      setTotalProduction(response.data);
     });
   }, [userId]);
 
@@ -95,13 +101,19 @@ export default function Profile() {
                   options={productionHourChart.options}
                   series={productionHour.production}
                   type="bar"
-                  height={250}
+                  height={200}
                 />
               </>
             )}
         </li>
         <li span={12} className="charts">
           <DefectChart />
+        </li>
+      </ul>
+      <ul className="totalProduction">
+        <li>
+          <p>Produção Total:</p>
+          <h2>{totalProduction.total}</h2>
         </li>
       </ul>
 

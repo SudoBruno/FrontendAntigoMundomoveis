@@ -40,6 +40,7 @@ import ExpeditionOutput from '../../pages/Expedition/Output';
 import ExpeditionStock from '../../pages/Expedition/Stock';
 import ExpeditionLaunch from '../../pages/Expedition/Launch';
 import ExpeditionChange from '../../pages/Expedition/Change';
+import ExpeditionDrop from '../../pages/Expedition/Search/Drop';
 
 //////////////////////////////////////////////////////////////////
 //WMS - RAW MATERIAL
@@ -239,6 +240,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <ExpeditionChange />,
+  },
+  {
+    path: '/expedition/drop',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionDrop />,
   },
   //////////////// RH  //////////////////////
   {
@@ -538,6 +545,9 @@ class App extends React.Component {
                   </Menu.Item>
                   <Menu.Item key="35" icon={<FileExcelOutlined />}>
                     <Link to="/expedition/change">Troca de estoque</Link>
+                  </Menu.Item>
+                  <Menu.Item key="41" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/drop">Drop</Link>
                   </Menu.Item>
                 </SubMenu>
               </SubMenu>

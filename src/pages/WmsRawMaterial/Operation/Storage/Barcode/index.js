@@ -106,7 +106,6 @@ function Barcode() {
                         height={40}
                         fontSize={20}
                       />
-                      {console.log(item.barcode)}
                     </div>
                   </div>
                 </>

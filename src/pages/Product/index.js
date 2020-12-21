@@ -257,7 +257,7 @@ export default function Product() {
     setVolume(response.data.volume_quantity);
 
     response = await api.get(`product-sector/${e.id}`);
-    console.log(response.data);
+
     setSelectProductsSectors(response.data);
 
     response = await api.get(`product-ins/${e.id}`);

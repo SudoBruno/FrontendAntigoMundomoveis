@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVDownload, CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import {
   SearchOutlined,
   FileExcelOutlined,
   DownloadOutlined,
 } from '@ant-design/icons';
-import api from '../../../services/api';
-import {
-  Layout,
-  Table,
-  Button,
-  Row,
-  Input,
-  Space,
-  Select,
-  Col,
-  DatePicker,
-} from 'antd';
+import api from '../../../../services/api';
+import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
 
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
 
-export default function ExpeditionOutput() {
+export default function ExpeditionDrop() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -135,99 +124,89 @@ export default function ExpeditionOutput() {
     render() {
       const columns = [
         {
-          title: 'Cod. Forn',
-          dataIndex: 'code',
-          key: 'code',
-          ...this.getColumnSearchProps('code'),
-        },
-        {
-          title: 'Produto',
-          dataIndex: 'product',
-          key: 'product',
-
+          title: 'ID',
+          dataIndex: 'id',
+          key: 'id',
           ...this.getColumnSearchProps('id'),
         },
         {
-          title: 'Estoque antigo',
-          dataIndex: 'old_name',
-          key: 'old_name',
-          ...this.getColumnSearchProps('old_name'),
-        },
-        {
-          title: 'Novo estoque',
-          dataIndex: 'new_name',
-          key: 'new_name',
+          title: 'Nome',
+          dataIndex: 'name',
+          key: 'name',
 
-          ...this.getColumnSearchProps('new_name'),
+          ...this.getColumnSearchProps('name'),
         },
         {
-          title: 'Código de barras',
-          dataIndex: 'barCode',
-          key: 'barCode',
-          ...this.getColumnSearchProps('barCode'),
+          title: 'Dia do Drop',
+          dataIndex: 'initial_date',
+          key: 'initial_date',
+          ...this.getColumnSearchProps('initial_date'),
         },
         {
-          title: 'Alterado em:',
-          dataIndex: 'created_at',
-          key: 'created_at',
+          title: 'Operação',
+          colSpan: 2,
+          dataIndex: 'operacao',
+          align: 'center',
 
-          ...this.getColumnSearchProps('created_at'),
+          render: (text, record) => {
+            return (
+              <React.Fragment>
+                {status == false && (
+                  <DownloadOutlined
+                    onClick={() => {
+                      handleDownload(record);
+                      setStatus(true);
+                    }}
+                  />
+                )}
+                {status == true && (
+                  <CSVLink
+                    {...csvReport}
+                    style={{ color: '#000' }}
+                    separator={';'}
+                    onClick={() => {
+                      setStatus(false);
+                    }}
+                  >
+                    Download
+                  </CSVLink>
+                )}
+              </React.Fragment>
+            );
+          },
         },
       ];
 
-      return <Table columns={columns} dataSource={change} />;
+      return <Table columns={columns} dataSource={drops} />;
     }
   }
-
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [change, setChange] = useState([]);
-  const [csvData, setCsvData] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  const [ready, setReady] = useState(false);
-  const [intervalTime, setIntervalTime] = useState([]);
-
+  const [status, setStatus] = useState(false);
+  const [drops, setDrops] = useState([{}]);
+  const [data, setData] = useState([{}]);
+  const [headers, setHeaders] = useState([
+    { label: 'Drop ID', key: 'agenda_drop_id' },
+    { label: 'Produto', key: 'name' },
+    { label: 'Cod. Interno', key: 'reference' },
+    { label: 'Agendado', key: 'need' },
+    { label: 'Saiu', key: 'output' },
+  ]);
   useEffect(() => {
-    api.get('expedition/change', {}).then((response) => {
-      setChange(response.data);
+    api.get('drop', {}).then((response) => {
+      setDrops(response.data);
     });
-  }, [refreshKey]);
+  }, []);
 
-  async function Filter() {
-    const data = {
-      intervalTime: intervalTime,
-    };
-    const response = await api.post('expedition/change/filter', data);
+  const handleDownload = async (e) => {
+    const response = await api.get(`/drop/output/item/${e.id}`);
 
-    setChange(response.data);
-  }
+    setData(response.data);
+  };
 
-  async function Change() {
-    setReady(false);
-    const data = {
-      intervalTime: intervalTime,
-    };
-    let response = [];
-    if (intervalTime.length == 0) {
-      response = await api.get('expedition/change');
-    } else {
-      response = await api.post('expedition/change/filter', data);
-    }
-
-    setCsvData(response.data);
-    setTimeout(
-      function () {
-        setReady(true);
-      }.bind(this),
-      500
-    );
-    setHeaders([
-      { key: 'Codigo fornecedor' },
-      { key: 'Produto' },
-      { key: 'Rua' },
-      { key: 'Data armazenado' },
-      { key: 'Código de barras' },
-    ]);
-  }
+  const csvReport = {
+    data: data,
+    headers: headers,
+    filename: 'drop.csv',
+  };
   return (
     <Layout
       style={{
@@ -238,36 +217,21 @@ export default function ExpeditionOutput() {
       }}
     >
       <Row style={{ marginBottom: 16 }}>
-        <Col span={12}>
-          <RangePicker
-            size="small"
-            placeholder={['data inicial', 'data final']}
-            onChange={setIntervalTime}
-          />
-          <SearchOutlined
-            style={{
-              fontSize: 18,
-              color: '#3b4357',
-              marginLeft: 8,
-            }}
-            onClick={Filter}
-          />
-        </Col>
-        <Col span={12} align="end">
-          {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Change}>
+        <Col span={24} align="end">
+          {/* {!ready && (
+            <Button type="submit" className="buttonGreen" onClick={Stock}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
-              Transferências
+              Estoque Atual
             </Button>
-          )}
-          {ready && (
+          )} */}
+          {/* {ready && (
             <Button className="buttonGreen">
               <DownloadOutlined style={{ marginRight: 8 }} />
               <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
                 Download
               </CSVLink>
             </Button>
-          )}
+          )} */}
         </Col>
       </Row>
 

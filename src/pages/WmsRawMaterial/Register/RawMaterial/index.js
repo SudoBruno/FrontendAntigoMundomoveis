@@ -199,7 +199,6 @@ export default function RawMaterial() {
                   title="Confirmar remoção?"
                 >
                   <a href="#" style={{ marginLeft: 20 }}>
-                    {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
                 </Popconfirm>
@@ -216,6 +215,7 @@ export default function RawMaterial() {
   const [rawMaterials, setRawMaterials] = useState([]);
   const [id_unmeasure, setId_unmeasure] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [coefficient, setCoefficient] = useState(0);
 
   //Validações
   const [errorIns, setErrorIns] = useState('');
@@ -233,6 +233,7 @@ export default function RawMaterial() {
     setIns(e.ins);
     setDescription(e.description);
     setId_unmeasure(e.id_unmeasure);
+    setCoefficient(e.coefficient);
 
     const status = e.active === 'Sim' ? 1 : 0;
     setActive(status);
@@ -254,6 +255,7 @@ export default function RawMaterial() {
       description,
       id_unmeasure,
       active,
+      coefficient,
     };
 
     if (ins === '') {
@@ -352,6 +354,7 @@ export default function RawMaterial() {
     setDescription('');
     setId_unmeasure('');
     setActive(1);
+    setCoefficient(1);
 
     setShow(false);
   };
@@ -396,11 +399,9 @@ export default function RawMaterial() {
         onCancel={handleClose}
         footer={[
           <Button key="back" type="default" onClick={handleClose}>
-            {' '}
             Cancelar
           </Button>,
           <Button key="submit" type="primary" onClick={handleRegister}>
-            {' '}
             Salvar
           </Button>,
         ]}
@@ -408,8 +409,7 @@ export default function RawMaterial() {
         <ul>
           <li style={{ marginBottom: 20 }}>
             <label>
-              {' '}
-              Código INS:{' '}
+              Código INS:
               <span style={{ color: 'red', marginBottom: 10 }}> * </span>
               <input
                 placeholder="Digite o código INS"
@@ -426,8 +426,7 @@ export default function RawMaterial() {
           </li>
           <li style={{ marginBottom: 20 }}>
             <label>
-              {' '}
-              Descrição:{' '}
+              Descrição:
               <span style={{ color: 'red', marginBottom: 10 }}> * </span>
               <input
                 placeholder="Digite a descrição do insumo"
@@ -446,8 +445,7 @@ export default function RawMaterial() {
           </li>
           <li style={{ marginBottom: 20 }}>
             <label>
-              {' '}
-              Unidade de medida:{' '}
+              Unidade de medida:
               <span style={{ color: 'red', marginBottom: 10 }}> * </span>
               <Select
                 showSearch
@@ -481,7 +479,21 @@ export default function RawMaterial() {
           </li>
           <li>
             <label>
-              {' '}
+              Fator de conversão:
+              <span style={{ color: 'red', marginBottom: 10 }}> * </span>
+              <input
+                placeholder="Digite o fator de conversão do insumo"
+                style={{ marginBottom: 0 }}
+                name="coefficient"
+                value={coefficient}
+                onChange={(e) => {
+                  setCoefficient(e.target.value);
+                }}
+              />
+            </label>
+          </li>
+          <li>
+            <label>
               Ativo:<span style={{ color: 'red', marginBottom: 10 }}> * </span>
               <Select
                 style={{ width: '100%', marginTop: 12 }}

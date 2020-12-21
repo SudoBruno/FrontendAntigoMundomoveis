@@ -222,7 +222,6 @@ export default function SubProduct() {
   useEffect(() => {
     api.get('rawmaterial/entry/not-store', {}).then((response) => {
       setIns(response.data);
-      console.log(response.data);
     });
   }, [refreshKey]);
 
@@ -377,9 +376,9 @@ export default function SubProduct() {
   const handleClose = () => {
     setName('');
     setId(0);
-    console.log(itensStorages);
+
     setItensStorage([{ ins_name: '' }]);
-    console.log(itensStorages);
+
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -405,14 +404,13 @@ export default function SubProduct() {
     list[index].entryitens = e[1];
     list[index].entry_name = e[2];
     list[index].remaining = e[3];
-    console.log(e[3]);
+
     list.map((item) => {
       if (
         item.entryitens === list[index].entryitens &&
         item.ins === list[index].ins &&
         item.amount !== undefined
       ) {
-        console.log(list[index].remaining, item.amout);
         list[index].remaining = list[index].remaining - item.amount;
       }
     });
@@ -456,7 +454,6 @@ export default function SubProduct() {
     const { name, value } = e.target;
     const list = [...itensStorages];
     if (name === 'amount') {
-      console.log(value);
       if (parseFloat(value) < 0 || parseFloat(value) > list[index].remaining) {
         setRefreshKey((refreshKey) => refreshKey + 1);
         openNotificationWithIcon(
