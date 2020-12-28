@@ -405,10 +405,25 @@ export default function Product() {
   };
 
   // handle click event of the Add button
-  const handleAddClick = () => {
+  const handleAddClick = (e, index) => {
+    e.preventDefault();
+    var position = 0;
+    if (index > 0) {
+      position = index - 1;
+    } else {
+      position = 0;
+    }
+    console.log(selectProductsSectors[position]);
     setSelectProductsSectors([
       ...selectProductsSectors,
-      { subproduct: '', sector: '', points: '' },
+      {
+        subproductName: selectProductsSectors[position].subproductName,
+        subproduct: selectProductsSectors[position].subproduct,
+        sector: '',
+        points: '',
+        amount: selectProductsSectors[position].amount,
+        order: '',
+      },
     ]);
   };
 
@@ -651,7 +666,7 @@ export default function Product() {
             return (
               <>
                 <Row gutter={5}>
-                  <Col span={10}>
+                  <Col span={7}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="Subproduto"
@@ -679,7 +694,7 @@ export default function Product() {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={10}>
+                  <Col span={7}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="Setor:"
@@ -703,6 +718,34 @@ export default function Product() {
                       </Select>
                     </Form.Item>
                   </Col>
+                  <Col span={3}>
+                    <Form.Item
+                      labelCol={{ span: 23 }}
+                      label="quantidade:"
+                      labelAlign={'left'}
+                    >
+                      <Input
+                        name="amount"
+                        value={selectProductSector.amount}
+                        onChange={(e) => HandleChange(e, index)}
+                        // style={{ width: '80%', marginRight: 8 }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={3}>
+                    <Form.Item
+                      labelCol={{ span: 23 }}
+                      label="order:"
+                      labelAlign={'left'}
+                    >
+                      <Input
+                        name="order"
+                        value={selectProductSector.order}
+                        onChange={(e) => HandleChange(e, index)}
+                        // style={{ width: '80%', marginRight: 8 }}
+                      />
+                    </Form.Item>
+                  </Col>
                   <Col span={4}>
                     <Form.Item
                       labelCol={{ span: 23 }}
@@ -711,7 +754,7 @@ export default function Product() {
                     >
                       <Input
                         name="points"
-                        placeholder="Ordem"
+                        placeholder="Pontos"
                         value={selectProductSector.points}
                         onChange={(e) => HandleChange(e, index)}
                         style={{ width: '80%', marginRight: 8 }}
@@ -729,7 +772,7 @@ export default function Product() {
                     key="primary"
                     title="Nova Linha"
                     style={{ width: '100%' }}
-                    onClick={handleAddClick}
+                    onClick={(e) => handleAddClick(e, index)}
                   >
                     <PlusOutlined />
                     Subproduto

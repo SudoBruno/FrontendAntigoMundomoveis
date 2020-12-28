@@ -74,6 +74,8 @@ import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Stock';
 
+import PlantingMount from '../../pages/Planting/Mount';
+
 const userName = localStorage.getItem('userName');
 
 const { Header, Sider, Content } = Layout;
@@ -313,6 +315,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CoverStock />,
+  },
+  {
+    path: '/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingMount />,
   },
 ];
 
@@ -604,6 +612,13 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
             </SubMenu>
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
+                <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
+                  <Link to="/mount">Linha</Link>
+                </Menu.Item>
+              </SubMenu>
+            )}
             <Menu.Item key="40" icon={<ExportOutlined />}>
               <Link to="/" onClick={handleLogout}>
                 Sair
