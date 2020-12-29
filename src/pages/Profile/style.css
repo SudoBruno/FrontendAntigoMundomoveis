@@ -47,7 +47,8 @@
     list-style: none;
 }
 
-.profile-container ul li {
+.profile-container li {
+    list-style: none;
     background-color: #fff;
     padding: 24px;
     border-radius: 8px;
