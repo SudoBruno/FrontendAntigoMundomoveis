@@ -74,7 +74,10 @@ import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Stock';
 
-import  CallList from "../../pages/RH/CallList";
+import CallList from '../../pages/RH/CallList';
+import PlantingMount from '../../pages/Planting/Mount';
+import PlantingStockMount from '../../pages/Planting/Search/MountStock';
+import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
 
 const userName = localStorage.getItem('userName');
 
@@ -319,9 +322,26 @@ const routes = [
     path: '/call/employee',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <CallList/>,
+    main: () => <CallList />,
   },
-  
+  {
+    path: '/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingMount />,
+  },
+  {
+    path: '/stock/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingStockMount />,
+  },
+  {
+    path: '/production/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingProductionMount />,
+  },
 ];
 
 class App extends React.Component {
@@ -617,6 +637,28 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
             </SubMenu>
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
+                <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
+                  <Link to="/mount">Linha</Link>
+                </Menu.Item>
+                <SubMenu
+                  key="WnsInsumosSearches"
+                  title="Consultas"
+                  icon={<SearchOutlined />}
+                >
+                  <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
+                    <Link to="/stock/mount">Na Linha</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="mountProduction"
+                    icon={<RightSquareOutlined />}
+                  >
+                    <Link to="/production/mount">Em Produção</Link>
+                  </Menu.Item>
+                </SubMenu>
+              </SubMenu>
+            )}
             <Menu.Item key="40" icon={<ExportOutlined />}>
               <Link to="/" onClick={handleLogout}>
                 Sair

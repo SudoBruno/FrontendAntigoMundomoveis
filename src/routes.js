@@ -12,6 +12,7 @@ import LaunchProduction from './pages/LaunchProduction';
 import ExpeditionLaunch from './pages/Expedition/Launch';
 import LaunchRawMaterial from './pages/Expedition/Launch';
 import StockBarcode from './pages/WmsRawMaterial/Search/SearchStorage/Barcode';
+import Mount from './pages/Planting/Mount';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
