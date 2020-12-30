@@ -18,14 +18,12 @@ import {
   Checkbox,
 } from 'antd';
 
-
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './styles.css';
 
 import api from '../../../services/api';
-
 
 const Option = Select.Option;
 export default function CallList() {
@@ -106,8 +104,8 @@ export default function CallList() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -168,7 +166,6 @@ export default function CallList() {
           sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
           ...this.getColumnSearchProps('presence'),
         },
-
       ];
 
       return <Table columns={columns} dataSource={callList} />;
@@ -179,13 +176,15 @@ export default function CallList() {
   const [area, setArea] = useState(0);
   const [areaName, setAreaName] = useState('');
   const [areas, setAreas] = useState([]);
-  const [callList, setCallList] = useState([{
-    name: '',
-    area: '',
-    entryTime: '',
-    areaId: 0,
-    employeeId: 0
-  }]);
+  const [callList, setCallList] = useState([
+    {
+      name: '',
+      area: '',
+      entryTime: '',
+      areaId: 0,
+      employeeId: 0,
+    },
+  ]);
 
   // useEffect(() => {
   //   api.get('call-list', {}).then((response) => {
@@ -209,69 +208,53 @@ export default function CallList() {
     });
   }
 
-
   const [show, setShow] = useState(false);
 
   const isPresent = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-
-      const response = await api.put(`call-list/presence/${callList[refreshKey].id}`)
+      const response = await api.put(
+        `call-list/presence/${callList[refreshKey].id}`
+      );
       console.log(refreshKey, callList.length - 1);
       if (refreshKey >= callList.length - 1) {
         openNotificationWithIcon(
           'success',
           'Chamada Finalizada',
           'Chamada finalizada'
-
         );
-        setRefreshKey(0)
+        setRefreshKey(0);
         setShow(false);
       } else {
-
-        setRefreshKey((refreshKey) => refreshKey + 1)
+        setRefreshKey((refreshKey) => refreshKey + 1);
       }
-
     } catch (error) {
-      openNotificationWithIcon(
-        'error',
-        'ERRO',
-        'Erro na chamada'
-      );
+      openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
     }
-
-
-
-  }
+  };
 
   const fault = async (e) => {
     try {
-
-      const response = await api.put(`call-list/absence/${callList[refreshKey].id}`)
+      const response = await api.put(
+        `call-list/absence/${callList[refreshKey].id}`
+      );
       console.log(refreshKey, callList.length - 1);
       if (refreshKey >= callList.length - 1) {
         openNotificationWithIcon(
           'success',
           'Chamada Finalizada',
           'Chamada finalizada'
-
         );
-        setRefreshKey(0)
+        setRefreshKey(0);
         setShow(false);
       } else {
-
-        setRefreshKey((refreshKey) => refreshKey + 1)
+        setRefreshKey((refreshKey) => refreshKey + 1);
       }
-
     } catch (error) {
-      openNotificationWithIcon(
-        'error',
-        'ERRO',
-        'Erro na chamada'
-      );
+      openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
     }
-  }
+  };
 
   const handleUpload = (e) => {
     e.preventDefault();
@@ -301,17 +284,12 @@ export default function CallList() {
       );
       const response = await api.post('/call/employee/xlsx', employee);
     } catch (error) {
-      openNotificationWithIcon(
-        'error',
-        'ERRO',
-        'Erro ao enviar'
-      );
+      openNotificationWithIcon('error', 'ERRO', 'Erro ao enviar');
     }
   };
 
   const [refreshKey, setRefreshKey] = useState(0);
   const [error, setError] = useState('');
-
 
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -326,27 +304,20 @@ export default function CallList() {
 
   const handleShow = () => setShow(true);
 
-
-
-  async function startCallList(e) {
-    e.preventDefault()
-
-    const response = await api.get(`/call-list/${area}`)
+  const alterCallList = async () => {
+    const response = await api.get(`/call-list/${area}`);
     console.log('response', response.data);
     if (response.data.length > 0) {
-
-      setCallList(response.data)
+      setCallList(response.data);
     } else {
-
-      openNotificationWithIcon(
-        'error',
-        'ERRO',
-        'Fucionarios nao encontrados'
-      );
-
+      openNotificationWithIcon('error', 'ERRO', 'Fucionarios nao encontrados');
     }
+  };
 
-    setShow(true)
+  async function startCallList(e) {
+    e.preventDefault();
+
+    setShow(true);
   }
 
   return (
@@ -386,7 +357,7 @@ export default function CallList() {
               size="large"
               value={areaName}
               onChange={(e) => {
-                console.log(e);
+                alterCallList();
                 setArea(e[0]);
                 setAreaName(e[1]);
               }}
@@ -403,17 +374,21 @@ export default function CallList() {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={12} style={{ display: 'flex', alignItems: 'center', justifyContent: 'left', marginTop: 20 }}>
-          <button className="btn-enviar" onClick={e => startCallList(e)}>
+        <Col
+          span={12}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'left',
+            marginTop: 20,
+          }}
+        >
+          <button className="btn-enviar" onClick={(e) => startCallList(e)}>
             Iniciar Chamada
-        </button>
+          </button>
         </Col>
       </Row>
-      <Modal
-        visible={show}
-        width={800}
-        title={'Chamada'}
-      >
+      <Modal visible={show} width={800} title={'Chamada'}>
         {console.log('aa', callList)}
         <Row gutter={5}>
           <Col span={8}>
@@ -421,25 +396,18 @@ export default function CallList() {
               labelCol={{ span: 23 }}
               label="Funcionario"
               labelAlign={'left'}
-
             >
               <Select
                 showSearch
                 placeholder="Selecione"
                 size="large"
                 value={callList[refreshKey].name}
-
                 disabled
               >
-
-
                 {callList.map((option) => {
                   return (
                     <>
-                      <Option
-                        key={option.id}
-                        value={[option.id, option.name]}
-                      >
+                      <Option key={option.id} value={[option.id, option.name]}>
                         {option.name}
                       </Option>
                     </>
@@ -459,19 +427,16 @@ export default function CallList() {
                 placeholder="Selecione"
                 size="large"
                 value={callList[refreshKey].area}
-              // onChange={(e) => {
-              //   console.log(e);
-              //   setArea(e[0]);
-              //   setAreaName(e[1]);
-              // }}
+                // onChange={(e) => {
+                //   console.log(e);
+                //   setArea(e[0]);
+                //   setAreaName(e[1]);
+                // }}
               >
                 {areas.map((option) => {
                   return (
                     <>
-                      <Option
-                        key={option.id}
-                        value={[option.id, option.name]}
-                      >
+                      <Option key={option.id} value={[option.id, option.name]}>
                         {option.name}
                       </Option>
                     </>
@@ -492,35 +457,34 @@ export default function CallList() {
                 value={callList[refreshKey].entryTime}
                 disabled
               />
-
             </Form.Item>
           </Col>
-
         </Row>
-
 
         <Row gutter={5}>
           <Col span={12} className="callListButtons">
             <Button
-              className='presenceButton'
-              onClick={e => {
-                isPresent(e)
-
-              }}>Presente</Button>
+              className="presenceButton"
+              onClick={(e) => {
+                isPresent(e);
+              }}
+            >
+              Presente
+            </Button>
           </Col>
           <Col span={12} className="callListButtons">
             <Button
-              className='absenceButton'
-              onClick={e => {
-                fault()
-
-              }}>Faltou</Button>
+              className="absenceButton"
+              onClick={(e) => {
+                fault();
+              }}
+            >
+              Faltou
+            </Button>
           </Col>
         </Row>
-
       </Modal>
       <SearchTable />
-
     </Layout>
   );
   // return (
