@@ -290,6 +290,7 @@ export default function PlantingMount() {
   const [previousMountId, setPreviousMountId] = useState(null);
   const [oldAmount, setOldAmount] = useState(0);
   const [reason, setReason] = useState('');
+  const [finishDate, setFinishDate] = useState('');
 
   // useEffect(() => {
   //   api.get('plating/mount ', {}).then((response) => {
@@ -385,8 +386,7 @@ export default function PlantingMount() {
     color: color,
   };
   async function handleCreateMount() {
-    console.log('old', oldAmount, 'sub', selectedSubProducts);
-    if (oldAmount != selectedSubProducts[0].amount) {
+    if (oldAmount != selectedSubProducts[0].amount && oldAmount != 0) {
       setShowReason(true);
       return;
     }
@@ -428,6 +428,7 @@ export default function PlantingMount() {
   const finishMount = async (e, data) => {
     e.preventDefault();
 
+    setFinishDate(data.finish);
     setProductionPlanControlId(data.pcpId);
     setProductionPlanControlName(data.pcp);
     setProductId(data.productId);
@@ -458,8 +459,34 @@ export default function PlantingMount() {
     setShow(true);
   };
 
-  const handleSaveReason = () => {
-    console.log(reason);
+  const handleSaveReason = async () => {
+    console.log(previousMountId, mountId);
+    const data = {
+      mountId: mountId == 0 ? previousMountId : mountId,
+      reason: reason,
+      amountInput: oldAmount,
+      amountOutput: selectedSubProducts[0].amount,
+      movement: finishDate == null ? 'output' : 'input',
+    };
+    if (reason == '' || reason == undefined || reason == null) {
+      openNotificationWithIcon(
+        'error',
+        'Motivo não preenchido',
+        'Por favor, explicar a diferença de quantidade no monte'
+      );
+    } else {
+      try {
+        const response = await api.post('/plating/loser/mount', data);
+
+        setOldAmount(parseFloat(selectedSubProducts[0].amount));
+        // setTimeout(() => {
+        setShowReason(false);
+
+        // }, 300);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -707,7 +734,7 @@ export default function PlantingMount() {
       </Modal>
 
       <Modal
-        title="Percebemos que a quantidade dada entrada é diferente da que chegou, descreva o motivo"
+        title="Percebemos que a quantidade que foi dada entrada é diferente da que chegou, descreva o motivo"
         visible={showReason}
         width={500}
         footer={[

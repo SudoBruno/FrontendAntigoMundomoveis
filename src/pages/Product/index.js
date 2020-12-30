@@ -413,7 +413,7 @@ export default function Product() {
     } else {
       position = 0;
     }
-    console.log(selectProductsSectors[position]);
+
     setSelectProductsSectors([
       ...selectProductsSectors,
       {
