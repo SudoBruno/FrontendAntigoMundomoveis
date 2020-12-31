@@ -25,15 +25,7 @@ const { Option } = Select;
 
 export default function Client() {
   class SearchTable extends React.Component {
-    state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
-      loading: false,
-      searchText: '',
-      searchedColumn: '',
-    };
+
 
     getColumnSearchProps = (dataIndex) => ({
       filterDropdown: ({
@@ -101,8 +93,8 @@ export default function Client() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {

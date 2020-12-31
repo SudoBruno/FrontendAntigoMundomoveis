@@ -3,7 +3,7 @@ import {
   Layout,
   Table,
   Button,
-  Row, 
+  Row,
   Col,
   Input,
   Space,
@@ -100,8 +100,8 @@ export default function CategoryINS() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {

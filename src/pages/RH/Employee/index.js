@@ -29,7 +29,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import api from '../../../services/api';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
-
 // import './style.css'
 
 const Option = Select.Option;
@@ -112,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -272,12 +271,6 @@ export default function Employee() {
       setFactoryFunctions(response.data);
     });
   }, []);
-  useEffect(() => {
-    api.get('sector', {}).then((response) => {
-      setSectors(response.data);
-    });
-  }, []);
-
   useEffect(() => {
     api.get('sector', {}).then((response) => {
       setSectors(response.data);
@@ -505,6 +498,7 @@ export default function Employee() {
                 labelCol={{ span: 23 }}
                 label="Nome do funcionário:"
                 labelAlign={'left'}
+                style={{ backgroundColor: 'white', }}
               >
                 <Input
                   name="name"

@@ -74,6 +74,8 @@ import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Stock';
 
+import  CallList from "../../pages/RH/CallList";
+
 const userName = localStorage.getItem('userName');
 
 const { Header, Sider, Content } = Layout;
@@ -86,7 +88,6 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <PCP />,
   },
-
   {
     path: '/factory-sector',
     exact: true,
@@ -314,6 +315,13 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CoverStock />,
   },
+  {
+    path: '/call/employee',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CallList/>,
+  },
+  
 ];
 
 class App extends React.Component {
