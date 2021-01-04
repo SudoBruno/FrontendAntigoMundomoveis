@@ -1,5 +1,4 @@
-
-.call-list-buttons{
+.call-list-buttons {
     display: grid;
     grid-template-columns: 40% 60%;
     margin: 0;
@@ -7,26 +6,20 @@
     font-size: 1.5em;
 }
 
-.call-list-buttons input{
+.call-list-buttons input {
     max-width: 50%;
-    
     background-color: #5cb85c;
 }
 
 @media screen and (max-width: 650px) {
-
-    .call-list-buttons{
+    .call-list-buttons {
         font-size: 1.3rem;
-        grid-template-columns: 100% ;
-        
+        grid-template-columns: 100%;
     }
-    
-    .call-list-buttons input{
+    .call-list-buttons input {
         max-width: 100%;
-        
     }
-    
-  }
+}
 
 input[type='file'] {
     display: none
@@ -43,9 +36,9 @@ input[type='file'] {
     justify-content: center;
     align-items: center;
     padding-top: 2%;
-  }
+}
 
-  .btn-enviar {
+.btn-enviar {
     background-color: #5cb85c;
     width: 30%;
     color: #fff;
@@ -56,9 +49,9 @@ input[type='file'] {
     border-radius: 5px;
 }
 
-.input-file{
+.input-file {
     width: 80%;
-   justify-self: end;
+    justify-self: end;
 }
 
 /* .callListButtons{
@@ -67,36 +60,30 @@ input[type='file'] {
     align-items: center;
 } */
 
-
 .presenceButton {
     background-color: #5cb85c;
-    
     color: #fff;
     font-weight: bold;
-  
     margin-left: 10px;
     border: none;
     border-radius: 5px;
     width: 100%;
 }
-.presenceButton:hover{
+
+.presenceButton:hover {
     background-color: #499b49;
-    
     color: #fff;
 }
 
 .absenceButton:hover {
     background-color: #cc3204;
-    
     color: #fff;
 }
 
 .absenceButton {
     background-color: #f3410b;
-    
     color: #fff;
     font-weight: bold;
-  
     margin-left: 10px;
     border: none;
     border-radius: 5px;
