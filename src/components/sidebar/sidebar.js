@@ -16,6 +16,7 @@ import {
 } from '@ant-design/icons';
 import { FaCouch, FaWarehouse } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
+import { BsListCheck } from 'react-icons/bs';
 
 import logo from '../../assets/logo.png';
 
@@ -606,7 +607,14 @@ class App extends React.Component {
               </Menu.Item>
             )}
             {localStorage.getItem('acess_level') === '1' && (
-              <Menu.Item key="32" icon={<FileExcelOutlined />}>
+              <Menu.Item
+                key="32"
+                icon={
+                  <span className="anticon anticon-bank">
+                    <BsListCheck color="#fff" size={16} />
+                  </span>
+                }
+              >
                 <Link to="/call/employee">Chamada </Link>
               </Menu.Item>
             )}

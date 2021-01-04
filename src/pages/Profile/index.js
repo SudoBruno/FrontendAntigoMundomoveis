@@ -97,49 +97,51 @@ export default function Profile() {
 
   useEffect(() => {
     api.get('hour', {}).then((response) => {
-      setProductionHourChart({
-        options: {
-          chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
-            toolbar: {
-              show: true,
-            },
-            zoom: {
-              enabled: true,
-            },
-          },
-          responsive: [
-            {
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0,
-                },
+      if (response.data.categories.length > 0) {
+        setProductionHourChart({
+          options: {
+            chart: {
+              type: 'bar',
+              height: 350,
+              stacked: true,
+              toolbar: {
+                show: true,
+              },
+              zoom: {
+                enabled: true,
               },
             },
-          ],
-          plotOptions: {
-            bar: {
-              horizontal: false,
+            responsive: [
+              {
+                breakpoint: 480,
+                options: {
+                  legend: {
+                    position: 'bottom',
+                    offsetX: -10,
+                    offsetY: 0,
+                  },
+                },
+              },
+            ],
+            plotOptions: {
+              bar: {
+                horizontal: false,
+              },
+            },
+            xaxis: {
+              type: 'time',
+              categories: response.data.categories,
+            },
+            legend: {
+              position: 'right',
+              offsetY: 40,
+            },
+            fill: {
+              opacity: 1,
             },
           },
-          xaxis: {
-            type: 'time',
-            categories: response.data.categories,
-          },
-          legend: {
-            position: 'right',
-            offsetY: 40,
-          },
-          fill: {
-            opacity: 1,
-          },
-        },
-      });
+        });
+      }
     });
   }, [userId]);
 
