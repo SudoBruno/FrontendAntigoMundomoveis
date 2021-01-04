@@ -304,13 +304,13 @@ export default function CallList() {
 
   const handleShow = () => setShow(true);
 
-  const alterCallList = async () => {
-    const response = await api.get(`/call-list/${area}`);
-    console.log('response', response.data);
+  const alterCallList = async (e) => {
+    const response = await api.get(`/call-list/${e}`);
+
     if (response.data.length > 0) {
       setCallList(response.data);
     } else {
-      openNotificationWithIcon('error', 'ERRO', 'Fucionarios nao encontrados');
+      openNotificationWithIcon('error', 'ERRO', 'Funcionários nao encontrados');
     }
   };
 
@@ -357,7 +357,7 @@ export default function CallList() {
               size="large"
               value={areaName}
               onChange={(e) => {
-                alterCallList();
+                alterCallList(e[0]);
                 setArea(e[0]);
                 setAreaName(e[1]);
               }}
@@ -448,7 +448,7 @@ export default function CallList() {
           <Col span={6}>
             <Form.Item
               labelCol={{ span: 23 }}
-              label="Horario de entrada:"
+              label="Horário de entrada:"
               labelAlign={'left'}
             >
               <Input
