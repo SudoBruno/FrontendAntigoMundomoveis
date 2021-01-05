@@ -64,6 +64,7 @@ import WmsRawMaterialPCP from '../../pages/WmsRawMaterial/Search/PCP';
 //////////////////////////////////////////////////////////////////
 
 ////////////////////// RH ////////////////////////
+import Shift from '../../pages/RH/Shift';
 import FactoryArea from '../../pages/RH/FactoryArea';
 import FactoryFunction from '../../pages/RH/FactoryFunction';
 import Company from '../../pages/RH/Company';
@@ -253,6 +254,12 @@ const routes = [
     main: () => <ExpeditionDrop />,
   },
   //////////////// RH  //////////////////////
+  {
+    path: '/shift',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Shift />,
+  },
   {
     path: '/company',
     exact: true,
@@ -583,21 +590,41 @@ class App extends React.Component {
             )}
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu key="rh" title="RH" icon={<UserOutlined />}>
-                <Menu.Item key="26" icon={<RightSquareOutlined />}>
-                  <Link to="/company">Empresa</Link>
-                </Menu.Item>
+                <SubMenu
+                  key="RhCadastros"
+                  title="Cadastros"
+                  icon={<PlusOutlined />}
+                >
+                  <Menu.Item key="shift" icon={<RightSquareOutlined />}>
+                    <Link to="/shift">Turno </Link>
+                  </Menu.Item>
+                  <Menu.Item key="26" icon={<RightSquareOutlined />}>
+                    <Link to="/company">Empresa</Link>
+                  </Menu.Item>
 
-                <Menu.Item key="27" icon={<RightSquareOutlined />}>
-                  <Link to="/factory/sector">Setor </Link>
-                </Menu.Item>
-                <Menu.Item key="28" icon={<RightSquareOutlined />}>
-                  <Link to="/factory/area">Area </Link>
-                </Menu.Item>
-                <Menu.Item key="29" icon={<RightSquareOutlined />}>
-                  <Link to="/factory/function">Função </Link>
-                </Menu.Item>
-                <Menu.Item key="30" icon={<RightSquareOutlined />}>
-                  <Link to="/employee">Funcionário </Link>
+                  <Menu.Item key="27" icon={<RightSquareOutlined />}>
+                    <Link to="/factory/sector">Setor </Link>
+                  </Menu.Item>
+                  <Menu.Item key="28" icon={<RightSquareOutlined />}>
+                    <Link to="/factory/area">Area </Link>
+                  </Menu.Item>
+                  <Menu.Item key="29" icon={<RightSquareOutlined />}>
+                    <Link to="/factory/function">Função </Link>
+                  </Menu.Item>
+                  <Menu.Item key="30" icon={<RightSquareOutlined />}>
+                    <Link to="/employee">Funcionário </Link>
+                  </Menu.Item>
+                </SubMenu>
+
+                <Menu.Item
+                  key="32"
+                  icon={
+                    <span className="anticon anticon-bank">
+                      <BsListCheck color="#fff" size={16} />
+                    </span>
+                  }
+                >
+                  <Link to="/call/employee">Chamada </Link>
                 </Menu.Item>
               </SubMenu>
             )}
@@ -606,18 +633,7 @@ class App extends React.Component {
                 <Link to="/production/report">Relatório Produção </Link>
               </Menu.Item>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
-              <Menu.Item
-                key="32"
-                icon={
-                  <span className="anticon anticon-bank">
-                    <BsListCheck color="#fff" size={16} />
-                  </span>
-                }
-              >
-                <Link to="/call/employee">Chamada </Link>
-              </Menu.Item>
-            )}
+
             <SubMenu
               key="cover"
               title="Controle de capas"

@@ -111,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -214,7 +214,7 @@ export default function Employee() {
   const [UF, setUF] = useState('');
   const [CEP, setCEP] = useState('');
   const [number, setNumber] = useState('');
-  const [resignation, setResignation] = useState();
+  const [resignation, setResignation] = useState('');
   const [reasonResignation, setReasonResignation] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -232,6 +232,10 @@ export default function Employee() {
   const [company, setCompany] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [companys, setCompanys] = useState([]);
+
+  const [shifts, setShifts] = useState([]);
+  const [shiftId, setShiftId] = useState(0);
+  const [shiftName, setShiftName] = useState('');
 
   const [admission, setAdmission] = useState(moment());
   const data = {
@@ -255,6 +259,7 @@ export default function Employee() {
     resignation,
     reasonResignation,
     phone,
+    shiftId,
   };
   useEffect(() => {
     api.get('employee', {}).then((response) => {
@@ -279,6 +284,11 @@ export default function Employee() {
   useEffect(() => {
     api.get('department', {}).then((response) => {
       setAreas(response.data);
+    });
+  }, []);
+  useEffect(() => {
+    api.get('shift', {}).then((response) => {
+      setShifts(response.data);
     });
   }, []);
 
@@ -309,6 +319,8 @@ export default function Employee() {
     setFactoryFunctionName(response.data.factoryFunctionName);
     setCompany(response.data.company_id);
     setCompanyName(response.data.companyName);
+    setShiftId(response.data.shiftId);
+    setShiftName(response.data.shiftName);
 
     handleShow();
   }
@@ -322,6 +334,7 @@ export default function Employee() {
 
   async function handleRegister(e) {
     e.preventDefault();
+    console.log(shiftId);
 
     try {
       if (id === 0) {
@@ -342,6 +355,8 @@ export default function Employee() {
           setReasonResignation('');
           setPhone('');
           setAdmission();
+          setShiftId(0);
+          setShiftName('');
 
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -383,6 +398,8 @@ export default function Employee() {
           setReasonResignation('');
           setPhone('');
           setAdmission(moment());
+          setShiftId(0);
+          setShiftName('');
         } catch (error) {
           openNotificationWithIcon(
             'error',
@@ -439,6 +456,8 @@ export default function Employee() {
     setSectorName('');
     setFactoryFunctionName('');
     setAreaName('');
+    setShiftId(0);
+    setShiftName('');
     setShow(false);
   };
 
@@ -498,7 +517,7 @@ export default function Employee() {
                 labelCol={{ span: 23 }}
                 label="Nome do funcionário:"
                 labelAlign={'left'}
-                style={{ backgroundColor: 'white', }}
+                style={{ backgroundColor: 'white' }}
               >
                 <Input
                   name="name"
@@ -602,7 +621,7 @@ export default function Employee() {
             </Col>
           </Row>
           <Row gutter={5}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="Função"
@@ -633,7 +652,7 @@ export default function Employee() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="Empresa"
@@ -650,6 +669,38 @@ export default function Employee() {
                   }}
                 >
                   {companys.map((option) => {
+                    return (
+                      <>
+                        <Option
+                          key={option.id}
+                          value={[option.id, option.name]}
+                        >
+                          {option.name}
+                        </Option>
+                      </>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Turno"
+                labelAlign={'left'}
+              >
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={shiftName}
+                  onChange={(e) => {
+                    console.log(e);
+                    setShiftId(e[0]);
+                    setShiftName(e[1]);
+                  }}
+                >
+                  {shifts.map((option) => {
                     return (
                       <>
                         <Option
