@@ -111,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -296,7 +296,7 @@ export default function Employee() {
     setId(e.id);
     setName(e.name);
     let response = await api.get(`employee/${e.id}`);
-
+    console.log(response);
     setCPF(response.data.cpf);
     setPIS(response.data.PIS);
     setCTPS(response.data.CTPS);
@@ -314,7 +314,7 @@ export default function Employee() {
     setSector(response.data.factory_sector_id);
     setSectorName(response.data.sectorName);
     setArea(response.data.factory_area_id);
-    setAreaName(response.data.factoryFunctionName);
+    setAreaName(response.data.areaName);
     setFactoryFunctionId(response.data.factory_function_id);
     setFactoryFunctionName(response.data.factoryFunctionName);
     setCompany(response.data.company_id);
