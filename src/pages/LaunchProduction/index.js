@@ -109,8 +109,8 @@ export default function LaunchProduction() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -178,6 +178,8 @@ export default function LaunchProduction() {
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
+    setEmployeeId('');
+    setEmployeeName('');
     setLaunched([]);
     setAmount(0);
   };
@@ -279,11 +281,10 @@ export default function LaunchProduction() {
       if (employee_id !== '') {
         LaunchCode(data);
       } else {
-        openNotificationWithIcon(
-          'error',
-          'Funcionário não selecionado',
-          'Nenhum funcionário selecionado'
-        );
+
+        const response = await api.get(`employee/${e}`);
+        setEmployeeName(response.data.name);
+        setEmployeeId(response.data.id);
       }
     } else {
       LaunchCode(data);
@@ -374,10 +375,11 @@ export default function LaunchProduction() {
                   setEmployeeName(e[1]);
                 }}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {employee.map((option) => {
                   return (
+
                     <>
                       <Option key={option.id} value={[option.id, option.name]}>
                         {option.name}
@@ -411,7 +413,7 @@ export default function LaunchProduction() {
         )}
 
         <Divider />
-        {show === true && <BarcodeReader onScan={EditBarCode} />}
+        <BarcodeReader onScan={EditBarCode} onError={EditBarCode} />
         <h1>{amount}</h1>
         <SearchTable />
       </Modal>

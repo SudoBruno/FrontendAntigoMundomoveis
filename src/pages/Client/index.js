@@ -24,8 +24,17 @@ import api from '../../services/api';
 const { Option } = Select;
 
 export default function Client() {
-  class SearchTable extends React.Component {
 
+  class SearchTable extends React.Component {
+    state = {
+      pagination: {
+        current: 1,
+        pageSize: 10,
+      },
+      loading: false,
+      searchText: '',
+      searchedColumn: '',
+    };
 
     getColumnSearchProps = (dataIndex) => ({
       filterDropdown: ({
@@ -72,7 +81,7 @@ export default function Client() {
         </div>
       ),
       filterIcon: (filtered) => (
-        <SearchOutlined style={{ client: filtered ? '#1890ff' : undefined }} />
+        <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
       onFilter: (value, record) =>
         record[dataIndex]
@@ -139,29 +148,30 @@ export default function Client() {
           dataIndex: 'name',
           key: 'name',
 
-          sorter: (a, b) => this.compareByAlph(a.name, b.name),
+          sorter: (a, b) => this.compareByAlph(a.age, b.age),
           ...this.getColumnSearchProps('name'),
         },
         {
-          title: 'Criado em:',
-          dataIndex: 'created_at',
-          key: 'created_at',
-          sorter: (a, b) => this.compareByAlph(a.created_at, b.created_at),
-          ...this.getColumnSearchProps('created_at'),
+          title: 'Data inicial',
+          dataIndex: 'initial_date',
+          key: 'initial_date',
+          ...this.getColumnSearchProps('initial_date'),
         },
         {
           title: 'Operação',
-          colSpan: 2,
           dataIndex: 'operacao',
           align: 'center',
 
           render: (text, record) => {
             return (
               <React.Fragment>
-                <EditOutlined
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleEdit(record)}
+
+
+                {/* <EditOutlined
+                  style={{ cursor: 'pointer', marginLeft: 20 }}
+                  target={''}
                 />
+
                 <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
@@ -170,7 +180,7 @@ export default function Client() {
                     {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm>
+                </Popconfirm> */}
               </React.Fragment>
             );
           },

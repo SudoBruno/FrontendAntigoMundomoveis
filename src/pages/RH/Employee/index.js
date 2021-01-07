@@ -334,7 +334,7 @@ export default function Employee() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    console.log(shiftId);
+
 
     try {
       if (id === 0) {
@@ -695,7 +695,6 @@ export default function Employee() {
                   size="large"
                   value={shiftName}
                   onChange={(e) => {
-                    console.log(e);
                     setShiftId(e[0]);
                     setShiftName(e[1]);
                   }}
