@@ -318,7 +318,7 @@ export default function PlantingMount() {
     setProductName(e[1]);
     try {
       const response = await api.get(
-        `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}`
+        `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`
       );
 
       setSubProducts(response.data);
