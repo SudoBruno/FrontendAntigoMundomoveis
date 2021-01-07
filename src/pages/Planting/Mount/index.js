@@ -206,7 +206,7 @@ export default function PlantingMount() {
             return (
               <React.Fragment>
                 <Link
-                  to={`/mount/${record.id}`}
+                  to={`/mount/${record.barCode}`}
                   style={{ color: 'rgb(0,0,0,0.65' }}
                   target="_blank"
                 >
@@ -244,6 +244,7 @@ export default function PlantingMount() {
     setProductName('');
     setMountId(0);
     setSelectSubProducts([{ subProductId: '', subProductName: '', amount: 0 }]);
+    setBarCode('');
     setTimeout(() => {
       setRefreshKey((refreshKey) => refreshKey + 1);
     }, 500);
@@ -286,6 +287,7 @@ export default function PlantingMount() {
   const [oldAmount, setOldAmount] = useState(0);
   const [reason, setReason] = useState('');
   const [finishDate, setFinishDate] = useState('');
+  const [barCode, setBarCode] = useState('');
 
   // useEffect(() => {
   //   api.get('plating/mount ', {}).then((response) => {
@@ -379,9 +381,9 @@ export default function PlantingMount() {
     mountId: mountId,
     previousMountId: previousMountId,
     color: color,
+    barCode: barCode,
   };
   const openTag = (id) => {
-    console.log(id);
     const win = window.open(`/mount/${id}`, '_blank');
     win.focus();
   };
@@ -401,7 +403,7 @@ export default function PlantingMount() {
           'O(s) Monte(s) foram criados com sucesso'
         );
 
-        openTag(response.data.id);
+        openTag(response.data.barCode);
       } catch (error) {
         openNotificationWithIcon(
           'error',
@@ -429,6 +431,8 @@ export default function PlantingMount() {
   }
   const finishMount = async (e, data) => {
     e.preventDefault();
+
+    setBarCode(data.barCode != undefined ? data.barCode : '');
 
     setFinishDate(data.finish);
     setProductionPlanControlId(data.pcpId);
@@ -503,13 +507,14 @@ export default function PlantingMount() {
       setProductId(response.data.productId);
       setProductName(response.data.productName);
       setColor(response.data.color);
+      setBarCode(e);
 
       if (response.data.finish == null) {
-        setMountId(e);
+        setMountId(response.data.id);
         setPreviousMountId(response.data.previousMountId);
       } else {
         setMountId(0);
-        setPreviousMountId(e);
+        setPreviousMountId(response.data.id);
       }
       const subProductsArray = await api.get(
         `product-plan-control/sub-product?product=${response.data.productId}&sector=${sectorId}`

@@ -68,7 +68,7 @@ function TagLayout() {
             }}
           >
             <BarCode
-              value={`${barCode.id}`}
+              value={`${barCode.barCode}`}
               width={1}
               height={28}
               fontSize={12}
