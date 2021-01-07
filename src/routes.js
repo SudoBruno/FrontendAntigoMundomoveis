@@ -6,6 +6,7 @@ import Coefficient from './pages/WmsRawMaterial/Register/RawMaterial/coefficient
 import SideBar from './components/sidebar/sidebar';
 import { isAuthenticated, Expedition } from './services/auth';
 import TagLayout from './components/TagLayout';
+import MountTagLayout from './components/MountTagLayout';
 import Barcode from './pages/WmsRawMaterial/Operation/Storage/Barcode';
 // import StokebA from './pages/WmsRawMaterial/Operation/Storage/Barcode';
 import LaunchProduction from './pages/LaunchProduction';
@@ -46,10 +47,11 @@ export default function Routes() {
       <Switch>
         <Route path="/" exact component={Logon} />
         <Route path="/coefficient" exact component={Coefficient} />
-        <Route path="/pcp/:id" component={TagLayout} />
+        <PrivateRoute path="/pcp/:id" component={TagLayout} />
         <PrivateRoute path="/wmsrm/barcode/:id" component={Barcode} />
         <PrivateRoute path="/stock/barcode/:id" component={StockBarcode} />
         <PrivateRoute path="/launch-product" component={LaunchProduction} />
+        <PrivateRoute path="/mount/:id" component={MountTagLayout} />
         <ExpeditionRoute
           path="/launch-expedition"
           component={ExpeditionLaunch}

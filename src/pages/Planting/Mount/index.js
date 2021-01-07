@@ -15,12 +15,13 @@ import {
 } from 'antd';
 import { Tooltip } from '@material-ui/core';
 import {
-  DeleteOutlined,
   DoubleRightOutlined,
-  EditOutlined,
   MinusCircleOutlined,
   PlusOutlined,
+  BarcodeOutlined,
 } from '@ant-design/icons';
+import { Link, useHistory } from 'react-router-dom';
+import BarcodeReader from 'react-barcode-reader';
 
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
@@ -204,19 +205,13 @@ export default function PlantingMount() {
           render: (text, record) => {
             return (
               <React.Fragment>
-                {/* <EditOutlined
-                  style={{ cursor: 'pointer' }}
-                  // onClick={() => handleEdit(record)}
-                />
-                <Popconfirm
-                  // onConfirm={() => handleDeleteFunction(record.id)}
-                  title="Confirmar remoção?"
+                <Link
+                  to={`/mount/${record.id}`}
+                  style={{ color: 'rgb(0,0,0,0.65' }}
+                  target="_blank"
                 >
-                  <a href="#" style={{ marginLeft: 20 }}>
-                    {' '}
-                    <DeleteOutlined style={{ color: '#000' }} />
-                  </a>
-                </Popconfirm> */}
+                  <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
+                </Link>
                 <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
@@ -385,6 +380,11 @@ export default function PlantingMount() {
     previousMountId: previousMountId,
     color: color,
   };
+  const openTag = (id) => {
+    console.log(id);
+    const win = window.open(`/mount/${id}`, '_blank');
+    win.focus();
+  };
   async function handleCreateMount() {
     if (oldAmount != selectedSubProducts[0].amount && oldAmount != 0) {
       setShowReason(true);
@@ -393,13 +393,15 @@ export default function PlantingMount() {
 
     if (mountId == 0) {
       try {
-        api.post('plating/mount', data);
+        const response = await api.post('plating/mount', data);
         handleClose();
         openNotificationWithIcon(
           'success',
           'Monte criado com sucesso ',
           'O(s) Monte(s) foram criados com sucesso'
         );
+
+        openTag(response.data.id);
       } catch (error) {
         openNotificationWithIcon(
           'error',
@@ -460,7 +462,6 @@ export default function PlantingMount() {
   };
 
   const handleSaveReason = async () => {
-    console.log(previousMountId, mountId);
     const data = {
       mountId: mountId == 0 ? previousMountId : mountId,
       reason: reason,
@@ -494,6 +495,47 @@ export default function PlantingMount() {
       description: description,
     });
   }
+
+  async function handleScan(e) {
+    await api.get(`plating/mount/tag/${e}`, {}).then(async (response) => {
+      setProductionPlanControlId(response.data.pcpId);
+      setProductionPlanControlName(response.data.pcp);
+      setProductId(response.data.productId);
+      setProductName(response.data.productName);
+      setColor(response.data.color);
+
+      if (response.data.finish == null) {
+        setMountId(e);
+        setPreviousMountId(response.data.previousMountId);
+      } else {
+        setMountId(0);
+        setPreviousMountId(e);
+      }
+      const subProductsArray = await api.get(
+        `product-plan-control/sub-product?product=${response.data.productId}&sector=${sectorId}`
+      );
+
+      setSubProducts(subProductsArray.data);
+
+      setSelectSubProducts([
+        {
+          subProductId: response.data.subProductId,
+          subProductName: response.data.subProductName,
+          amount: response.data.amount,
+        },
+      ]);
+
+      if (response.data.subProductId != undefined) {
+        setShow(true);
+      } else {
+        openNotificationWithIcon(
+          'error',
+          'Monte finalizado',
+          'Esse monte ja foi finalizado e essa etiqueta nao é mais valida'
+        );
+      }
+    });
+  }
   return (
     <Layout
       style={{
@@ -503,6 +545,7 @@ export default function PlantingMount() {
         minHeight: 280,
       }}
     >
+      <BarcodeReader onScan={handleScan} onError={handleScan} />
       <Row style={{ marginBottom: 16 }}>
         <Col span={24} align="right">
           <Tooltip title="Seccionadora" placement="right">
@@ -626,6 +669,7 @@ export default function PlantingMount() {
             </Form.Item>
           </Col>
         </Row>
+
         {selectedSubProducts.map((selectedSubProduct, index) => {
           return (
             <>

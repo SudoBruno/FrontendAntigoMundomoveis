@@ -1,0 +1,57 @@
+.tags {
+    line-height: 45px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 3px;
+    /*para alinhar os span no centro*/
+}
+
+.tags span {
+    position: relative;
+    min-width: 35%;
+    border: 1px solid darkgray;
+    /* para os spans pegarem o width */
+    display: inline-block;
+}
+
+.text {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 30px;
+    margin-left: 60px;
+}
+
+.tag-one {
+    display: grid;
+    grid-template-rows: 30px 20px 100px;
+    grid-template-columns: 190px 190px;
+    /* grid-template-areas: 'title title '; */
+}
+
+.mountTitles {
+    /* align-items: center; */
+    margin: 0;
+    text-align: center;
+    display: grid;
+    font-size: 13px;
+    grid-template-columns: 1fr;
+}
+
+.mountSectorBarCode {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* display: flex; */
+}
+
+.mountSectorName {
+    /* margin-left: 35%; */
+    /* margin: 0; */
+    text-align: center;
+}
+
+.barCode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}

@@ -11,15 +11,8 @@ import {
   Select,
   Popconfirm,
   notification,
-  Divider,
-  Form,
 } from 'antd';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  ConsoleSqlOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { Tooltip } from '@material-ui/core/';
 
