@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import api from '../../../services/api';
+
+import { Link } from 'react-router-dom';
 import {
   Layout,
   Table,
@@ -15,25 +19,17 @@ import {
 import { Tooltip } from '@material-ui/core';
 import {
   DoubleRightOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
   BarcodeOutlined,
   SearchOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
 } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
-import BarcodeReader from 'react-barcode-reader';
 
 import Highlighter from 'react-highlight-words';
 
-import api from '../../../services/api';
-
-import './style.css';
-
 const Option = Select.Option;
 
-const { TextArea } = Input;
-
-export default function PlantingMount() {
+export default function Seccionadora() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -233,40 +229,9 @@ export default function PlantingMount() {
       );
     }
   }
-  const [show, setShow] = useState(false);
-  const [showReason, setShowReason] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-    setProductionPlanControlId(0);
-    setProductionPlanControlName('');
-    setProductId(0);
-    setProductName('');
-    setMountId(0);
-    setSelectSubProducts([{ subProductId: '', subProductName: '', amount: 0 }]);
-    setBarCode('');
-    setTimeout(() => {
-      setRefreshKey((refreshKey) => refreshKey + 1);
-    }, 500);
-  };
-  const handleShow = () => setShow(true);
-
-  const [showSector, setShowSector] = useState(true);
-
-  const [sectors, setSectors] = useState([]);
-  const [sectorId, setSectorId] = useState(0);
-  const [sectorName, setSectorName] = useState('');
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [colorName, setColorName] = useState('');
-  const [color, setColor] = useState('');
-
-  const handleSelectSector = (e) => {
-    setRefreshKey((refreshKey) => refreshKey + 1);
-    setSectorId(e[0]);
-    setSectorName(e[1]);
-    setShowSector(false);
-  };
 
   const [mounts, setMounts] = useState([]);
+
   const [productionsPlansControl, setProductionsPlansControl] = useState([]);
   const [productionPlanControlId, setProductionPlanControlId] = useState([]);
   const [productionPlanControlName, setProductionPlanControlName] = useState(
@@ -282,58 +247,16 @@ export default function PlantingMount() {
   ]);
   const [subProducts, setSubProducts] = useState([]);
   const [mountId, setMountId] = useState(0);
-  const [previousMountId, setPreviousMountId] = useState(null);
-  const [oldAmount, setOldAmount] = useState(0);
+
   const [reason, setReason] = useState('');
   const [finishDate, setFinishDate] = useState('');
   const [barCode, setBarCode] = useState('');
-
-  // useEffect(() => {
-  //   api.get('plating/mount ', {}).then((response) => {
-  //     setMounts(response.data);
-  //   });
-  // }, []);
-
-  useEffect(() => {
-    api.get('product-plan-control ', {}).then((response) => {
-      setProductionsPlansControl(response.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    api.get(`plating/mount/sector/${sectorId}`, {}).then((response) => {
-      setMounts(response.data);
-    });
-  }, [refreshKey]);
-
-  useEffect(() => {
-    api.get('sector', {}).then((response) => {
-      setSectors(response.data);
-    });
-  }, []);
-
-  const handleProduct = async (e) => {
-    setProductId(e[0]);
-    setProductName(e[1]);
-    console.log(productionPlanControlId);
-    try {
-      const response = await api.get(
-        `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`
-      );
-
-      setSubProducts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleProductionPlanControl = async (e) => {
-    setProductionPlanControlId(e[0]);
-    setProductionPlanControlName(e[1]);
-    const response = await api.get(
-      `product/production-plan-controller/${e[0]}`
-    );
-    setProducts(response.data);
-  };
+  const [sectors, setSectors] = useState([]);
+  const [sectorId, setSectorId] = useState(0);
+  const [sectorName, setSectorName] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [colorName, setColorName] = useState('');
+  const [color, setColor] = useState('');
 
   const handleSubProduct = (value, index) => {
     var NewArray = [...selectedSubProducts];
@@ -343,6 +266,42 @@ export default function PlantingMount() {
 
     setSelectSubProducts(NewArray);
   };
+
+  function openNotificationWithIcon(type, message, description) {
+    notification[type]({
+      message: message,
+      description: description,
+    });
+  }
+
+  const handleProduct = async (e) => {
+    setProductId(e[0]);
+    setProductName(e[1]);
+    console.log(productionPlanControlId);
+    try {
+      const response = await api.get(
+        `product-plan-control/sub-product?product=${
+          e[0]
+        }&sector=${2}&pcp=${productionPlanControlId}`
+      );
+
+      setSubProducts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    api.get(`plating/mount/sector/${2}`, {}).then((response) => {
+      setMounts(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    api.get('product-plan-control ', {}).then((response) => {
+      setProductionsPlansControl(response.data);
+    });
+  }, []);
 
   const handleRemoveClick = (index) => {
     const list = [...selectedSubProducts];
@@ -356,6 +315,27 @@ export default function PlantingMount() {
     ]);
   };
 
+  const handleClose = () => {
+    setShow(false);
+    setProductionPlanControlId(0);
+    setProductionPlanControlName('');
+    setProductId(0);
+    setProductName('');
+    setMountId(0);
+    setSelectSubProducts([{ subProductId: '', subProductName: '', amount: 0 }]);
+    setBarCode('');
+  };
+
+  async function handleCreateMount() {}
+
+  const handleProductionPlanControl = async (e) => {
+    setProductionPlanControlId(e[0]);
+    setProductionPlanControlName(e[1]);
+    const response = await api.get(
+      `product/production-plan-controller/${e[0]}`
+    );
+    setProducts(response.data);
+  };
   const HandleChange = (e, index) => {
     var NewArray = [...selectedSubProducts];
     var { name, value } = e.target;
@@ -372,175 +352,38 @@ export default function PlantingMount() {
       setSelectSubProducts(NewArray);
     }
   };
-  const data = {
-    factoryEmployeeId: localStorage.getItem('userId'),
-    productionPlanControl: productionPlanControlId,
-    subProducts: selectedSubProducts,
-    factorySectorId: sectorId,
-    productId: productId,
-    mountId: mountId,
-    previousMountId: previousMountId,
-    color: color,
-    barCode: barCode,
-  };
-  const openTag = (id) => {
-    const win = window.open(`/mount/${id}`, '_blank');
-    win.focus();
-  };
-  async function handleCreateMount() {
-    if (oldAmount != selectedSubProducts[0].amount && oldAmount != 0) {
-      setShowReason(true);
-      return;
-    }
 
-    if (mountId == 0) {
-      try {
-        const response = await api.post('plating/mount', data);
-        handleClose();
-        openNotificationWithIcon(
-          'success',
-          'Monte criado com sucesso ',
-          'O(s) Monte(s) foram criados com sucesso'
-        );
-
-        openTag(response.data.barCode);
-      } catch (error) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao Criar',
-          'Ocorreu um erro, por favor tentar novamente'
-        );
-      }
-    } else {
-      try {
-        api.put('plating/mount', data);
-        handleClose();
-        openNotificationWithIcon(
-          'success',
-          'Monte editado com sucesso ',
-          'O(s) Monte(s) foram editado com sucesso'
-        );
-      } catch (error) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao Criar',
-          'Ocorreu um erro, por favor tentar novamente'
-        );
-      }
-    }
-  }
   const finishMount = async (e, data) => {
-    e.preventDefault();
-
-    setBarCode(data.barCode != undefined ? data.barCode : '');
-
-    setFinishDate(data.finish);
-    setProductionPlanControlId(data.pcpId);
-    setProductionPlanControlName(data.pcp);
-    setProductId(data.productId);
-    setProductName(data.productName);
-    setColor(data.color);
-    if (data.finish == null) {
-      setMountId(data.id);
-      setPreviousMountId(data.previousMountId);
-    } else {
-      setMountId(0);
-      setPreviousMountId(data.id);
-    }
-
-    setOldAmount(data.amount);
-    setSelectSubProducts([
-      {
-        subProductId: data.subProductId,
-        subProductName: data.subProductName,
-        amount: data.amount,
-      },
-    ]);
-
-    const response = await api.get(
-      `product-plan-control/sub-product?product=${data.productId}&sector=${sectorId}&pcp=${data.pcpId}`
-    );
-
-    setSubProducts(response.data);
-    setShow(true);
+    // e.preventDefault();
+    // setBarCode(data.barCode != undefined ? data.barCode : '');
+    // setFinishDate(data.finish);
+    // setProductionPlanControlId(data.pcpId);
+    // setProductionPlanControlName(data.pcp);
+    // setProductId(data.productId);
+    // setProductName(data.productName);
+    // setColor(data.color);
+    // if (data.finish == null) {
+    //   setMountId(data.id);
+    //   setPreviousMountId(data.previousMountId);
+    // } else {
+    //   setMountId(0);
+    //   setPreviousMountId(data.id);
+    // }
+    // setSelectSubProducts([
+    //   {
+    //     subProductId: data.subProductId,
+    //     subProductName: data.subProductName,
+    //     amount: data.amount,
+    //   },
+    // ]);
+    // const response = await api.get(
+    //   `product-plan-control/sub-product?product=${data.productId}&sector=${sectorId}&pcp=${data.pcpId}`
+    // );
+    // setSubProducts(response.data);
+    // setShow(true);
   };
-
-  const handleSaveReason = async () => {
-    const data = {
-      mountId: mountId == 0 ? previousMountId : mountId,
-      reason: reason,
-      amountInput: oldAmount,
-      amountOutput: selectedSubProducts[0].amount,
-      movement: finishDate == null ? 'output' : 'input',
-    };
-    if (reason == '' || reason == undefined || reason == null) {
-      openNotificationWithIcon(
-        'error',
-        'Motivo não preenchido',
-        'Por favor, explicar a diferença de quantidade no monte'
-      );
-    } else {
-      try {
-        const response = await api.post('/plating/loser/mount', data);
-
-        setOldAmount(parseFloat(selectedSubProducts[0].amount));
-        // setTimeout(() => {
-        setShowReason(false);
-
-        // }, 300);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-  function openNotificationWithIcon(type, message, description) {
-    notification[type]({
-      message: message,
-      description: description,
-    });
-  }
-
-  async function handleScan(e) {
-    await api.get(`plating/mount/tag/${e}`, {}).then(async (response) => {
-      setProductionPlanControlId(response.data.pcpId);
-      setProductionPlanControlName(response.data.pcp);
-      setProductId(response.data.productId);
-      setProductName(response.data.productName);
-      setColor(response.data.color);
-      setBarCode(e);
-
-      if (response.data.finish == null) {
-        setMountId(response.data.id);
-        setPreviousMountId(response.data.previousMountId);
-      } else {
-        setMountId(0);
-        setPreviousMountId(response.data.id);
-      }
-      const subProductsArray = await api.get(
-        `product-plan-control/sub-product?product=${response.data.productId}&sector=${sectorId}&pcp=${response.data.pcpId}`
-      );
-
-      setSubProducts(subProductsArray.data);
-      setOldAmount(response.data.amount);
-      setSelectSubProducts([
-        {
-          subProductId: response.data.subProductId,
-          subProductName: response.data.subProductName,
-          amount: response.data.amount,
-        },
-      ]);
-
-      if (response.data.subProductId != undefined) {
-        setShow(true);
-      } else {
-        openNotificationWithIcon(
-          'error',
-          'Monte finalizado',
-          'Esse monte ja foi finalizado e essa etiqueta nao é mais valida'
-        );
-      }
-    });
-  }
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
   return (
     <Layout
       style={{
@@ -550,7 +393,7 @@ export default function PlantingMount() {
         minHeight: 280,
       }}
     >
-      <BarcodeReader onScan={handleScan} onError={handleScan} />
+      {/* <BarcodeReader onScan={handleScan} onError={handleScan} /> */}
       <Row style={{ marginBottom: 16 }}>
         <Col span={24} align="right">
           <Tooltip title="Seccionadora" placement="right">
@@ -565,6 +408,8 @@ export default function PlantingMount() {
           </Tooltip>
         </Col>
       </Row>
+      <SearchTable />
+
       <Modal
         title="Criação de monte"
         visible={show}
@@ -745,59 +590,6 @@ export default function PlantingMount() {
             </>
           );
         })}
-      </Modal>
-
-      <SearchTable />
-
-      {/* Setor */}
-
-      <Modal title="Selecione o setor" visible={showSector} width={500}>
-        <Row gutter={5}>
-          <Col span={24}>
-            <Form.Item
-              labelCol={{ span: 23 }}
-              label="Selecione seu setor:"
-              labelAlign={'left'}
-            >
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={sectorName}
-                onChange={(e) => handleSelectSector(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                {sectors.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={[option.id, option.name]}>
-                        {option.name}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Modal>
-
-      <Modal
-        title="Percebemos que a quantidade que foi dada entrada é diferente da que chegou, descreva o motivo"
-        visible={showReason}
-        width={500}
-        footer={[
-          <Button key="submit" type="primary" onClick={handleSaveReason}>
-            Salvar
-          </Button>,
-        ]}
-      >
-        <Row gutter={5}>
-          <Col span={24}>
-            <TextArea rows={4} onChange={(e) => setReason(e.target.value)} />
-          </Col>
-        </Row>
       </Modal>
     </Layout>
   );
