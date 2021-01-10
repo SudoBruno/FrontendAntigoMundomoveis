@@ -8,6 +8,7 @@ import Chart from 'react-apexcharts';
 import { Row, Col } from 'antd';
 
 import DefectChart from '../../components/DefectChart';
+import ProductionDayChart from '../../components/ProductionDayChart';
 
 const chartStyle = {
   height: 250,
@@ -20,8 +21,7 @@ export default function Profile() {
   const [production, setProduction] = useState([]);
   const [productionHour, setProductionHour] = useState([{}]);
   const [productionHourChart, setProductionHourChart] = useState({});
-  const [productionDay, setProductionDay] = useState({});
-  const [productionDayTotal, setProductionDayTotal] = useState({});
+
   const [totalProduction, setTotalProduction] = useState({});
 
   const userId = localStorage.getItem('userId');
@@ -35,57 +35,6 @@ export default function Profile() {
   useEffect(() => {
     api.get('production/hour', {}).then((response) => {
       setProductionHour(response.data);
-    });
-  }, [userId]);
-
-  useEffect(() => {
-    api.get('production/day', {}).then((response) => {
-      setProductionDay({
-        series: [{ data: response.data.totalProduction }], //response.data.totalProduction,
-        options: {
-          chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
-            toolbar: {
-              show: true,
-            },
-            zoom: {
-              enabled: true,
-            },
-          },
-          responsive: [
-            {
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0,
-                },
-              },
-            },
-          ],
-          plotOptions: {
-            bar: {
-              horizontal: false,
-            },
-          },
-          xaxis: {
-            type: 'date',
-            categories: response.data.days,
-          },
-          legend: {
-            position: 'right',
-            offsetY: 40,
-          },
-          fill: {
-            opacity: 1,
-          },
-        },
-      });
-
-      setProductionDayTotal(response.data.total);
     });
   }, [userId]);
 
@@ -147,21 +96,7 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      <li className="charts" style={{ marginBottom: 14 }}>
-        {productionHour.production !== undefined &&
-          productionHourChart.options !== undefined && (
-            <>
-              <h2>Produção por Dia </h2>
-              <h3>Total: {productionDayTotal}</h3>
-              <Chart
-                options={productionDay.options}
-                series={productionDay.series}
-                type="bar"
-                height={200}
-              />
-            </>
-          )}
-      </li>
+      <ProductionDayChart />
       <ul>
         <li className="charts">
           {productionHour.production !== undefined &&
