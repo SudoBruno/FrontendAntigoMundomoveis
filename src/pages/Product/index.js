@@ -214,6 +214,8 @@ export default function Product() {
   const [color, setColor] = useState([]);
   const [colors, setColors] = useState([]);
 
+  const [clientCode, setClientCode] = useState('');
+
   const [selectProductsSectors, setSelectProductsSectors] = useState([
     { subproduct: '', sector: '', points: '' },
   ]);
@@ -229,6 +231,7 @@ export default function Product() {
     client_id: newClient,
     selectINS,
     color_id: color,
+    client_code: clientCode,
   };
 
   useEffect(() => {
@@ -255,6 +258,7 @@ export default function Product() {
     setNewClient(response.data.client_id);
     setColor(response.data.color_id);
     setVolume(response.data.volume_quantity);
+    setClientCode(response.data.client_code);
 
     response = await api.get(`product-sector/${e.id}`);
 
@@ -358,6 +362,7 @@ export default function Product() {
     setReference('');
     setLaborCost(0);
     setMaterialCost(0);
+    setClientCode('');
 
     setShow(false);
   };
@@ -595,7 +600,52 @@ export default function Product() {
                 )}
               </Form.Item>
             </Col>
+            <Col span={8}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Cod. Cliente (SKU):"
+                labelAlign={'left'}
+              >
+                <Input
+                  name="client_code"
+                  placeholder="Código do cliente"
+                  onChange={(e) => setClientCode(e.target.value)}
+                  value={clientCode}
+                />{' '}
+                {reference == '' && (
+                  <span style={{ color: 'red' }}>{error}</span>
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Cor:"
+                labelAlign={'left'}
+              >
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={color}
+                  onChange={(e) => setColor(e)}
 
+                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                >
+                  {colors.map((option) => {
+                    return (
+                      <>
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      </>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={5}>
             <Col span={8}>
               <Form.Item
                 labelCol={{ span: 23 }}
@@ -628,35 +678,6 @@ export default function Product() {
                 {materialCost == '' && (
                   <span style={{ color: 'red' }}>{error}</span>
                 )}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8}>
-              <Form.Item
-                labelCol={{ span: 23 }}
-                label="Cor:"
-                labelAlign={'left'}
-              >
-                <Select
-                  showSearch
-                  placeholder="Selecione"
-                  size="large"
-                  value={color}
-                  onChange={(e) => setColor(e)}
-
-                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-                >
-                  {colors.map((option) => {
-                    return (
-                      <>
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      </>
-                    );
-                  })}
-                </Select>
               </Form.Item>
             </Col>
           </Row>
