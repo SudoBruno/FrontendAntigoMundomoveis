@@ -315,7 +315,7 @@ export default function PlantingMount() {
   const handleProduct = async (e) => {
     setProductId(e[0]);
     setProductName(e[1]);
-    console.log(productionPlanControlId);
+
     try {
       const response = await api.get(
         `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`

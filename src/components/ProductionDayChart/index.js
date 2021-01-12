@@ -8,7 +8,7 @@ export default function ProductionDayChart() {
   useEffect(() => {
     api.get('production/day', {}).then((response) => {
       const totalProduction = response.data.days;
-      console.log(totalProduction, 'total');
+
       setProductionDay({
         series: [response.data.totalProduction],
         options: {

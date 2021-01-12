@@ -221,10 +221,7 @@ export default function Seccionadora() {
         <Table
           columns={columns}
           dataSource={mounts}
-          rowClassName={
-            (record, index) => record.color
-            // index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
-          }
+          rowClassName={(record, index) => record.color}
         />
       );
     }
@@ -257,6 +254,9 @@ export default function Seccionadora() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [colorName, setColorName] = useState('');
   const [color, setColor] = useState('');
+  const [showSector, setShowSector] = useState(true);
+  const [previousMountId, setPreviousMountId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubProduct = (value, index) => {
     var NewArray = [...selectedSubProducts];
@@ -277,12 +277,10 @@ export default function Seccionadora() {
   const handleProduct = async (e) => {
     setProductId(e[0]);
     setProductName(e[1]);
-    console.log(productionPlanControlId);
+
     try {
       const response = await api.get(
-        `product-plan-control/sub-product?product=${
-          e[0]
-        }&sector=${2}&pcp=${productionPlanControlId}`
+        `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`
       );
 
       setSubProducts(response.data);
@@ -290,16 +288,27 @@ export default function Seccionadora() {
       console.error(error);
     }
   };
+  const handleSelectSector = (e) => {
+    setRefreshKey((refreshKey) => refreshKey + 1);
+    setSectorId(e[0]);
+    setSectorName(e[1]);
+    setShowSector(false);
+  };
 
   useEffect(() => {
-    api.get(`plating/mount/sector/${2}`, {}).then((response) => {
+    api.get(`plating/mount/sector/${sectorId}`, {}).then((response) => {
       setMounts(response.data);
     });
-  }, []);
+  }, [refreshKey]);
 
   useEffect(() => {
     api.get('product-plan-control ', {}).then((response) => {
       setProductionsPlansControl(response.data);
+    });
+  }, []);
+  useEffect(() => {
+    api.get('sector', {}).then((response) => {
+      setSectors(response.data);
     });
   }, []);
 
@@ -314,6 +323,17 @@ export default function Seccionadora() {
       { subProductId: '', subProductName: '', amount: 0 },
     ]);
   };
+  const data = {
+    factoryEmployeeId: localStorage.getItem('userId'),
+    productionPlanControl: productionPlanControlId,
+    subProducts: selectedSubProducts,
+    factorySectorId: sectorId,
+    productId: productId,
+    mountId: mountId,
+    color: color,
+    barCode: barCode,
+    previousMountId: previousMountId,
+  };
 
   const handleClose = () => {
     setShow(false);
@@ -325,8 +345,54 @@ export default function Seccionadora() {
     setSelectSubProducts([{ subProductId: '', subProductName: '', amount: 0 }]);
     setBarCode('');
   };
+  const openTag = (id) => {
+    console.log('aq');
+    const win = window.open(`/mount/${id}`, '_blank');
+    win.focus();
+  };
 
-  async function handleCreateMount() {}
+  async function handleCreateMount() {
+    setLoading(true);
+    if (mountId == 0) {
+      try {
+        const response = await api.post('plating/seccionadora/mount', data);
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+
+        handleClose();
+        setRefreshKey((refreshKey) => refreshKey + 1);
+        openNotificationWithIcon(
+          'success',
+          'Monte criado com sucesso ',
+          'O(s) Monte(s) foram criados com sucesso'
+        );
+      } catch (error) {
+        openNotificationWithIcon(
+          'error',
+          'Erro ao Criar',
+          'Ocorreu um erro, por favor tentar novamente'
+        );
+      }
+    } else {
+      const response = await api.post(
+        'plating/next-sector/seccionadora/mount',
+        data
+      );
+      openTag(mountId);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      handleClose();
+      setRefreshKey((refreshKey) => refreshKey + 1);
+      openNotificationWithIcon(
+        'success',
+        'Monte criado com sucesso ',
+        'O(s) Monte(s) foram criados com sucesso'
+      );
+    }
+  }
 
   const handleProductionPlanControl = async (e) => {
     setProductionPlanControlId(e[0]);
@@ -339,8 +405,19 @@ export default function Seccionadora() {
   const HandleChange = (e, index) => {
     var NewArray = [...selectedSubProducts];
     var { name, value } = e.target;
+    var totalAmount = +value;
 
-    if (subProducts[index].amount < value) {
+    selectedSubProducts.map((item, indexS) => {
+      if (
+        item.subProductId == selectedSubProducts[index].subProductId &&
+        index != indexS
+      ) {
+        totalAmount += +item.amount;
+      }
+    });
+
+    if (subProducts[0].amount < totalAmount) {
+      handleRemoveClick(index);
       openNotificationWithIcon(
         'error',
         'Erro na quantidade',
@@ -354,33 +431,34 @@ export default function Seccionadora() {
   };
 
   const finishMount = async (e, data) => {
-    // e.preventDefault();
-    // setBarCode(data.barCode != undefined ? data.barCode : '');
-    // setFinishDate(data.finish);
-    // setProductionPlanControlId(data.pcpId);
-    // setProductionPlanControlName(data.pcp);
-    // setProductId(data.productId);
-    // setProductName(data.productName);
-    // setColor(data.color);
-    // if (data.finish == null) {
-    //   setMountId(data.id);
-    //   setPreviousMountId(data.previousMountId);
-    // } else {
-    //   setMountId(0);
-    //   setPreviousMountId(data.id);
-    // }
-    // setSelectSubProducts([
-    //   {
-    //     subProductId: data.subProductId,
-    //     subProductName: data.subProductName,
-    //     amount: data.amount,
-    //   },
-    // ]);
-    // const response = await api.get(
-    //   `product-plan-control/sub-product?product=${data.productId}&sector=${sectorId}&pcp=${data.pcpId}`
-    // );
-    // setSubProducts(response.data);
-    // setShow(true);
+    e.preventDefault();
+    setBarCode(data.barCode != undefined ? data.barCode : '');
+
+    setProductionPlanControlId(data.pcpId);
+    setProductionPlanControlName(data.pcp);
+    setProductId(data.productId);
+    setProductName(data.productName);
+    setColor(data.color);
+
+    setMountId(data.id);
+    setPreviousMountId(data.id);
+
+    setSelectSubProducts([
+      {
+        subProductId: data.subProductId,
+        subProductName: data.subProductName,
+        amount: data.amount,
+      },
+    ]);
+
+    setSubProducts([
+      {
+        id: data.subProductId,
+        name: data.subProductName,
+        amount: data.amount,
+      },
+    ]);
+    setShow(true);
   };
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -419,7 +497,12 @@ export default function Seccionadora() {
           <Button key="back" type="default" onClick={handleClose}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={handleCreateMount}>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleCreateMount}
+          >
             Salvar
           </Button>,
         ]}
@@ -433,8 +516,6 @@ export default function Seccionadora() {
                 size="large"
                 value={productionPlanControlName}
                 onChange={(e) => handleProductionPlanControl(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {productionsPlansControl.map((option) => {
                   return (
@@ -460,8 +541,6 @@ export default function Seccionadora() {
                 size="large"
                 value={productName}
                 onChange={(e) => handleProduct(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {products.map((option) => {
                   return (
@@ -489,8 +568,6 @@ export default function Seccionadora() {
                   setColor(e[0]);
                 }}
                 style={{ color: `${color}` }}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 <>
                   <Option
@@ -536,8 +613,6 @@ export default function Seccionadora() {
                       size="large"
                       value={selectedSubProduct.subProductName}
                       onChange={(e) => handleSubProduct(e, index)}
-
-                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {subProducts.map((option) => {
                         return (
@@ -590,6 +665,35 @@ export default function Seccionadora() {
             </>
           );
         })}
+      </Modal>
+      <Modal title="Selecione o setor" visible={showSector} width={500}>
+        <Row gutter={5}>
+          <Col span={24}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Selecione seu setor:"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={sectorName}
+                onChange={(e) => handleSelectSector(e)}
+              >
+                {sectors.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
       </Modal>
     </Layout>
   );
