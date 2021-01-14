@@ -171,12 +171,20 @@ export default function PlantingMount() {
           ...this.getColumnSearchProps('subProductName'),
         },
         {
-          title: 'Quantidade',
-          dataIndex: 'amount',
-          key: 'amount',
+          title: 'Quantidade que chegou',
+          dataIndex: 'amountInput',
+          key: 'amountInput',
 
-          sorter: (a, b) => this.compareByAlph(a.amount, b.amount),
-          ...this.getColumnSearchProps('amount'),
+          sorter: (a, b) => this.compareByAlph(a.amountInput, b.amountInput),
+          ...this.getColumnSearchProps('amountInput'),
+        },
+        {
+          title: 'Quantidade processada',
+          dataIndex: 'amountOutput',
+          key: 'amountOutput',
+
+          sorter: (a, b) => this.compareByAlph(a.amountOutput, b.amountOutput),
+          ...this.getColumnSearchProps('amountOutput'),
         },
         {
           title: 'PCP',
@@ -276,6 +284,9 @@ export default function PlantingMount() {
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState([]);
   const [productName, setProductName] = useState([]);
+  const [isInOtherSector, setIsInOtherSector] = useState(false);
+  const [otherSectorName, setOtherSectorName] = useState('');
+  const [otherSectorId, setOtherSectorId] = useState(0);
 
   const [selectedSubProducts, setSelectSubProducts] = useState([
     { subProductId: '', subProductName: '', amount: 0 },
@@ -393,6 +404,25 @@ export default function PlantingMount() {
       return;
     }
 
+    if (otherSectorName != '') {
+      try {
+        api.put('plating/mount/alter-sector', data);
+        handleClose();
+        openNotificationWithIcon(
+          'success',
+          'Monte editado com sucesso ',
+          'O(s) Monte(s) foram editado com sucesso'
+        );
+      } catch (error) {
+        openNotificationWithIcon(
+          'error',
+          'Erro ao editar',
+          'Ocorreu um erro, por favor tentar novamente'
+        );
+      }
+    }
+    return;
+
     if (mountId == 0) {
       try {
         const response = await api.post('plating/mount', data);
@@ -402,8 +432,6 @@ export default function PlantingMount() {
           'Monte criado com sucesso ',
           'O(s) Monte(s) foram criados com sucesso'
         );
-
-        openTag(response.data.barCode);
       } catch (error) {
         openNotificationWithIcon(
           'error',
@@ -501,45 +529,66 @@ export default function PlantingMount() {
   }
 
   async function handleScan(e) {
-    await api.get(`plating/mount/tag/${e}`, {}).then(async (response) => {
-      setProductionPlanControlId(response.data.pcpId);
-      setProductionPlanControlName(response.data.pcp);
-      setProductId(response.data.productId);
-      setProductName(response.data.productName);
-      setColor(response.data.color);
-      setBarCode(e);
-
-      if (response.data.finish == null) {
-        setMountId(response.data.id);
-        setPreviousMountId(response.data.previousMountId);
-      } else {
-        setMountId(0);
-        setPreviousMountId(response.data.id);
-      }
-      const subProductsArray = await api.get(
-        `product-plan-control/sub-product?product=${response.data.productId}&sector=${sectorId}&pcp=${response.data.pcpId}`
-      );
-
-      setSubProducts(subProductsArray.data);
-      setOldAmount(response.data.amount);
-      setSelectSubProducts([
-        {
-          subProductId: response.data.subProductId,
-          subProductName: response.data.subProductName,
-          amount: response.data.amount,
-        },
-      ]);
-
-      if (response.data.subProductId != undefined) {
-        setShow(true);
-      } else {
-        openNotificationWithIcon(
-          'error',
-          'Monte finalizado',
-          'Esse monte ja foi finalizado e essa etiqueta nao é mais valida'
-        );
-      }
-    });
+    await api
+      .get(`plating/mount?barCode=${e}&sector=${sectorId}`, {})
+      .then(async (response) => {
+        console.log(response.data);
+        if (response.data.show == 0) {
+          setOtherSectorName(response.data.nextSectorName);
+          setIsInOtherSector(true);
+        }
+        setProductionPlanControlId(response.data.pcpId);
+        setProductionPlanControlName(response.data.pcp);
+        setProductId(response.data.productId);
+        setProductName(response.data.productName);
+        setColor(response.data.color);
+        setBarCode(e);
+        // if (response.data.finish == null) {
+        //   setMountId(response.data.id);
+        //   setPreviousMountId(response.data.previousMountId);
+        // } else {
+        //   setMountId(0);
+        //   setPreviousMountId(response.data.id);
+        // }
+        setSubProducts([
+          {
+            id: response.data.subProductId,
+            name: response.data.subProductName,
+            amount: response.data.amountInput,
+          },
+        ]);
+        // setOldAmount(response.data.amount);
+        setSelectSubProducts([
+          {
+            subProductId: response.data.subProductId,
+            subProductName: response.data.subProductName,
+            amount: response.data.amountInput,
+          },
+        ]);
+        // console.log(response.data.finish);
+        // console.log(response.data.nextSectorId, sectorId);
+        // if (response.data.subProductId != undefined) {
+        //   if (
+        //     response.data.nextSectorId != sectorId &&
+        //     response.data.finish != null
+        //   ) {
+        //     setOtherSectorName(response.data.nextSectorName);
+        //     setIsInOtherSector(true);
+        //   } else {
+        //     setOtherSectorName('');
+        //     setShow(true);
+        //   }
+        // } else {
+        //   openNotificationWithIcon(
+        //     'error',
+        //     'Monte finalizado',
+        //     'Esse monte ja foi finalizado e essa etiqueta nao é mais valida'
+        //   );
+        // }
+      });
+  }
+  async function alterNextSector() {
+    setShow(true);
   }
   return (
     <Layout
@@ -796,6 +845,33 @@ export default function PlantingMount() {
         <Row gutter={5}>
           <Col span={24}>
             <TextArea rows={4} onChange={(e) => setReason(e.target.value)} />
+          </Col>
+        </Row>
+      </Modal>
+
+      <Modal
+        title="Alteração no caminho do monte"
+        visible={isInOtherSector}
+        width={700}
+        footer={[
+          <Button
+            key="back"
+            type="default"
+            onClick={() => setIsInOtherSector(false)}
+          >
+            Cancelar
+          </Button>,
+          <Button key="submit" type="primary" onClick={alterNextSector}>
+            Sim
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={24}>
+            <h3>
+              Você está tentando iniciar um monte em um setor do programado,
+              deseja continuar?
+            </h3>
           </Col>
         </Row>
       </Modal>
