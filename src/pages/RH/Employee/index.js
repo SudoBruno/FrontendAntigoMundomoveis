@@ -238,6 +238,9 @@ export default function Employee() {
   const [shiftName, setShiftName] = useState('');
 
   const [admission, setAdmission] = useState(moment());
+
+  const [secullumId, setSecullumId] = useState('');
+
   const data = {
     admission,
     company,
@@ -260,6 +263,7 @@ export default function Employee() {
     reasonResignation,
     phone,
     shiftId,
+    secullumId
   };
   useEffect(() => {
     api.get('employee', {}).then((response) => {
@@ -321,6 +325,7 @@ export default function Employee() {
     setCompanyName(response.data.companyName);
     setShiftId(response.data.shiftId);
     setShiftName(response.data.shiftName);
+    setSecullumId(response.data.secullum_id);
 
     handleShow();
   }
@@ -357,6 +362,7 @@ export default function Employee() {
           setAdmission();
           setShiftId(0);
           setShiftName('');
+          setSecullumId('');
 
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -400,6 +406,8 @@ export default function Employee() {
           setAdmission(moment());
           setShiftId(0);
           setShiftName('');
+          setSecullumId('');
+
         } catch (error) {
           openNotificationWithIcon(
             'error',
@@ -458,6 +466,8 @@ export default function Employee() {
     setAreaName('');
     setShiftId(0);
     setShiftName('');
+    setSecullumId('');
+
     setShow(false);
   };
 
@@ -700,6 +710,7 @@ export default function Employee() {
                   }}
                 >
                   {shifts.map((option) => {
+                    console.log("id: " + shiftId, "nome" + shiftName)
                     return (
                       <>
                         <Option
@@ -710,7 +721,10 @@ export default function Employee() {
                         </Option>
                       </>
                     );
-                  })}
+                  }
+                  )
+
+                  }
                 </Select>
               </Form.Item>
             </Col>
@@ -814,6 +828,17 @@ export default function Employee() {
                   value={city}
                 />
               </Form.Item>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="ID Secullum"
+                labelAlign={'left'}
+              >
+                <Input
+                  name="secullum"
+                  onChange={(e) => setSecullumId(e.target.value)}
+                  value={secullumId}
+                />
+              </Form.Item>
             </Col>
 
             <Col span={2}>
@@ -872,7 +897,15 @@ export default function Employee() {
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
                     format="DD/MM/YYYY"
                     defaultValue={moment(resignation, 'DD/MM/YYYY')}
-                    onChange={(date) => setResignation(date._d)}
+                    onChange={(date) => {
+                      if (date == "" || date == null) {
+                        setResignation("");
+                      }
+                      else {
+                        setResignation(date._d);
+                      }
+
+                    }}
                   />
                 )}
 
@@ -880,7 +913,15 @@ export default function Employee() {
                   <DatePicker
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
                     format="DD/MM/YYYY"
-                    onChange={(date) => setResignation(date._d)}
+                    onChange={(date) => {
+                      if (date == "" || date == null) {
+                        setResignation("");
+                      }
+                      else {
+                        setResignation(date._d);
+                      }
+
+                    }}
                   />
                 )}
               </Form.Item>
