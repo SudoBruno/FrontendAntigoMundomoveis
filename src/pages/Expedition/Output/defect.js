@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CSVLink } from 'react-csv';
+import { CSVLink, CSVDownload } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import {
   SearchOutlined,
@@ -7,11 +7,22 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons';
 import api from '../../../services/api';
-import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
+import {
+  Layout,
+  Table,
+  Button,
+  Row,
+  Input,
+  Space,
+  Select,
+  Col,
+  DatePicker,
+} from 'antd';
 
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
-export default function ExpeditionStock() {
+export default function ExpeditionOutput() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -134,20 +145,13 @@ export default function ExpeditionStock() {
           dataIndex: 'product',
           key: 'product',
 
-          ...this.getColumnSearchProps('product'),
+          ...this.getColumnSearchProps('id'),
         },
         {
-          title: 'Rua',
-          dataIndex: 'street',
-          key: 'street',
-          ...this.getColumnSearchProps('street'),
-        },
-
-        {
-          title: 'Data Armazenado',
-          dataIndex: 'stock',
-          key: 'stock',
-          ...this.getColumnSearchProps('stock'),
+          title: 'Data Saída',
+          dataIndex: 'output',
+          key: 'output',
+          ...this.getColumnSearchProps('output'),
         },
         {
           title: 'Cod_Barras',
@@ -158,23 +162,44 @@ export default function ExpeditionStock() {
         },
       ];
 
-      return <Table columns={columns} dataSource={stock} />;
+      return <Table columns={columns} dataSource={output} />;
     }
   }
 
   const [refreshKey, setRefreshKey] = useState(0);
-  const [stock, setStock] = useState([]);
+  const [output, setOutput] = useState([]);
   const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [ready, setReady] = useState(false);
+  const [intervalTime, setIntervalTime] = useState([]);
+
   useEffect(() => {
-    api.get('expedition/stock', {}).then((response) => {
-      setStock(response.data);
+    api.get('expedition/output/defect', {}).then((response) => {
+      setOutput(response.data);
     });
   }, [refreshKey]);
-  async function Stock() {
+
+  async function Filter() {
+    const data = {
+      intervalTime: intervalTime,
+    };
+    const response = await api.post('expedition/output/filter', data);
+
+    setOutput(response.data);
+  }
+
+  async function Output() {
     setReady(false);
-    const response = await api.get('expedition/stock');
+    const data = {
+      intervalTime: intervalTime,
+    };
+    let response = [];
+    if (intervalTime.length == 0) {
+      response = await api.get('expedition/output');
+    } else {
+      response = await api.post('expedition/output/filter', data);
+    }
+
     setCsvData(response.data);
     setTimeout(
       function () {
@@ -200,11 +225,26 @@ export default function ExpeditionStock() {
       }}
     >
       <Row style={{ marginBottom: 16 }}>
+        {/* <Col span={12}>
+          <RangePicker
+            size="small"
+            placeholder={['data inicial', 'data final']}
+            onChange={setIntervalTime}
+          />
+          <SearchOutlined
+            style={{
+              fontSize: 18,
+              color: '#3b4357',
+              marginLeft: 8,
+            }}
+            onClick={Filter}
+          />
+        </Col> */}
         <Col span={24} align="end">
           {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Stock}>
+            <Button type="submit" className="buttonGreen" onClick={Output}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
-              Estoque Atual
+              Saídas
             </Button>
           )}
           {ready && (
