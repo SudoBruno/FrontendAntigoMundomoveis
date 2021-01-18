@@ -145,7 +145,7 @@ export default function ExpeditionInput() {
           dataIndex: 'product',
           key: 'product',
 
-          ...this.getColumnSearchProps('id'),
+          ...this.getColumnSearchProps('product'),
         },
         {
           title: 'Rua',
@@ -161,7 +161,7 @@ export default function ExpeditionInput() {
           ...this.getColumnSearchProps('input'),
         },
         {
-          title: 'Cod_Barras',
+          title: 'Cod. Barras',
           dataIndex: 'barCode',
           key: 'barCode',
 

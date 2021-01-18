@@ -168,13 +168,13 @@ export default function ExpeditionStock() {
   const [headers, setHeaders] = useState([]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    api.get('expedition/stock', {}).then((response) => {
+    api.get('expedition/stock/defect', {}).then((response) => {
       setStock(response.data);
     });
   }, [refreshKey]);
   async function Stock() {
     setReady(false);
-    const response = await api.get('expedition/stock');
+    const response = await api.get('expedition/stock/defect');
     setCsvData(response.data);
     setTimeout(
       function () {

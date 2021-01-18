@@ -43,6 +43,10 @@ import ExpeditionLaunch from '../../pages/Expedition/Launch';
 import ExpeditionChange from '../../pages/Expedition/Change';
 import ExpeditionDrop from '../../pages/Expedition/Search/Drop';
 
+import ExpeditionInputDefect from '../../pages/Expedition/Input/defect';
+import ExpeditionOutputDefect from '../../pages/Expedition/Output/defect';
+import ExpeditionStockDefect from '../../pages/Expedition/Stock/defect';
+
 //////////////////////////////////////////////////////////////////
 //WMS - RAW MATERIAL
 import WmsRawSupplier from '../../pages/WmsRawMaterial/Register/Supplier';
@@ -253,6 +257,24 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <ExpeditionDrop />,
+  },
+  {
+    path: '/expedition/input/defect',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionInputDefect />,
+  },
+  {
+    path: '/expedition/output/defect',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionOutputDefect />,
+  },
+  {
+    path: '/expedition/stock/defect',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <ExpeditionStockDefect />,
   },
   //////////////// RH  //////////////////////
   {
@@ -591,6 +613,23 @@ class App extends React.Component {
                   </Menu.Item>
                   <Menu.Item key="41" icon={<FileExcelOutlined />}>
                     <Link to="/expedition/drop">Drop</Link>
+                  </Menu.Item>
+                </SubMenu>
+                <SubMenu
+                  key="ExpeditionDefectSearches"
+                  title="PD"
+                  icon={<SearchOutlined />}
+                >
+                  <Menu.Item key="stockDefect" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/stock/defect">Estoque</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="inputDefect" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/input/defect">Entradas</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="outputDefect" icon={<FileExcelOutlined />}>
+                    <Link to="/expedition/output/defect">Saídas</Link>
                   </Menu.Item>
                 </SubMenu>
               </SubMenu>
