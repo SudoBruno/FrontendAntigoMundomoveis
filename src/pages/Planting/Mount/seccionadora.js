@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons';
 
 import Highlighter from 'react-highlight-words';
+import { post } from 'jquery';
 
 const Option = Select.Option;
 
@@ -177,11 +178,11 @@ export default function Seccionadora() {
         },
         {
           title: 'PCP',
-          dataIndex: 'pcp',
-          key: 'pcp',
+          dataIndex: 'pcpName',
+          key: 'pcpName',
 
-          sorter: (a, b) => this.compareByAlph(a.pcp, b.pcp),
-          ...this.getColumnSearchProps('pcp'),
+          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
+          ...this.getColumnSearchProps('pcpName'),
         },
         {
           title: 'Começou',
@@ -211,7 +212,7 @@ export default function Seccionadora() {
                 <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
-                  // onClick={(e) => finishMount(e, record)}
+                  onClick={(e) => finishMount(e, record)}
                 />
               </React.Fragment>
             );
@@ -251,7 +252,11 @@ export default function Seccionadora() {
   const [sectorName, setSectorName] = useState('');
   const [sectorId, setSectorId] = useState(0);
 
+  const [showNextSector, setShowNextSector] = useState(false);
+
   const [showSector, setShowSector] = useState(true);
+
+  const [previousPlatingMountId, setPreviousPlatingMountId] = useState(0);
 
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -357,6 +362,8 @@ export default function Seccionadora() {
     var subProductIndex = subProducts.findIndex(
       (item) => item.id === selectedSubProducts[index].subProductId
     );
+    console.log(subProductIndex, selectedSubProducts[index], index);
+    console.log(subProducts);
 
     if (subProducts[subProductIndex].amount < totalAmount) {
       openNotificationWithIcon(
@@ -389,6 +396,80 @@ export default function Seccionadora() {
     setSectorId(e[0]);
     setSectorName(e[1]);
     setShowSector(false);
+  };
+
+  const finishMount = async (e, data) => {
+    e.preventDefault();
+    console.log(data);
+    setProductId(data.productId);
+    setProductName(data.productName);
+    setProductionPlanControlId(data.pcpId);
+    setProductionPlanControlName(data.pcpName);
+    setColor(data.color);
+    setSelectSubProducts([
+      {
+        subProductId: data.subProductId,
+        subProductName: data.subProductName,
+        amount: data.amountInput,
+      },
+    ]);
+    setSubProducts([
+      {
+        id: data.subProductId,
+        name: data.subProductName,
+        amount: data.amountInput,
+      },
+    ]);
+    setPreviousPlatingMountId(data.id);
+
+    setShowNextSector(true);
+  };
+  const dataNextSector = {
+    factorySectorId: sectorId,
+    factoryEmployeeId: localStorage.getItem('userId'),
+    productId,
+    subProducts: selectedSubProducts,
+    color,
+    productionPlanControlId,
+    previousPlatingMountId,
+  };
+
+  const nextSector = async () => {
+    try {
+      const response = await api.post('plating/mount/tags', dataNextSector);
+      openNotificationWithIcon(
+        'success',
+        'Sucesso ao gerar etiquetas',
+        'As etiquetas foram geradas com sucesso'
+      );
+      setProductId(0);
+      setProductName('');
+      setProductionPlanControlId(0);
+      setProductionPlanControlName('');
+      setColor('');
+      setSelectSubProducts([
+        {
+          subProductId: 0,
+          subProductName: '',
+          amount: 0,
+        },
+      ]);
+      setSubProducts([
+        {
+          id: 0,
+          name: '',
+          amount: 0,
+        },
+      ]);
+      setPreviousPlatingMountId(0);
+      setShowNextSector(false);
+    } catch (error) {
+      openNotificationWithIcon(
+        'error',
+        'Erro ao gerar etiqueta',
+        'Erro ao passar para o proximo setor, tente novamente'
+      );
+    }
   };
 
   return (
@@ -625,6 +706,152 @@ export default function Seccionadora() {
             </Form.Item>
           </Col>
         </Row>
+      </Modal>
+
+      <Modal
+        title="Passar para o proximo setor"
+        visible={showNextSector}
+        width={700}
+        footer={[
+          <Button key="back" type="default" onClick={handleClose}>
+            Cancelar
+          </Button>,
+          <Button key="submit" type="primary" onClick={nextSector}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Select size="large" value={productionPlanControlName} disabled>
+                {productionsPlansControl.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Select size="large" value={productName} disabled>
+                {products.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
+              <Select
+                size="large"
+                value={color}
+                style={{ color: `${color}` }}
+                disabled
+              >
+                <>
+                  <Option
+                    key={1}
+                    value={['yellow', 'Amarelo']}
+                    style={{ color: 'yellow' }}
+                  >
+                    Amarelo
+                  </Option>
+                  <Option
+                    key={2}
+                    value={['blue', 'Azul']}
+                    style={{ color: 'blue' }}
+                  >
+                    Azul
+                  </Option>
+                  <Option
+                    key={3}
+                    value={['red', 'Vermelho']}
+                    style={{ color: 'red' }}
+                  >
+                    Vermelho
+                  </Option>
+                </>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider />
+
+        {selectedSubProducts.map((selectedSubProduct, index) => {
+          return (
+            <>
+              <Row gutter={5}>
+                <Col span={16}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="SubProduto:"
+                    labelAlign={'left'}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Selecione"
+                      size="large"
+                      value={selectedSubProduct.subProductName}
+                      onChange={(e) => handleSubProduct(e, index)}
+
+                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                    >
+                      {subProducts.map((option) => {
+                        return (
+                          <>
+                            <Option
+                              key={option.id}
+                              value={[option.id, option.name]}
+                            >
+                              {option.name}
+                            </Option>
+                          </>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Quantidade:"
+                    labelAlign={'left'}
+                    style={{ width: '90%', marginRight: 16 }}
+                  >
+                    <Input
+                      name="amount"
+                      placeholder="Quantidade"
+                      value={selectedSubProduct.amount}
+                      onChange={(e) => HandleChange(e, index)}
+                      style={{ width: '85%', marginRight: 8 }}
+                    />
+                    {selectedSubProducts.length !== 1 && (
+                      <MinusCircleOutlined
+                        onClick={() => handleRemoveClick(index)}
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </>
+          );
+        })}
       </Modal>
     </Layout>
   );
