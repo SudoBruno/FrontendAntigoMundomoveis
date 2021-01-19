@@ -217,7 +217,7 @@ export default function Product() {
   const [clientCode, setClientCode] = useState('');
 
   const [selectProductsSectors, setSelectProductsSectors] = useState([
-    { subproduct: '', sector: '', points: '' },
+    { subproduct: '', sector: '', points: '', order: '' },
   ]);
 
   const data = {
