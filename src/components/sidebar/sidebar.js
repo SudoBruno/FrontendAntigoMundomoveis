@@ -75,6 +75,7 @@ import Company from '../../pages/RH/Company';
 import Employee from '../../pages/RH/Employee';
 import Drop from '../../pages/Drop';
 import ProductionReport from '../../pages/ProductionReport';
+import NotProductionReport from '../../pages/NotProductionReport';
 
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
@@ -92,7 +93,7 @@ const { SubMenu } = Menu;
 
 const routes = [
   {
-    path: '/PCP',
+    path: '/pcp',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <PCP />,
@@ -325,6 +326,12 @@ const routes = [
     main: () => <ProductionReport />,
   },
   {
+    path: '/not/production/report',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <NotProductionReport />,
+  },
+  {
     path: '/wmsRawMaterial/Search/entry',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
@@ -439,16 +446,37 @@ class App extends React.Component {
               </Menu.Item>
             )}
             {localStorage.getItem('acess_level') === '1' && (
-              <Menu.Item
+              <SubMenu
                 key="2"
+                title="PCP"
                 icon={
                   <span className="anticon anticon-bank">
                     <FaCouch color="#fff" size={16} />
                   </span>
                 }
               >
-                <Link to="/pcp">Produção</Link>
-              </Menu.Item>
+                <Menu.Item key="31" icon={<PlusOutlined />}>
+                  <Link to="/pcp">Produção</Link>
+                </Menu.Item>
+                <SubMenu
+                  key="pcpReport"
+                  title="Relatórios"
+                  icon={<RightSquareOutlined />}
+                >
+                  <Menu.Item
+                    key="productionReport"
+                    icon={<FileExcelOutlined />}
+                  >
+                    <Link to="/production/report">Produzidos </Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="notProductionReport"
+                    icon={<FileExcelOutlined />}
+                  >
+                    <Link to="/not/production/report">Não Produzidos </Link>
+                  </Menu.Item>
+                </SubMenu>
+              </SubMenu>
             )}
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu
@@ -666,11 +694,6 @@ class App extends React.Component {
                   <Link to="/call/employee">Chamada </Link>
                 </Menu.Item>
               </SubMenu>
-            )}
-            {localStorage.getItem('acess_level') === '1' && (
-              <Menu.Item key="31" icon={<FileExcelOutlined />}>
-                <Link to="/production/report">Relatório Produção </Link>
-              </Menu.Item>
             )}
 
             <SubMenu
