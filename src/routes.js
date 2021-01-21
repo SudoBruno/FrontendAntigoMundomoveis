@@ -51,7 +51,10 @@ export default function Routes() {
         <PrivateRoute path="/wmsrm/barcode/:id" component={Barcode} />
         <PrivateRoute path="/stock/barcode/:id" component={StockBarcode} />
         <PrivateRoute path="/launch-product" component={LaunchProduction} />
-        <PrivateRoute path="/mount/:id" component={MountTagLayout} />
+        <PrivateRoute
+          path="/mount/tag/:barCode/sector/:sectorId"
+          component={MountTagLayout}
+        />
         <ExpeditionRoute
           path="/launch-expedition"
           component={ExpeditionLaunch}

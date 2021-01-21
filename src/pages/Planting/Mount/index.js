@@ -11,6 +11,7 @@ import {
   Form,
   Select,
   notification,
+  Divider,
 } from 'antd';
 import { Tooltip } from '@material-ui/core';
 import {
@@ -213,7 +214,7 @@ export default function PlantingMount() {
             return (
               <React.Fragment>
                 <Link
-                  to={`/mount/${record.barCode}`}
+                  to={`/mount/tag/${record.barCode}/sector/${sectorId}`}
                   style={{ color: 'rgb(0,0,0,0.65' }}
                   target="_blank"
                 >
@@ -222,7 +223,7 @@ export default function PlantingMount() {
                 <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
-                  onClick={(e) => finishMount(e, record)}
+                  // onClick={(e) => finishMount(e, record)}
                 />
               </React.Fragment>
             );
@@ -241,76 +242,41 @@ export default function PlantingMount() {
       );
     }
   }
-  const [show, setShow] = useState(false);
-  const [showReason, setShowReason] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-    setProductionPlanControlId(0);
-    setProductionPlanControlName('');
-    setProductId(0);
-    setProductName('');
-    setMountId(0);
-    setSelectSubProducts([{ subProductId: '', subProductName: '', amount: 0 }]);
-    setBarCode('');
-    setTimeout(() => {
-      setRefreshKey((refreshKey) => refreshKey + 1);
-    }, 500);
-  };
-  const handleShow = () => setShow(true);
-
-  const [showSector, setShowSector] = useState(true);
-
-  const [sectors, setSectors] = useState([]);
-  const [sectorId, setSectorId] = useState(0);
-  const [sectorName, setSectorName] = useState('');
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [colorName, setColorName] = useState('');
-  const [color, setColor] = useState('');
-
-  const handleSelectSector = (e) => {
-    setRefreshKey((refreshKey) => refreshKey + 1);
-    setSectorId(e[0]);
-    setSectorName(e[1]);
-    setShowSector(false);
-  };
 
   const [mounts, setMounts] = useState([]);
-  const [productionsPlansControl, setProductionsPlansControl] = useState([]);
-  const [productionPlanControlId, setProductionPlanControlId] = useState([]);
-  const [productionPlanControlName, setProductionPlanControlName] = useState(
-    []
-  );
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [sectorId, setSectorId] = useState(0);
+  const [sectors, setSectors] = useState([]);
+  const [sectorName, setSectorName] = useState('');
+  const [showSector, setShowSector] = useState(true);
 
-  const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState([]);
-  const [productName, setProductName] = useState([]);
-  const [isInOtherSector, setIsInOtherSector] = useState(false);
-  const [otherSectorName, setOtherSectorName] = useState('');
-  const [otherSectorId, setOtherSectorId] = useState(0);
+  const [alterMountRoute, setAlterMountRoute] = useState(false);
+  const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
 
-  const [selectedSubProducts, setSelectSubProducts] = useState([
-    { subProductId: '', subProductName: '', amount: 0 },
-  ]);
-  const [subProducts, setSubProducts] = useState([]);
-  const [mountId, setMountId] = useState(0);
-  const [previousMountId, setPreviousMountId] = useState(null);
-  const [oldAmount, setOldAmount] = useState(0);
-  const [reason, setReason] = useState('');
-  const [finishDate, setFinishDate] = useState('');
   const [barCode, setBarCode] = useState('');
 
-  // useEffect(() => {
-  //   api.get('plating/mount ', {}).then((response) => {
-  //     setMounts(response.data);
-  //   });
-  // }, []);
+  const [showInNextSector, setShowInNextSector] = useState(false);
 
-  useEffect(() => {
-    api.get('product-plan-control ', {}).then((response) => {
-      setProductionsPlansControl(response.data);
-    });
-  }, []);
+  const [color, setColor] = useState('');
+  const [productName, setProductName] = useState('');
+  const [productionPlanControlName, setProductionPlanControlName] = useState(
+    ''
+  );
+  const [subProductName, setSubProductName] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [newAmount, setNewAmount] = useState(0);
 
+  const [showStart, setShowStart] = useState(false);
+
+  const [showStartOtherSector, setShowStartOtherSector] = useState(false);
+
+  const [isFinish, setIsFinish] = useState(false);
+
+  const [reason, setReason] = useState('');
+  const [showReason, setShowReason] = useState(false);
+  const [isAlterAmount, setIsAlterAmount] = useState(false);
+  const [movement, setMovement] = useState('');
+  const [mountId, setMountId] = useState(0);
   useEffect(() => {
     api.get(`plating/mount/sector/${sectorId}`, {}).then((response) => {
       setMounts(response.data);
@@ -323,204 +289,13 @@ export default function PlantingMount() {
     });
   }, []);
 
-  const handleProduct = async (e) => {
-    setProductId(e[0]);
-    setProductName(e[1]);
-
-    try {
-      const response = await api.get(
-        `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`
-      );
-
-      setSubProducts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleProductionPlanControl = async (e) => {
-    setProductionPlanControlId(e[0]);
-    setProductionPlanControlName(e[1]);
-    const response = await api.get(
-      `product/production-plan-controller/${e[0]}`
-    );
-    setProducts(response.data);
+  const handleSelectSector = (e) => {
+    setRefreshKey((refreshKey) => refreshKey + 1);
+    setSectorId(e[0]);
+    setSectorName(e[1]);
+    setShowSector(false);
   };
 
-  const handleSubProduct = (value, index) => {
-    var NewArray = [...selectedSubProducts];
-
-    NewArray[index].subProductId = value[0];
-    NewArray[index].subProductName = value[1];
-
-    setSelectSubProducts(NewArray);
-  };
-
-  const handleRemoveClick = (index) => {
-    const list = [...selectedSubProducts];
-    list.splice(index, 1);
-    setSelectSubProducts(list);
-  };
-  const handleAddClick = () => {
-    setSelectSubProducts([
-      ...selectedSubProducts,
-      { subProductId: '', subProductName: '', amount: 0 },
-    ]);
-  };
-
-  const HandleChange = (e, index) => {
-    var NewArray = [...selectedSubProducts];
-    var { name, value } = e.target;
-
-    if (subProducts[index].amount < value) {
-      openNotificationWithIcon(
-        'error',
-        'Erro na quantidade',
-        'Tem mais itens no monte do que no PCP'
-      );
-    } else {
-      NewArray[index][name] = value;
-
-      setSelectSubProducts(NewArray);
-    }
-  };
-  const data = {
-    factoryEmployeeId: localStorage.getItem('userId'),
-    productionPlanControl: productionPlanControlId,
-    subProducts: selectedSubProducts,
-    factorySectorId: sectorId,
-    productId: productId,
-    mountId: mountId,
-    previousMountId: previousMountId,
-    color: color,
-    barCode: barCode,
-  };
-  const openTag = (id) => {
-    const win = window.open(`/mount/${id}`, '_blank');
-    win.focus();
-  };
-  async function handleCreateMount() {
-    if (oldAmount != selectedSubProducts[0].amount && oldAmount != 0) {
-      setShowReason(true);
-      return;
-    }
-
-    if (otherSectorName != '') {
-      try {
-        api.put('plating/mount/alter-sector', data);
-        handleClose();
-        openNotificationWithIcon(
-          'success',
-          'Monte editado com sucesso ',
-          'O(s) Monte(s) foram editado com sucesso'
-        );
-      } catch (error) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao editar',
-          'Ocorreu um erro, por favor tentar novamente'
-        );
-      }
-    }
-    return;
-
-    if (mountId == 0) {
-      try {
-        const response = await api.post('plating/mount', data);
-        handleClose();
-        openNotificationWithIcon(
-          'success',
-          'Monte criado com sucesso ',
-          'O(s) Monte(s) foram criados com sucesso'
-        );
-      } catch (error) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao Criar',
-          'Ocorreu um erro, por favor tentar novamente'
-        );
-      }
-    } else {
-      try {
-        api.put('plating/mount', data);
-        handleClose();
-        openNotificationWithIcon(
-          'success',
-          'Monte editado com sucesso ',
-          'O(s) Monte(s) foram editado com sucesso'
-        );
-      } catch (error) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao Criar',
-          'Ocorreu um erro, por favor tentar novamente'
-        );
-      }
-    }
-  }
-  const finishMount = async (e, data) => {
-    e.preventDefault();
-
-    setBarCode(data.barCode != undefined ? data.barCode : '');
-
-    setFinishDate(data.finish);
-    setProductionPlanControlId(data.pcpId);
-    setProductionPlanControlName(data.pcp);
-    setProductId(data.productId);
-    setProductName(data.productName);
-    setColor(data.color);
-    if (data.finish == null) {
-      setMountId(data.id);
-      setPreviousMountId(data.previousMountId);
-    } else {
-      setMountId(0);
-      setPreviousMountId(data.id);
-    }
-
-    setOldAmount(data.amount);
-    setSelectSubProducts([
-      {
-        subProductId: data.subProductId,
-        subProductName: data.subProductName,
-        amount: data.amount,
-      },
-    ]);
-
-    const response = await api.get(
-      `product-plan-control/sub-product?product=${data.productId}&sector=${sectorId}&pcp=${data.pcpId}`
-    );
-
-    setSubProducts(response.data);
-    setShow(true);
-  };
-
-  const handleSaveReason = async () => {
-    const data = {
-      mountId: mountId == 0 ? previousMountId : mountId,
-      reason: reason,
-      amountInput: oldAmount,
-      amountOutput: selectedSubProducts[0].amount,
-      movement: finishDate == null ? 'output' : 'input',
-    };
-    if (reason == '' || reason == undefined || reason == null) {
-      openNotificationWithIcon(
-        'error',
-        'Motivo não preenchido',
-        'Por favor, explicar a diferença de quantidade no monte'
-      );
-    } else {
-      try {
-        const response = await api.post('/plating/loser/mount', data);
-
-        setOldAmount(parseFloat(selectedSubProducts[0].amount));
-        // setTimeout(() => {
-        setShowReason(false);
-
-        // }, 300);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
       message: message,
@@ -528,68 +303,152 @@ export default function PlantingMount() {
     });
   }
 
-  async function handleScan(e) {
-    await api
-      .get(`plating/mount?barCode=${e}&sector=${sectorId}`, {})
-      .then(async (response) => {
-        console.log(response.data);
-        if (response.data.show == 0) {
-          setOtherSectorName(response.data.nextSectorName);
-          setIsInOtherSector(true);
+  const handleScan = async (e) => {
+    const response = await api.get(`plating/mount/tag/${e}/sector/${sectorId}`);
+    setBarCode(e);
+
+    if (response.data.finish == null) {
+      if (response.data.showSector == 0) {
+        openNotificationWithIcon('error', 'setor errado', 'Setor errado!');
+        setShowAlterMountRoute(true);
+      } else {
+        if (response.data.start == null) {
+          setShowStart(true);
+        } else {
+          setShowInNextSector(true);
         }
-        setProductionPlanControlId(response.data.pcpId);
-        setProductionPlanControlName(response.data.pcp);
-        setProductId(response.data.productId);
-        setProductName(response.data.productName);
-        setColor(response.data.color);
-        setBarCode(e);
-        // if (response.data.finish == null) {
-        //   setMountId(response.data.id);
-        //   setPreviousMountId(response.data.previousMountId);
-        // } else {
-        //   setMountId(0);
-        //   setPreviousMountId(response.data.id);
-        // }
-        setSubProducts([
-          {
-            id: response.data.subProductId,
-            name: response.data.subProductName,
-            amount: response.data.amountInput,
-          },
-        ]);
-        // setOldAmount(response.data.amount);
-        setSelectSubProducts([
-          {
-            subProductId: response.data.subProductId,
-            subProductName: response.data.subProductName,
-            amount: response.data.amountInput,
-          },
-        ]);
-        // console.log(response.data.finish);
-        // console.log(response.data.nextSectorId, sectorId);
-        // if (response.data.subProductId != undefined) {
-        //   if (
-        //     response.data.nextSectorId != sectorId &&
-        //     response.data.finish != null
-        //   ) {
-        //     setOtherSectorName(response.data.nextSectorName);
-        //     setIsInOtherSector(true);
-        //   } else {
-        //     setOtherSectorName('');
-        //     setShow(true);
-        //   }
-        // } else {
-        //   openNotificationWithIcon(
-        //     'error',
-        //     'Monte finalizado',
-        //     'Esse monte ja foi finalizado e essa etiqueta nao é mais valida'
-        //   );
-        // }
-      });
-  }
-  async function alterNextSector() {
-    setShow(true);
-  }
+      }
+    } else {
+      openNotificationWithIcon(
+        'error',
+        'Monte ja finalizado',
+        'Esse monte ja foi finalizado'
+      );
+    }
+
+    setColor(response.data.color);
+    setProductName(response.data.productName);
+    setProductionPlanControlName(response.data.pcp);
+    setSubProductName(response.data.subProductName);
+    setAmount(response.data.amount);
+    setNewAmount(response.data.amount);
+    setMountId(response.data.id);
+  };
+
+  const alterRoute = () => {
+    openNotificationWithIcon(
+      'success',
+      'caminho alterado',
+      'caminho alterado!'
+    );
+    setAlterMountRoute(true);
+    setShowAlterMountRoute(false);
+
+    setShowStartOtherSector(true);
+  };
+
+  const nextSector = async () => {
+    if (amount != newAmount) {
+      setShowReason(true);
+      setMovement('output');
+    } else {
+      try {
+        await api.put('plating/mount/finish', {
+          amountOutput: newAmount,
+          barCode,
+          sectorId,
+        });
+        setShowInNextSector(false);
+        openNotificationWithIcon(
+          'success',
+          'Monte finalizado',
+          'Monte finalizado com sucesso'
+        );
+      } catch (error) {
+        openNotificationWithIcon(
+          'error',
+          'Erro ao finalizar o monte',
+          'Ocorreu um erro ao finalizar o monte'
+        );
+      }
+    }
+  };
+
+  const startMount = async () => {
+    if (amount != newAmount) {
+      setShowReason(true);
+      setMovement('input');
+    } else {
+      try {
+        await api.put('plating/mount/alter/start', {
+          amountInput: newAmount,
+          barCode,
+          sectorId,
+          employeeId: localStorage.getItem('userId'),
+        });
+        setShowStart(false);
+        openNotificationWithIcon(
+          'success',
+          'Monte iniciado',
+          'Monte iniciado com sucesso'
+        );
+      } catch (error) {
+        openNotificationWithIcon(
+          'error',
+          'Erro ao iniciar o monte',
+          'Ocorreu um erro ao iniciar o monte'
+        );
+      }
+    }
+  };
+
+  const startMountOtherSector = async () => {
+    if (amount != newAmount) {
+      setShowReason(true);
+      setMovement('input');
+    } else {
+      try {
+        await api.put('plating/mount/alter/start', {
+          amountInput: newAmount,
+          barCode,
+          sectorId,
+          employeeId: localStorage.getItem('userId'),
+        });
+        setShowStartOtherSector(false);
+        openNotificationWithIcon(
+          'success',
+          'Monte iniciado',
+          'Monte iniciado com sucesso'
+        );
+      } catch (error) {
+        openNotificationWithIcon(
+          'error',
+          'Erro ao iniciar o monte',
+          'Ocorreu um erro ao iniciar o monte'
+        );
+      }
+    }
+  };
+
+  // const alterAmount = () => {
+  //   if (!isAlterAmount) {
+  //     setShowReason(true);
+  //   }
+  // };
+
+  const handleSaveReason = async () => {
+    setShowReason(false);
+
+    await api.post('plating/loser/mount', {
+      amountInput: amount,
+      amountOutput: newAmount,
+      mountId,
+      movement,
+      reason,
+    });
+    setAmount(newAmount);
+  };
+
   return (
     <Layout
       style={{
@@ -600,206 +459,9 @@ export default function PlantingMount() {
       }}
     >
       <BarcodeReader onScan={handleScan} onError={handleScan} />
-      <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="right">
-          <Tooltip title="Seccionadora" placement="right">
-            <Button
-              className="buttonGreen"
-              icon={<PlusOutlined />}
-              style={{ marginRight: 5, marginTop: 3, fontSize: '14px' }}
-              onClick={handleShow}
-            >
-              Seccionadora
-            </Button>
-          </Tooltip>
-        </Col>
-      </Row>
-      <Modal
-        title="Criação de monte"
-        visible={show}
-        width={500}
-        onCancel={handleClose}
-        footer={[
-          <Button key="back" type="default" onClick={handleClose}>
-            Cancelar
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleCreateMount}>
-            Salvar
-          </Button>,
-        ]}
-      >
-        <Row gutter={5}>
-          <Col span={12}>
-            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={productionPlanControlName}
-                onChange={(e) => handleProductionPlanControl(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                {productionsPlansControl.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={[option.id, option.name]}>
-                        {option.name}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              labelCol={{ span: 23 }}
-              label="Produto:"
-              labelAlign={'left'}
-            >
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={productName}
-                onChange={(e) => handleProduct(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                {products.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={[option.id, option.name]}>
-                        {option.name}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
-            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={colorName}
-                onChange={(e) => {
-                  setColorName(e[1]);
-                  setColor(e[0]);
-                }}
-                style={{ color: `${color}` }}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                <>
-                  <Option
-                    key={1}
-                    value={['yellow', 'Amarelo']}
-                    style={{ color: 'yellow' }}
-                  >
-                    Amarelo
-                  </Option>
-                  <Option
-                    key={2}
-                    value={['blue', 'Azul']}
-                    style={{ color: 'blue' }}
-                  >
-                    Azul
-                  </Option>
-                  <Option
-                    key={3}
-                    value={['red', 'Vermelho']}
-                    style={{ color: 'red' }}
-                  >
-                    Vermelho
-                  </Option>
-                </>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        {selectedSubProducts.map((selectedSubProduct, index) => {
-          return (
-            <>
-              <Row gutter={5}>
-                <Col span={16}>
-                  <Form.Item
-                    labelCol={{ span: 23 }}
-                    label="SubProduto:"
-                    labelAlign={'left'}
-                  >
-                    <Select
-                      showSearch
-                      placeholder="Selecione"
-                      size="large"
-                      value={selectedSubProduct.subProductName}
-                      onChange={(e) => handleSubProduct(e, index)}
-
-                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-                    >
-                      {subProducts.map((option) => {
-                        return (
-                          <>
-                            <Option
-                              key={option.id}
-                              value={[option.id, option.name]}
-                            >
-                              {option.name}
-                            </Option>
-                          </>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    labelCol={{ span: 23 }}
-                    label="Quantidade:"
-                    labelAlign={'left'}
-                    style={{ width: '90%', marginRight: 16 }}
-                  >
-                    <Input
-                      name="amount"
-                      placeholder="Quantidade"
-                      value={selectedSubProduct.amount}
-                      onChange={(e) => HandleChange(e, index)}
-                      style={{ width: '80%', marginRight: 8 }}
-                    />
-                    {selectedSubProducts.length !== 1 && (
-                      <MinusCircleOutlined
-                        onClick={() => handleRemoveClick(index)}
-                      />
-                    )}
-                  </Form.Item>
-                </Col>
-              </Row>
-              {selectedSubProducts.length - 1 === index && (
-                <Button
-                  key="primary"
-                  title="Nova Linha"
-                  style={{ width: '100%' }}
-                  onClick={handleAddClick}
-                >
-                  <PlusOutlined />
-                  Subproduto
-                </Button>
-              )}
-            </>
-          );
-        })}
-      </Modal>
 
       <SearchTable />
-
-      {/* Setor */}
-
+      {/* selecionar setor */}
       <Modal title="Selecione o setor" visible={showSector} width={500}>
         <Row gutter={5}>
           <Col span={24}>
@@ -831,37 +493,20 @@ export default function PlantingMount() {
           </Col>
         </Row>
       </Modal>
-
-      <Modal
-        title="Percebemos que a quantidade que foi dada entrada é diferente da que chegou, descreva o motivo"
-        visible={showReason}
-        width={500}
-        footer={[
-          <Button key="submit" type="primary" onClick={handleSaveReason}>
-            Salvar
-          </Button>,
-        ]}
-      >
-        <Row gutter={5}>
-          <Col span={24}>
-            <TextArea rows={4} onChange={(e) => setReason(e.target.value)} />
-          </Col>
-        </Row>
-      </Modal>
-
+      {/* alterar caminho do monte */}
       <Modal
         title="Alteração no caminho do monte"
-        visible={isInOtherSector}
+        visible={showAlterMountRoute}
         width={700}
         footer={[
           <Button
             key="back"
             type="default"
-            onClick={() => setIsInOtherSector(false)}
+            onClick={() => setShowAlterMountRoute(false)}
           >
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={alterNextSector}>
+          <Button type="primary" onClick={alterRoute}>
             Sim
           </Button>,
         ]}
@@ -869,9 +514,229 @@ export default function PlantingMount() {
         <Row gutter={5}>
           <Col span={24}>
             <h3>
-              Você está tentando iniciar um monte em um setor do programado,
-              deseja continuar?
+              Você está tentando iniciar um monte em um setor diferente do
+              programado, deseja continuar?
             </h3>
+          </Col>
+        </Row>
+      </Modal>
+      {/* modal passar mount para o proximo setor */}
+      <Modal
+        title="Passar para o proximo setor"
+        visible={showInNextSector}
+        width={700}
+        footer={[
+          <Button
+            key="back"
+            type="default"
+            onClick={(e) => {
+              setShowInNextSector(false);
+            }}
+          >
+            Cancelar
+          </Button>,
+          <Button type="primary" onClick={nextSector}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Input name="pcp" value={productionPlanControlName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Input name="product" value={productName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
+              <Input name="color" value={color} disabled />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider />
+        <Row gutter={5}>
+          <Col span={16}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="SubProduto:"
+              labelAlign={'left'}
+            >
+              <Input name="subProduct" value={subProductName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Quantidade:"
+              labelAlign={'left'}
+            >
+              <Input
+                name="amount"
+                value={newAmount}
+                onChange={(e) => setNewAmount(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Modal>
+
+      {/* modal start mount */}
+      <Modal
+        title="Iniciar monte"
+        visible={showStart}
+        width={700}
+        footer={[
+          <Button
+            key="back"
+            type="default"
+            onClick={(e) => setShowStart(false)}
+          >
+            Cancelar
+          </Button>,
+          <Button type="primary" onClick={startMount}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Input name="pcp" value={productionPlanControlName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Input name="product" value={productName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
+              <Input name="color" value={color} disabled />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider />
+        <Row gutter={5}>
+          <Col span={16}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="SubProduto:"
+              labelAlign={'left'}
+            >
+              <Input name="subProduct" value={subProductName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Quantidade:"
+              labelAlign={'left'}
+            >
+              <Input
+                name="amount"
+                value={newAmount}
+                onChange={(e) => setNewAmount(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Modal>
+
+      {/* modal iniciando monte em setor diferente do programado */}
+
+      <Modal
+        title="Iniciar monte em setor diferente do programado"
+        visible={showStartOtherSector}
+        width={700}
+        footer={[
+          <Button
+            key="back"
+            type="default"
+            onClick={(e) => setShowStartOtherSector(false)}
+          >
+            Cancelar
+          </Button>,
+          <Button type="primary" onClick={startMountOtherSector}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Input name="pcp" value={productionPlanControlName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Input name="product" value={productName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
+              <Input name="color" value={color} disabled />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider />
+        <Row gutter={5}>
+          <Col span={16}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="SubProduto:"
+              labelAlign={'left'}
+            >
+              <Input name="subProduct" value={subProductName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Quantidade:"
+              labelAlign={'left'}
+            >
+              <Input
+                name="amount"
+                value={newAmount}
+                onChange={(e) => setNewAmount(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Modal>
+
+      <Modal
+        title="Percebemos que a quantidade que foi dada entrada é diferente da que chegou, descreva o motivo"
+        visible={showReason}
+        width={500}
+        footer={[
+          <Button type="primary" onClick={(e) => setShowReason(false)}>
+            cancelar
+          </Button>,
+          <Button type="primary" onClick={handleSaveReason}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={24}>
+            <TextArea rows={4} onChange={(e) => setReason(e.target.value)} />
           </Col>
         </Row>
       </Modal>
