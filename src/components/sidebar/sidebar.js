@@ -83,6 +83,7 @@ import CoverStock from '../../pages/Cover/Stock';
 
 import CallList from '../../pages/RH/CallList';
 import PlantingMount from '../../pages/Planting/Mount';
+import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
 
@@ -378,6 +379,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <PlantingProductionMount />,
+  },
+  {
+    path: '/seccionadora/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Seccionadora />,
   },
 ];
 
@@ -725,6 +732,12 @@ class App extends React.Component {
             </SubMenu>
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
+                <Menu.Item
+                  key="mountSeccionadora"
+                  icon={<RightSquareOutlined />}
+                >
+                  <Link to="/seccionadora/mount">Seccionadora </Link>
+                </Menu.Item>
                 <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
                   <Link to="/mount">Linha</Link>
                 </Menu.Item>

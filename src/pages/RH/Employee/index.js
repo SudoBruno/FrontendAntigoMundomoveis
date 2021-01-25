@@ -111,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -300,7 +300,7 @@ export default function Employee() {
     setId(e.id);
     setName(e.name);
     let response = await api.get(`employee/${e.id}`);
-    console.log(response);
+
     setCPF(response.data.cpf);
     setPIS(response.data.PIS);
     setCTPS(response.data.CTPS);
@@ -339,7 +339,6 @@ export default function Employee() {
 
   async function handleRegister(e) {
     e.preventDefault();
-
 
     try {
       if (id === 0) {

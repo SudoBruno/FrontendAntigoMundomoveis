@@ -1,30 +1,30 @@
-.tags {
-    line-height: 45px;
+.amountTag {
     width: 100%;
     position: relative;
-    margin-bottom: 3px;
     /*para alinhar os span no centro*/
 }
 
-.tags span {
+.amountTag span {
     position: relative;
-    min-width: 35%;
     border: 1px solid darkgray;
     /* para os spans pegarem o width */
     display: inline-block;
+}
+
+span {
+    max-width: 396px;
 }
 
 .text {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 30px;
-    margin-left: 60px;
 }
 
 .tag-one {
     display: grid;
     grid-template-rows: 30px 20px 100px;
-    grid-template-columns: 190px 190px;
+    grid-template-columns: 170px 170px;
     /* grid-template-areas: 'title title '; */
 }
 
@@ -47,6 +47,7 @@
     /* margin-left: 35%; */
     /* margin: 0; */
     text-align: center;
+    font-size: 14px;
 }
 
 .barCode {

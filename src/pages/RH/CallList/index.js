@@ -217,7 +217,7 @@ export default function CallList() {
       const response = await api.put(
         `call-list/presence/${callList[refreshKey].id}`
       );
-      console.log(refreshKey, callList.length - 1);
+
       if (refreshKey >= callList.length - 1) {
         openNotificationWithIcon(
           'success',
@@ -239,7 +239,7 @@ export default function CallList() {
       const response = await api.put(
         `call-list/absence/${callList[refreshKey].id}`
       );
-      console.log(refreshKey, callList.length - 1);
+
       if (refreshKey >= callList.length - 1) {
         openNotificationWithIcon(
           'success',
@@ -389,7 +389,6 @@ export default function CallList() {
         </Col>
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
-        {console.log('aa', callList)}
         <Row gutter={5}>
           <Col span={8}>
             <Form.Item
@@ -428,7 +427,7 @@ export default function CallList() {
                 size="large"
                 value={callList[refreshKey].area}
                 // onChange={(e) => {
-                //   console.log(e);
+                //
                 //   setArea(e[0]);
                 //   setAreaName(e[1]);
                 // }}

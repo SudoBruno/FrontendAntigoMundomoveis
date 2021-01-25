@@ -205,7 +205,6 @@ export default function Shift() {
   }, [refreshKey]);
 
   async function handleEdit(e) {
-    console.log(e);
     setId(e.id);
     setName(e.name);
     setFirstEntry(e.firstEntry);
