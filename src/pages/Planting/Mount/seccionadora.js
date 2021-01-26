@@ -305,6 +305,7 @@ export default function Seccionadora() {
         'Monte criados com sucesso',
         'Os montes foram criados com sucesso!'
       );
+      setRefreshKey((refreshKey) => refreshKey + 1);
       setShow(false);
     } catch (error) {
       openNotificationWithIcon(
@@ -362,8 +363,6 @@ export default function Seccionadora() {
     var subProductIndex = subProducts.findIndex(
       (item) => item.id === selectedSubProducts[index].subProductId
     );
-    console.log(subProductIndex, selectedSubProducts[index], index);
-    console.log(subProducts);
 
     if (subProducts[subProductIndex].amount < totalAmount) {
       openNotificationWithIcon(
@@ -400,7 +399,7 @@ export default function Seccionadora() {
 
   const finishMount = async (e, data) => {
     e.preventDefault();
-    console.log(data);
+
     setProductId(data.productId);
     setProductName(data.productName);
     setProductionPlanControlId(data.pcpId);
@@ -442,6 +441,7 @@ export default function Seccionadora() {
         'Sucesso ao gerar etiquetas',
         'As etiquetas foram geradas com sucesso'
       );
+      setRefreshKey((refreshKey) => refreshKey + 1);
       setProductId(0);
       setProductName('');
       setProductionPlanControlId(0);
@@ -463,6 +463,8 @@ export default function Seccionadora() {
       ]);
       setPreviousPlatingMountId(0);
       setShowNextSector(false);
+      var win = window.open(`/mount/tag/${previousPlatingMountId}`, '_blank');
+      win.focus();
     } catch (error) {
       openNotificationWithIcon(
         'error',

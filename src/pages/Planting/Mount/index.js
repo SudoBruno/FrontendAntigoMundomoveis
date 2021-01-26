@@ -274,7 +274,6 @@ export default function PlantingMount() {
 
   const [reason, setReason] = useState('');
   const [showReason, setShowReason] = useState(false);
-  const [isAlterAmount, setIsAlterAmount] = useState(false);
   const [movement, setMovement] = useState('');
   const [mountId, setMountId] = useState(0);
   useEffect(() => {
@@ -364,6 +363,7 @@ export default function PlantingMount() {
           'Monte finalizado',
           'Monte finalizado com sucesso'
         );
+        setRefreshKey((refreshKey) => refreshKey + 1);
       } catch (error) {
         openNotificationWithIcon(
           'error',
@@ -392,6 +392,7 @@ export default function PlantingMount() {
           'Monte iniciado',
           'Monte iniciado com sucesso'
         );
+        setRefreshKey((refreshKey) => refreshKey + 1);
       } catch (error) {
         openNotificationWithIcon(
           'error',
@@ -420,6 +421,7 @@ export default function PlantingMount() {
           'Monte iniciado',
           'Monte iniciado com sucesso'
         );
+        setRefreshKey((refreshKey) => refreshKey + 1);
       } catch (error) {
         openNotificationWithIcon(
           'error',

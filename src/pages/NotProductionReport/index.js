@@ -202,7 +202,6 @@ export default function ExpeditionDrop() {
     const response = await api.get(
       `/not/production/product-plan-control/${e.id}`
     );
-    console.log(response.data);
 
     setData(response.data);
   };

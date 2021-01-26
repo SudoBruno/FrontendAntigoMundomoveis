@@ -55,6 +55,7 @@ export default function Routes() {
           path="/mount/tag/:barCode/sector/:sectorId"
           component={MountTagLayout}
         />
+        <PrivateRoute path="/mount/tag/:mountId" component={MountTagLayout} />
         <ExpeditionRoute
           path="/launch-expedition"
           component={ExpeditionLaunch}
