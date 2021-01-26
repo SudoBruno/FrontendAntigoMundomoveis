@@ -77,6 +77,7 @@ import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Stock';
 
 import CallList from '../../pages/RH/CallList';
+import CallReport from '../..//pages/RH/CallReport';
 import PlantingMount from '../../pages/Planting/Mount';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
@@ -331,6 +332,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CallList />,
+  },
+  {
+    path: '/call/report',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CallReport />,
   },
   {
     path: '/mount',
@@ -625,6 +632,17 @@ class App extends React.Component {
                   }
                 >
                   <Link to="/call/employee">Chamada </Link>
+                </Menu.Item>
+
+                <Menu.Item
+                  key="33"
+                  icon={
+                    <span className="anticon anticon-bank">
+                      <FileExcelOutlined color="#fff" size={16} />
+                    </span>
+                  }
+                >
+                  <Link to="/call/report">Relatório Chamada</Link>
                 </Menu.Item>
               </SubMenu>
             )}

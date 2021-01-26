@@ -100,8 +100,8 @@ export default function ExpeditionInput() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -215,11 +215,11 @@ export default function ExpeditionInput() {
       500
     );
     setHeaders([
-      { key: 'Codigo fornecedor' },
-      { key: 'Produto' },
-      { key: 'Rua' },
-      { key: 'Data armazenado' },
-      { key: 'Código de barras' },
+      { lable: 'Codigo fornecedor', key: 'code' },
+      { lable: 'Produto', key: 'product' },
+      { lable: 'Rua', key: 'street' },
+      { lable: 'Data armazenado', key: 'input' },
+      { lable: 'Produto', key: 'barCode' },
     ]);
   }
   return (
