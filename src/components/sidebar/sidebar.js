@@ -80,6 +80,8 @@ import NotProductionReport from '../../pages/NotProductionReport';
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Stock';
+import CoverWarehouse from '../../pages/Cover/Register/Warehouse';
+import CoverStreet from '../../pages/Cover/Register/Street';
 
 import CallList from '../../pages/RH/CallList';
 import PlantingMount from '../../pages/Planting/Mount';
@@ -355,6 +357,18 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CoverStock />,
+  },
+  {
+    path: '/cover/warehouse',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverWarehouse />,
+  },
+  {
+    path: '/cover/street',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverStreet />,
   },
   {
     path: '/call/employee',
@@ -715,6 +729,12 @@ class App extends React.Component {
               >
                 <Menu.Item key="7" icon={<RightSquareOutlined />}>
                   <Link to="/sub-product">Subproduto</Link>
+                </Menu.Item>
+                <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
+                  <Link to="/cover/warehouse">Estoques</Link>
+                </Menu.Item>
+                <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
+                  <Link to="/cover/street">Rua</Link>
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="37" icon={<BarcodeOutlined />}>
