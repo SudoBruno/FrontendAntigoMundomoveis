@@ -646,7 +646,7 @@ class App extends React.Component {
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="24" icon={<BarcodeOutlined />}>
-                  <Link to="/expedition/launch">Laçamento</Link>
+                  <Link to="/expedition/launch">Lançamento</Link>
                 </Menu.Item>
                 <SubMenu
                   key="ExpeditionSearches"
@@ -752,13 +752,10 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
 
-              {localStorage.getItem('acess_level') === '5' && (
-                <>
-                  <Menu.Item key="37" icon={<BarcodeOutlined />}>
-                    <Link to="/cover/launch">Laçamento</Link>
-                  </Menu.Item>
-                </>
-              )}
+              <Menu.Item key="37" icon={<BarcodeOutlined />}>
+                <Link to="/cover/launch">Lançamento</Link>
+              </Menu.Item>
+
               <SubMenu
                 key="ExpeditionSearches"
                 title="Consultas"
