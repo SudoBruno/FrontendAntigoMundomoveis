@@ -302,7 +302,6 @@ export default function CoverStreet() {
 
   useEffect(() => {
     api.get('cover/warehouse', {}).then((response) => {
-      console.log(response.data);
       setWarehouse(response.data);
     });
   }, []);

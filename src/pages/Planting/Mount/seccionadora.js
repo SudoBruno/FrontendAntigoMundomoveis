@@ -362,8 +362,6 @@ export default function Seccionadora() {
     var subProductIndex = subProducts.findIndex(
       (item) => item.id === selectedSubProducts[index].subProductId
     );
-    console.log(subProductIndex, selectedSubProducts[index], index);
-    console.log(subProducts);
 
     if (subProducts[subProductIndex].amount < totalAmount) {
       openNotificationWithIcon(
@@ -400,7 +398,6 @@ export default function Seccionadora() {
 
   const finishMount = async (e, data) => {
     e.preventDefault();
-    console.log(data);
     setProductId(data.productId);
     setProductName(data.productName);
     setProductionPlanControlId(data.pcpId);

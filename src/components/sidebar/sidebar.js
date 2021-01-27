@@ -79,7 +79,9 @@ import NotProductionReport from '../../pages/NotProductionReport';
 
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
-import CoverStock from '../../pages/Cover/Stock';
+import CoverStock from '../../pages/Cover/Search/Stock';
+import CoverInput from '../../pages/Cover/Search/Input';
+import CoverOutput from '../../pages/Cover/Search/Output';
 import CoverWarehouse from '../../pages/Cover/Register/Warehouse';
 import CoverStreet from '../../pages/Cover/Register/Street';
 
@@ -357,6 +359,18 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CoverStock />,
+  },
+  {
+    path: '/cover/input',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverInput />,
+  },
+  {
+    path: '/cover/output',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverOutput />,
   },
   {
     path: '/cover/warehouse',
@@ -737,9 +751,14 @@ class App extends React.Component {
                   <Link to="/cover/street">Rua</Link>
                 </Menu.Item>
               </SubMenu>
-              <Menu.Item key="37" icon={<BarcodeOutlined />}>
-                <Link to="/cover/launch">Laçamento</Link>
-              </Menu.Item>
+
+              {localStorage.getItem('acess_level') === '5' && (
+                <>
+                  <Menu.Item key="37" icon={<BarcodeOutlined />}>
+                    <Link to="/cover/launch">Laçamento</Link>
+                  </Menu.Item>
+                </>
+              )}
               <SubMenu
                 key="ExpeditionSearches"
                 title="Consultas"
@@ -748,8 +767,15 @@ class App extends React.Component {
                 <Menu.Item key="38" icon={<FileExcelOutlined />}>
                   <Link to="/cover/stock">Estoque</Link>
                 </Menu.Item>
+                <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
+                  <Link to="/cover/input">Entrada</Link>
+                </Menu.Item>
+                <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
+                  <Link to="/cover/output">Saida</Link>
+                </Menu.Item>
               </SubMenu>
             </SubMenu>
+
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
                 <Menu.Item

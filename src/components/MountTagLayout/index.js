@@ -27,7 +27,6 @@ function TagLayout() {
     api
       .get(`plating/mount/tag/${barCode}/sector/${sectorId}`, {})
       .then((response) => {
-        console.log(response.data);
         if (response.data != '') {
           setBarCodes([response.data]);
         }

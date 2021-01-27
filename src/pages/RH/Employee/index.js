@@ -263,7 +263,7 @@ export default function Employee() {
     reasonResignation,
     phone,
     shiftId,
-    secullumId
+    secullumId,
   };
   useEffect(() => {
     api.get('employee', {}).then((response) => {
@@ -406,7 +406,6 @@ export default function Employee() {
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
-
         } catch (error) {
           openNotificationWithIcon(
             'error',
@@ -709,7 +708,6 @@ export default function Employee() {
                   }}
                 >
                   {shifts.map((option) => {
-                    console.log("id: " + shiftId, "nome" + shiftName)
                     return (
                       <>
                         <Option
@@ -720,10 +718,7 @@ export default function Employee() {
                         </Option>
                       </>
                     );
-                  }
-                  )
-
-                  }
+                  })}
                 </Select>
               </Form.Item>
             </Col>
@@ -897,13 +892,11 @@ export default function Employee() {
                     format="DD/MM/YYYY"
                     defaultValue={moment(resignation, 'DD/MM/YYYY')}
                     onChange={(date) => {
-                      if (date == "" || date == null) {
-                        setResignation("");
-                      }
-                      else {
+                      if (date == '' || date == null) {
+                        setResignation('');
+                      } else {
                         setResignation(date._d);
                       }
-
                     }}
                   />
                 )}
@@ -913,13 +906,11 @@ export default function Employee() {
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
                     format="DD/MM/YYYY"
                     onChange={(date) => {
-                      if (date == "" || date == null) {
-                        setResignation("");
-                      }
-                      else {
+                      if (date == '' || date == null) {
+                        setResignation('');
+                      } else {
                         setResignation(date._d);
                       }
-
                     }}
                   />
                 )}

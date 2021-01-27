@@ -44,7 +44,7 @@ export default function CoverLaunch() {
   });
 
   useEffect(() => {
-    api.get('sub-product', {}).then((response) => {
+    api.get('sub-product/cover', {}).then((response) => {
       setCovers(response.data);
     });
   }, []);

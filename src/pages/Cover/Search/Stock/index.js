@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { CSVDownload, CSVLink } from 'react-csv';
+import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
-import {
-  SearchOutlined,
-  FileExcelOutlined,
-  DownloadOutlined,
-} from '@ant-design/icons';
-import api from '../../services/api';
+import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import api from '../../../../services/api';
 import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
 
 const Option = Select.Option;
 
-export default function ExpeditionDrop() {
+export default function CoverStock() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -125,92 +121,64 @@ export default function ExpeditionDrop() {
       const columns = [
         {
           title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-          ...this.getColumnSearchProps('id'),
+          dataIndex: 'stockId',
+          key: 'stockId',
+          ...this.getColumnSearchProps('stockId'),
         },
         {
-          title: 'Nome',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'Capa',
+          dataIndex: 'coverName',
+          key: 'coverName',
 
-          ...this.getColumnSearchProps('name'),
+          ...this.getColumnSearchProps('coverName'),
         },
-        // {
-        //   title: 'Dia do Drop',
-        //   dataIndex: 'initial_date',
-        //   key: 'initial_date',
-        //   ...this.getColumnSearchProps('initial_date'),
-        // },
         {
-          title: 'Operação',
-          colSpan: 2,
-          dataIndex: 'operacao',
-          align: 'center',
+          title: 'Quantidade',
+          dataIndex: 'quantity',
+          key: 'quantity',
+          ...this.getColumnSearchProps('quantity'),
+        },
 
-          render: (text, record) => {
-            return (
-              <React.Fragment>
-                {status == false && (
-                  <DownloadOutlined
-                    onClick={() => {
-                      handleDownload(record);
-                      setStatus(true);
-                    }}
-                  />
-                )}
-                {status == true && (
-                  <CSVLink
-                    {...csvReport}
-                    style={{ color: '#000' }}
-                    separator={';'}
-                    onClick={() => {
-                      setStatus(false);
-                    }}
-                  >
-                    Download
-                  </CSVLink>
-                )}
-              </React.Fragment>
-            );
-          },
+        {
+          title: 'Almoxarifado',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+          ...this.getColumnSearchProps('warehouseName'),
+        },
+        {
+          title: 'Rua',
+          dataIndex: 'streetName',
+          key: 'streetName',
+          ...this.getColumnSearchProps('streetName'),
         },
       ];
 
-      return <Table columns={columns} dataSource={productionPlanControl} />;
+      return <Table columns={columns} dataSource={stock} />;
     }
   }
-  const [status, setStatus] = useState(false);
-  const [productionPlanControl, setProductionPlanControl] = useState([{}]);
-  const [data, setData] = useState([{}]);
+
+  const [stock, setStock] = useState([]);
+
   const [headers, setHeaders] = useState([
-    { label: 'Linha de produção', key: 'line' },
-    { label: 'Produto', key: 'product' },
-    { label: 'color', key: 'color' },
-    { label: 'Cod de barras', key: 'barCode' },
-    { label: 'Cod. Interno', key: 'code' },
-    { label: 'Setor', key: 'factorySector' },
-    { label: 'PCP', key: 'pcpName' },
+    { label: 'id', key: 'stockId' },
+    { label: 'Capa', key: 'coverName' },
+    { label: 'Quantidade', key: 'quantity' },
+    { label: 'Almoxarifado', key: 'warehouseName' },
+    { label: 'Rua', key: 'streetName' },
   ]);
+
   useEffect(() => {
-    api.get('product-plan-control', {}).then((response) => {
-      setProductionPlanControl(response.data);
+    api.get('cover/stock', {}).then((response) => {
+      setStock(response.data);
     });
   }, []);
-
-  const handleDownload = async (e) => {
-    const response = await api.get(
-      `/not/production/product-plan-control/${e.id}`
-    );
-
-    setData(response.data);
-  };
-
   const csvReport = {
-    data: data,
+    data: stock,
     headers: headers,
-    filename: 'relatorioDeNaoProduzidos.csv',
+    filename: 'ralatorio_estoque_capas.csv',
   };
+  const [status, setStatus] = useState(false);
+
   return (
     <Layout
       style={{
@@ -220,6 +188,38 @@ export default function ExpeditionDrop() {
         minHeight: 280,
       }}
     >
+      <Row style={{ marginBottom: 16 }}>
+        <Col span={24} align="end">
+          <Button className="buttonGreen">
+            {status == false && (
+              <>
+                <DownloadOutlined
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setStatus(true);
+                  }}
+                  style={{ marginRight: 8 }}
+                />
+                Baixar
+              </>
+            )}
+            {status == true && (
+              <CSVLink
+                {...csvReport}
+                style={{ color: '#000' }}
+                separator={';'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setStatus(false);
+                }}
+              >
+                Download
+              </CSVLink>
+            )}
+          </Button>
+        </Col>
+      </Row>
+
       <SearchTable />
     </Layout>
   );
