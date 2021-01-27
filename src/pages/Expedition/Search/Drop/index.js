@@ -89,8 +89,8 @@ export default function ExpeditionDrop() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -183,6 +183,7 @@ export default function ExpeditionDrop() {
   const [status, setStatus] = useState(false);
   const [drops, setDrops] = useState([{}]);
   const [data, setData] = useState([{}]);
+
   const [headers, setHeaders] = useState([
     { label: 'Drop ID', key: 'agenda_drop_id' },
     { label: 'Produto', key: 'name' },

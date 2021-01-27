@@ -186,14 +186,13 @@ export default function CallList() {
     },
   ]);
 
-  // useEffect(() => {
-  //   api.get('call-list', {}).then((response) => {
-  //     if (response.data.length > 0) {
-
-  //       setCallList(response.data);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    api.get('call-list', {}).then((response) => {
+      if (response.data.length > 0) {
+        setCallList(response.data);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     api.get('department', {}).then((response) => {
@@ -426,11 +425,6 @@ export default function CallList() {
                 placeholder="Selecione"
                 size="large"
                 value={callList[refreshKey].area}
-                // onChange={(e) => {
-                //
-                //   setArea(e[0]);
-                //   setAreaName(e[1]);
-                // }}
               >
                 {areas.map((option) => {
                   return (
