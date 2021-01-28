@@ -111,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -300,7 +300,6 @@ export default function Employee() {
     setId(e.id);
     setName(e.name);
     let response = await api.get(`employee/${e.id}`);
-
     setCPF(response.data.cpf);
     setPIS(response.data.PIS);
     setCTPS(response.data.CTPS);
