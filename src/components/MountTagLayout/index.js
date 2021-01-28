@@ -42,7 +42,7 @@ function TagLayout() {
 
   return (
     <>
-      <div class="amountTag">
+      <div className="amountTag">
         {barCodes.map((item) => {
           return (
             <>

@@ -202,13 +202,13 @@ export default function Seccionadora() {
           render: (text, record) => {
             return (
               <React.Fragment>
-                <Link
-                  to={`/mount/${record.barCode}`}
+                {/* <Link
+                  to={`/mount/tag/${record.id}`}
                   style={{ color: 'rgb(0,0,0,0.65' }}
                   target="_blank"
                 >
                   <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
-                </Link>
+                </Link> */}
                 <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
