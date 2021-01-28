@@ -7,7 +7,6 @@ import './style.css';
 import BarCode from 'react-barcode';
 
 function TagLayout() {
-  const JsBarcode = require('jsbarcode');
   const { id } = useParams();
   const [barCodes, setBarCodes] = useState([]);
 
@@ -16,24 +15,6 @@ function TagLayout() {
       setBarCodes(response.data);
     });
   }, [id]);
-
-  function GerarCodigoDeBarras() {
-    let configuracao = {
-      width: 1.1,
-      height: 32,
-      displayValue: false,
-    };
-
-    barCodes.map((barCode) => {
-      if (typeof barCode.code != 'string') {
-        barCode.code.map((code) => {
-          JsBarcode(`#c${code}`, `${code}`, configuracao);
-        });
-      } else {
-        JsBarcode(`#c${barCode.code}`, `${barCode.code}`, configuracao);
-      }
-    });
-  }
 
   return (
     <>

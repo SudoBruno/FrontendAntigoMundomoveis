@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CSVDownload, CSVLink } from 'react-csv';
+import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import {
   SearchOutlined,
@@ -14,10 +14,6 @@ const Option = Select.Option;
 export default function ExpeditionDrop() {
   class SearchTable extends React.Component {
     state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
       loading: false,
       searchText: '',
       searchedColumn: '',
@@ -93,34 +89,6 @@ export default function ExpeditionDrop() {
         ),
     });
 
-    compareByAlph = (a, b) => {
-      if (a > b) return -1;
-      if (a < b) return 1;
-      return 0;
-    };
-
-    handleSearch = (selectedKeys, confirm, dataIndex) => {
-      confirm();
-      this.setState({
-        searchText: selectedKeys[0],
-        searchedColumn: dataIndex,
-      });
-    };
-
-    handleReset = (clearFilters) => {
-      clearFilters();
-      this.setState({ searchText: '' });
-    };
-
-    handleTableChange = (pagination, filters, sorter) => {
-      this.fetch({
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        pagination,
-        ...filters,
-      });
-    };
-
     render() {
       const columns = [
         {
@@ -136,12 +104,7 @@ export default function ExpeditionDrop() {
 
           ...this.getColumnSearchProps('name'),
         },
-        // {
-        //   title: 'Dia do Drop',
-        //   dataIndex: 'initial_date',
-        //   key: 'initial_date',
-        //   ...this.getColumnSearchProps('initial_date'),
-        // },
+
         {
           title: 'Operação',
           colSpan: 2,
@@ -177,9 +140,20 @@ export default function ExpeditionDrop() {
         },
       ];
 
-      return <Table columns={columns} dataSource={productionPlanControl} />;
+      return (
+        <Table
+          columns={columns}
+          dataSource={productionPlanControl}
+          onChange={(e) => {
+            setPagination(e);
+          }}
+          pagination={pagination}
+        />
+      );
     }
   }
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+
   const [status, setStatus] = useState(false);
   const [productionPlanControl, setProductionPlanControl] = useState([{}]);
   const [data, setData] = useState([{}]);
