@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
-import {
-  SearchOutlined,
-  FileExcelOutlined,
-  DownloadOutlined,
-} from '@ant-design/icons';
-import api from '../../../services/api';
+import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import api from '../../../../services/api';
 import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
 
 const Option = Select.Option;
 
-export default function CoverStock() {
+export default function CoverInput() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -125,16 +121,16 @@ export default function CoverStock() {
       const columns = [
         {
           title: 'ID',
-          dataIndex: 'stockId',
-          key: 'stockId',
-          ...this.getColumnSearchProps('stockId'),
+          dataIndex: 'inputId',
+          key: 'inputId',
+          ...this.getColumnSearchProps('inputId'),
         },
         {
           title: 'Capa',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'coverName',
+          key: 'coverName',
 
-          ...this.getColumnSearchProps('name'),
+          ...this.getColumnSearchProps('coverName'),
         },
         {
           title: 'Quantidade',
@@ -144,45 +140,59 @@ export default function CoverStock() {
         },
 
         {
-          title: 'SubProduto',
-          dataIndex: 'subProductId',
-          key: 'subProductId',
-          ...this.getColumnSearchProps('subProductId'),
+          title: 'Almoxarifado',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+          ...this.getColumnSearchProps('warehouseName'),
+        },
+        {
+          title: 'Rua',
+          dataIndex: 'streetName',
+          key: 'streetName',
+          ...this.getColumnSearchProps('streetName'),
+        },
+        {
+          title: 'Funcionário',
+          dataIndex: 'employeeName',
+          key: 'employeeName',
+          ...this.getColumnSearchProps('employeeName'),
+        },
+        {
+          title: 'Armazenado',
+          dataIndex: 'created',
+          key: 'created',
+          ...this.getColumnSearchProps('created'),
         },
       ];
 
-      return <Table columns={columns} dataSource={stock} />;
+      return <Table columns={columns} dataSource={input} />;
     }
   }
 
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [stock, setStock] = useState([]);
-  const [csvData, setCsvData] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [input, setInput] = useState([]);
+
+  const [headers, setHeaders] = useState([
+    { label: 'id', key: 'inputId' },
+    { label: 'Capa', key: 'coverName' },
+    { label: 'Quantidade', key: 'quantity' },
+    { label: 'Almoxarifado', key: 'warehouseName' },
+    { label: 'Rua', key: 'streetName' },
+    { label: 'Funcionário', key: 'employeeName' },
+    { label: 'Armazenado', key: 'created' },
+  ]);
+
   useEffect(() => {
-    api.get('cover/stock', {}).then((response) => {
-      setStock(response.data);
+    api.get('cover/input', {}).then((response) => {
+      setInput(response.data);
     });
   }, []);
-  async function Stock() {
-    setReady(false);
-    const response = await api.get('cover/stock');
-    setCsvData(response.data);
-    setTimeout(
-      function () {
-        setReady(true);
-      }.bind(this),
-      500
-    );
-    setHeaders([
-      { key: 'Codigo fornecedor' },
-      { key: 'Produto' },
-      { key: 'Rua' },
-      { key: 'Data armazenado' },
-      { key: 'Código de barras' },
-    ]);
-  }
+  const csvReport = {
+    data: input,
+    headers: headers,
+    filename: 'ralatorio_entrada_no_estoque_de_capas.csv',
+  };
+  const [status, setStatus] = useState(false);
+
   return (
     <Layout
       style={{
@@ -194,20 +204,31 @@ export default function CoverStock() {
     >
       <Row style={{ marginBottom: 16 }}>
         <Col span={24} align="end">
-          {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Stock}>
-              <FileExcelOutlined style={{ marginRight: 8 }} />
-              Estoque Atual
-            </Button>
-          )}
-          {ready && (
-            <Button className="buttonGreen">
-              <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
+          <Button className="buttonGreen">
+            {status == false && (
+              <>
+                <DownloadOutlined
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setStatus(true);
+                  }}
+                  style={{ marginRight: 8 }}
+                />
+                Baixar
+              </>
+            )}
+            {status == true && (
+              <CSVLink
+                {...csvReport}
+                separator={';'}
+                onClick={() => {
+                  setStatus(false);
+                }}
+              >
                 Download
               </CSVLink>
-            </Button>
-          )}
+            )}
+          </Button>
         </Col>
       </Row>
 

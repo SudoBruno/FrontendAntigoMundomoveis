@@ -44,10 +44,22 @@ export default function CoverLaunch() {
   });
 
   useEffect(() => {
-    api.get('sub-product', {}).then((response) => {
+    api.get('sub-product/cover', {}).then((response) => {
       setCovers(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    api.get('cover/warehouse', {}).then((response) => {
+      setWarehouses(response.data);
+    });
+  }, []);
+  const [warehouses, setWarehouses] = useState([]);
+  const [coverWarehouseId, setCoverWarehouseId] = useState(0);
+  const [coverWarehouseName, setCoverWarehouseName] = useState('');
+  const [coverStreetId, setCoverStreetId] = useState(0);
+  const [coverStreetName, setCoverStreetName] = useState('');
+  const [streets, setStreets] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -57,7 +69,7 @@ export default function CoverLaunch() {
   };
   const handleInput = () => {
     let modal = {
-      title: 'Armazenagem de produtos finalizados',
+      title: 'Armazenagem de capas',
       url: 'input',
       hidden: false,
       span: 12,
@@ -68,7 +80,7 @@ export default function CoverLaunch() {
 
   const handleOutput = () => {
     let modal = {
-      title: 'Saida de produtos finalizados',
+      title: 'Saida de capas',
       url: 'output',
       hidden: true,
       span: 12,
@@ -96,6 +108,8 @@ export default function CoverLaunch() {
       idSubProduct: coverId,
       quantity: quantity,
       idUser: localStorage.getItem('userId'),
+      coverWarehouseId,
+      coverStreetId,
     };
     Launch(data);
   }
@@ -118,6 +132,13 @@ export default function CoverLaunch() {
       );
     }
   }
+
+  const warehouseChange = async (e) => {
+    setCoverWarehouseId(e[0]);
+    setCoverWarehouseName(e[1]);
+    const response = await api.get(`cover/street/warehouse/${e[0]}`);
+    setStreets(response.data);
+  };
 
   return (
     <>
@@ -151,6 +172,57 @@ export default function CoverLaunch() {
           </Button>,
         ]}
       >
+        <Row gutter={5}>
+          <Col span={12}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Armazém:"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={coverWarehouseName}
+                onChange={(e) => warehouseChange(e)}
+              >
+                {warehouses.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item labelCol={{ span: 23 }} label="Rua:" labelAlign={'left'}>
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={coverStreetName}
+                onChange={async (e) => {
+                  setCoverStreetId(e[0]);
+                  setCoverStreetName(e[1]);
+                }}
+              >
+                {streets.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={5}>
           <Col span={12}>
             <Form.Item

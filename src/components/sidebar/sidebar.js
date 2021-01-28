@@ -79,7 +79,11 @@ import NotProductionReport from '../../pages/NotProductionReport';
 
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
-import CoverStock from '../../pages/Cover/Stock';
+import CoverStock from '../../pages/Cover/Search/Stock';
+import CoverInput from '../../pages/Cover/Search/Input';
+import CoverOutput from '../../pages/Cover/Search/Output';
+import CoverWarehouse from '../../pages/Cover/Register/Warehouse';
+import CoverStreet from '../../pages/Cover/Register/Street';
 
 import CallList from '../../pages/RH/CallList';
 import CallReport from '../..//pages/RH/CallReport';
@@ -358,6 +362,30 @@ const routes = [
     main: () => <CoverStock />,
   },
   {
+    path: '/cover/input',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverInput />,
+  },
+  {
+    path: '/cover/output',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverOutput />,
+  },
+  {
+    path: '/cover/warehouse',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverWarehouse />,
+  },
+  {
+    path: '/cover/street',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CoverStreet />,
+  },
+  {
     path: '/call/employee',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
@@ -625,7 +653,7 @@ class App extends React.Component {
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="24" icon={<BarcodeOutlined />}>
-                  <Link to="/expedition/launch">Laçamento</Link>
+                  <Link to="/expedition/launch">Lançamento</Link>
                 </Menu.Item>
                 <SubMenu
                   key="ExpeditionSearches"
@@ -734,10 +762,18 @@ class App extends React.Component {
                 <Menu.Item key="7" icon={<RightSquareOutlined />}>
                   <Link to="/sub-product">Subproduto</Link>
                 </Menu.Item>
+                <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
+                  <Link to="/cover/warehouse">Estoques</Link>
+                </Menu.Item>
+                <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
+                  <Link to="/cover/street">Rua</Link>
+                </Menu.Item>
               </SubMenu>
+
               <Menu.Item key="37" icon={<BarcodeOutlined />}>
-                <Link to="/cover/launch">Laçamento</Link>
+                <Link to="/cover/launch">Lançamento</Link>
               </Menu.Item>
+
               <SubMenu
                 key="ExpeditionSearches"
                 title="Consultas"
@@ -746,8 +782,15 @@ class App extends React.Component {
                 <Menu.Item key="38" icon={<FileExcelOutlined />}>
                   <Link to="/cover/stock">Estoque</Link>
                 </Menu.Item>
+                <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
+                  <Link to="/cover/input">Entrada</Link>
+                </Menu.Item>
+                <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
+                  <Link to="/cover/output">Saida</Link>
+                </Menu.Item>
               </SubMenu>
             </SubMenu>
+
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
                 <Menu.Item

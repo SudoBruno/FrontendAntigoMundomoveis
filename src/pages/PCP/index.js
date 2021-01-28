@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { BarcodeOutlined, FileExcelOutlined } from '@ant-design/icons';
+import { BarcodeOutlined } from '@ant-design/icons';
 import { Tooltip } from '@material-ui/core/';
 import moment from 'moment';
+import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  DownloadOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 import api from '../../services/api';
 import {
   Layout,
@@ -21,12 +26,7 @@ import {
   DatePicker,
   Popconfirm,
 } from 'antd';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const Option = Select.Option;
@@ -174,17 +174,33 @@ export default function PCP() {
               <React.Fragment>
                 <Link
                   to={`/pcp/${record.id}`}
-                  style={{ color: 'rgb(0,0,0,0.65' }}
+                  style={{ color: 'rgb(0,0,0,0.65', marginRight: 20 }}
                   target="_blank"
                 >
                   <BarcodeOutlined style={{ marginLeft: 20 }} />
                 </Link>
-
-                {/* <EditOutlined
-                  style={{ cursor: 'pointer', marginLeft: 20 }}
-                  target={''}
-                />
-
+                <>
+                  {status == false && (
+                    <DownloadOutlined
+                      onClick={() => {
+                        handleDownload(record);
+                        setStatus(true);
+                      }}
+                    />
+                  )}
+                  {status == true && (
+                    <CSVLink
+                      {...csvReport}
+                      style={{ color: '#000' }}
+                      separator={';'}
+                      onClick={() => {
+                        setStatus(false);
+                      }}
+                    >
+                      Download
+                    </CSVLink>
+                  )}
+                </>
                 <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
@@ -193,17 +209,27 @@ export default function PCP() {
                     {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm> */}
+                </Popconfirm>
               </React.Fragment>
             );
           },
         },
       ];
 
-      return <Table columns={columns} dataSource={productionPlanControl} />;
+      return (
+        <Table
+          columns={columns}
+          dataSource={productionPlanControl}
+          onChange={(e) => {
+            setPagination(e);
+          }}
+          pagination={pagination}
+        />
+      );
     }
   }
-
+  const [status, setStatus] = useState(false);
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [refreshKey, setRefreshKey] = useState(0);
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
@@ -220,6 +246,31 @@ export default function PCP() {
   const [productionLineName, setProductionLineName] = useState('');
   const [productionPlanControl, setProductionPlanControl] = useState([]);
   const [colors, setColors] = useState([]);
+
+  const handleDownload = async (e) => {
+    const response = await api.get(`production/product-plan-control/${e.id}`);
+
+    setData(response.data);
+  };
+
+  const [data, setData] = useState([{}]);
+  const [headers, setHeaders] = useState([
+    { label: 'Linha de produção', key: 'line' },
+    { label: 'Produto', key: 'product' },
+    { label: 'color', key: 'color' },
+    { label: 'Cod de barras', key: 'barCode' },
+    { label: 'Cod. Interno', key: 'code' },
+    { label: 'Setor', key: 'factorySector' },
+    { label: 'PCP', key: 'pcpName' },
+    { label: 'Data lançamento', key: 'release' },
+    { label: 'Funcionário', key: 'employeeName' },
+  ]);
+
+  const csvReport = {
+    data: data,
+    headers: headers,
+    filename: 'relatorioDeNaoProduzidos.csv',
+  };
 
   const handleClose = () => {
     setName('');
@@ -272,6 +323,26 @@ export default function PCP() {
       message: message,
       description: description,
     });
+  }
+
+  async function handleDeleteFunction(id) {
+    try {
+      const response = await api.delete(`product-plan-control/${id}`);
+      setProductionPlanControl(
+        productionPlanControl.filter((item) => item.id != id)
+      );
+      openNotificationWithIcon(
+        'success',
+        'Deletado com sucesso',
+        'A PCP foi deletado com sucesso'
+      );
+    } catch (error) {
+      openNotificationWithIcon(
+        'error',
+        'Erro ao deletar',
+        'A PCP não foi deletado'
+      );
+    }
   }
 
   async function handleRegister(e) {
