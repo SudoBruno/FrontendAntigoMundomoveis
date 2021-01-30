@@ -71,7 +71,7 @@ export default function CoverLaunch() {
     let modal = {
       title: 'Armazenagem de capas',
       url: 'input',
-      hidden: false,
+      hidden: true,
       span: 12,
     };
     setModalConfigure(modal);
@@ -82,7 +82,7 @@ export default function CoverLaunch() {
     let modal = {
       title: 'Saida de capas',
       url: 'output',
-      hidden: true,
+      hidden: false,
       span: 12,
     };
     setModalConfigure(modal);
@@ -95,6 +95,8 @@ export default function CoverLaunch() {
   const [quantity, setQuantity] = useState(0);
   const [coverName, setCoverName] = useState('');
   const [coverId, setCoverId] = useState(0);
+
+  const [pcp, setPCP] = useState('');
 
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -110,6 +112,7 @@ export default function CoverLaunch() {
       idUser: localStorage.getItem('userId'),
       coverWarehouseId,
       coverStreetId,
+      pcp,
     };
     Launch(data);
   }
@@ -260,10 +263,23 @@ export default function CoverLaunch() {
             >
               <Input
                 name="amount"
-                placeholder="Digite o código"
+                placeholder="quantidade"
                 type={'number'}
                 // value={product.amount}
                 onChange={(e) => setQuantity(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row hidden={modalConfigure.hidden}>
+          <Col span={24}>
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Input
+                name="pcp"
+                placeholder="Nome do pcp"
+                type={'text'}
+                // value={product.amount}
+                onChange={(e) => setPCP(e.target.value)}
               />
             </Form.Item>
           </Col>

@@ -163,6 +163,12 @@ export default function CoverOutput() {
           key: 'created',
           ...this.getColumnSearchProps('created'),
         },
+        {
+          title: 'PCP',
+          dataIndex: 'pcp',
+          key: 'pcp',
+          ...this.getColumnSearchProps('pcp'),
+        },
       ];
 
       return <Table columns={columns} dataSource={outputs} />;
@@ -179,6 +185,7 @@ export default function CoverOutput() {
     { label: 'Rua', key: 'streetName' },
     { label: 'Funcionário', key: 'employeeName' },
     { label: 'Removido', key: 'created' },
+    { label: 'PCP', key: 'pcp' },
   ]);
 
   useEffect(() => {

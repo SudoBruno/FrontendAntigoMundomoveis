@@ -72,7 +72,7 @@ export default function Routes() {
           path="/launch-expedition"
           component={ExpeditionLaunch}
         />
-        <CoverRoute path="/cover/launch" component={CoverLaunch} />
+        {/* <CoverRoute path="/cover/launch" component={CoverLaunch} /> */}
 
         <PrivateRoute>
           <SideBar />

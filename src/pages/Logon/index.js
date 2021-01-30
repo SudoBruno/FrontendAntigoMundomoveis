@@ -32,7 +32,6 @@ export default function Logon(params) {
       localStorage.setItem('userId', response.data.id);
       localStorage.setItem('userName', response.data.name);
       localStorage.setItem('acess_level', response.data.acess_level);
-
       if (
         response.data.acess_level === '1' ||
         response.data.acess_level === '4'
