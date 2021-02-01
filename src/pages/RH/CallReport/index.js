@@ -188,7 +188,6 @@ export default function CallReport() {
   useEffect(() => {
     api.get('/call/employee/presenceFilter', {}).then((response) => {
       setInput(response.data);
-      console.log(input);
     });
   }, [refreshKey]);
 
