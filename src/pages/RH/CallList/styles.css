@@ -66,7 +66,7 @@ input[type='file'] {
     font-weight: bold;
     margin-left: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
     width: 100%;
 }
 
@@ -86,6 +86,23 @@ input[type='file'] {
     font-weight: bold;
     margin-left: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
     width: 97.5%;
+}
+
+.notPassThePointButton{
+    background-color: #4070af;
+    color: #fff;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.notPassThePointButton:hover{
+    background-color: #527eb8;
+    color: #fff;
+    
 }

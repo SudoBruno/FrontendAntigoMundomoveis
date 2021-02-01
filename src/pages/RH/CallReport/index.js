@@ -188,6 +188,7 @@ export default function CallReport() {
   useEffect(() => {
     api.get('/call/employee/presenceFilter', {}).then((response) => {
       setInput(response.data);
+      console.log(input);
     });
   }, [refreshKey]);
 
@@ -222,10 +223,10 @@ export default function CallReport() {
       500
     );
     setHeaders([
-      { lable: 'ID da Chamada', key: 'id' },
-      { lable: 'ID do Funcionário', key: 'employeeId' },
-      { lable: 'Departamento', key: 'area' },
-      { lable: 'Presença', key: 'presence' },
+      { label: 'ID da Chamada', key: 'id' },
+      { label: 'ID do Funcionário', key: 'employeeId' },
+      { label: 'Departamento', key: 'area' },
+      { label: 'Presença', key: 'presence' },
     ]);
   }
   function openNotificationWithIcon(type, message, description) {
@@ -243,7 +244,11 @@ export default function CallReport() {
       description: description,
     });
   }
-
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: 'relatórioDeFalta.csv',
+  };
   return (
     <Layout
       style={{
@@ -279,7 +284,12 @@ export default function CallReport() {
           {ready && (
             <Button className="buttonGreen">
               <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
+              <CSVLink
+                {...csvReport}
+                data={csvData}
+                style={{ color: '#fff' }}
+                separator={';'}
+              >
                 Download
               </CSVLink>
             </Button>
