@@ -83,6 +83,7 @@ import CoverStock from '../../pages/Cover/Stock';
 
 import CallList from '../../pages/RH/CallList';
 import CallReport from '../..//pages/RH/CallReport';
+import CallReportPoint from '../..//pages/RH/CallListPointReport';
 import PlantingMount from '../../pages/Planting/Mount';
 import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
@@ -368,6 +369,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CallReport />,
+  },
+  {
+    path: '/call/reportPoint',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <CallReportPoint />,
   },
   {
     path: '/mount',
@@ -707,17 +714,33 @@ class App extends React.Component {
                 >
                   <Link to="/call/employee">Chamada </Link>
                 </Menu.Item>
-
-                <Menu.Item
-                  key="33"
-                  icon={
-                    <span className="anticon anticon-bank">
-                      <FileExcelOutlined color="#fff" size={16} />
-                    </span>
-                  }
+                <SubMenu
+                  key="ResportCallList"
+                  title="Relatórios"
+                  icon={<SearchOutlined />}
                 >
-                  <Link to="/call/report">Relatório Chamada</Link>
-                </Menu.Item>
+                  <Menu.Item
+                    key="reportFault"
+                    icon={
+                      <span className="anticon anticon-bank">
+                        <FileExcelOutlined color="#fff" size={16} />
+                      </span>
+                    }
+                  >
+                    <Link to="/call/report">Falta</Link>
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="ReportPoint"
+                    icon={
+                      <span className="anticon anticon-bank">
+                        <FileExcelOutlined color="#fff" size={16} />
+                      </span>
+                    }
+                  >
+                    <Link to="/call/reportPoint">Ponto</Link>
+                  </Menu.Item>
+                </SubMenu>
               </SubMenu>
             )}
 

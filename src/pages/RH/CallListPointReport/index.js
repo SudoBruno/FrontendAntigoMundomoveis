@@ -168,11 +168,11 @@ export default function CallReport() {
                     ...this.getColumnSearchProps('area'),
                 },
                 {
-                    title: 'Presente:',
-                    dataIndex: 'presence',
-                    key: 'presence',
-                    sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
-                    ...this.getColumnSearchProps('presence'),
+                    title: 'Ponto:',
+                    dataIndex: 'passedPoint',
+                    key: 'passedPoint',
+                    sorter: (a, b) => this.compareByAlph(a.passedPoint, b.passedPoint),
+                    ...this.getColumnSearchProps('passedPoint'),
                 },
             ];
 
@@ -190,7 +190,7 @@ export default function CallReport() {
 
 
     useEffect(() => {
-        api.get('/call/employee/presenceFilter', {}).then((response) => {
+        api.get('/call/employee/inputPresencePointFilter', {}).then((response) => {
             setInput(response.data);
             console.log(input);
         });
@@ -201,7 +201,7 @@ export default function CallReport() {
         const data = {
             intervalTime: intervalTime,
         };
-        const response = await api.post('/call/employee/presenceFilter', data);
+        const response = await api.post('/call/employee/presencePointFilter', data);
 
         setInput(response.data);
     }
@@ -216,9 +216,9 @@ export default function CallReport() {
 
         let response = [];
         if (intervalTime.length == 0) {
-            response = await api.get('/call/employee/presenceFilter')
+            response = await api.get('/call/employee/presencePointFilter')
         } else {
-            response = await api.post('/call/employee/presenceFilter', data)
+            response = await api.post('/call/employee/presencePointFilter', data)
         }
 
         setCsvData(response.data);
@@ -232,7 +232,7 @@ export default function CallReport() {
             { label: 'ID da Chamada', key: 'id' },
             { label: 'ID do Funcionário', key: 'employeeId' },
             { label: 'Departamento', key: 'area' },
-            { label: 'Presença', key: 'presence' },
+            { label: 'Ponto', key: 'passedPoint' },
         ]);
     }
     function openNotificationWithIcon(type, message, description) {
@@ -251,11 +251,13 @@ export default function CallReport() {
             description: description,
         });
     }
+
     const csvReport = {
         data: csvData,
         headers: headers,
-        filename: 'relatórioDeFalta.csv',
+        filename: 'relatorioDePonto.csv',
     };
+
     return (
         <Layout
             style={{
@@ -286,13 +288,13 @@ export default function CallReport() {
                     {!ready && (
                         <Button type="submit" className="buttonGreen" onClick={Input}>
                             <FileExcelOutlined style={{ marginRight: 8 }} />
-                Relatório de Faltas
+                Relatório de Ponto
                         </Button>
                     )}
                     {ready && (
                         <Button className="buttonGreen">
                             <DownloadOutlined style={{ marginRight: 8 }} />
-                            <CSVLink   {...csvReport} data={csvData} style={{ color: '#fff' }} separator={';'}>
+                            <CSVLink {...csvReport} data={csvData} style={{ color: '#fff' }} separator={';'}>
                                 Download
                 </CSVLink>
                         </Button>
