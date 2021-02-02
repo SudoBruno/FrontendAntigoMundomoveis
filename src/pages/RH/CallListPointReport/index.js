@@ -167,13 +167,6 @@ export default function CallReport() {
                     sorter: (a, b) => this.compareByAlph(a.area, b.area),
                     ...this.getColumnSearchProps('area'),
                 },
-                {
-                    title: 'Ponto:',
-                    dataIndex: 'passedPoint',
-                    key: 'passedPoint',
-                    sorter: (a, b) => this.compareByAlph(a.passedPoint, b.passedPoint),
-                    ...this.getColumnSearchProps('passedPoint'),
-                },
             ];
 
             return <Table columns={columns} dataSource={input} />;
@@ -231,8 +224,8 @@ export default function CallReport() {
         setHeaders([
             { label: 'ID da Chamada', key: 'id' },
             { label: 'ID do Funcionário', key: 'employeeId' },
+            { label: 'NOME', key: 'name' },
             { label: 'Departamento', key: 'area' },
-            { label: 'Ponto', key: 'passedPoint' },
         ]);
     }
     function openNotificationWithIcon(type, message, description) {
