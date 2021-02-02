@@ -110,8 +110,8 @@ export default function CallReport() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -222,10 +222,11 @@ export default function CallReport() {
       500
     );
     setHeaders([
-      { label: 'ID da Chamada', key: 'id' },
-      { label: 'ID do Funcionário', key: 'employeeId' },
-      { label: 'Departamento', key: 'area' },
-      { label: 'Presença', key: 'presence' },
+      { label: 'ID DO CHAMADA', key: 'id' },
+      { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
+      { label: 'NOME', key: 'name' },
+      { label: 'DEPARTAMENTO', key: 'area' },
+      { label: 'PRESENÇA', key: 'presence' },
     ]);
   }
   function openNotificationWithIcon(type, message, description) {

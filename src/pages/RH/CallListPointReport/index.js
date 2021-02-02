@@ -5,31 +5,21 @@ import {
   Button,
   Row,
   Col,
-  Input,
   Space,
-  Modal,
   Select,
-  Popconfirm,
   notification,
-  Form,
-  Menu,
-  Dropdown,
-  Tooltip,
-  Checkbox,
   DatePicker,
 } from 'antd';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import {
   SearchOutlined,
-  UploadOutlined,
   FileExcelOutlined,
   DownloadOutlined,
 } from '@ant-design/icons';
 
 import api from '../../../services/api';
 
-const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
 export default function CallReport() {
@@ -166,11 +156,11 @@ export default function CallReport() {
           ...this.getColumnSearchProps('area'),
         },
         {
-          title: 'Ponto:',
-          dataIndex: 'passedPoint',
-          key: 'passedPoint',
-          sorter: (a, b) => this.compareByAlph(a.passedPoint, b.passedPoint),
-          ...this.getColumnSearchProps('passedPoint'),
+          title: 'Presente:',
+          dataIndex: 'presence',
+          key: 'presence',
+          sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
+          ...this.getColumnSearchProps('presence'),
         },
       ];
 
@@ -186,8 +176,9 @@ export default function CallReport() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    api.get('/call/employee/inputPresencePointFilter', {}).then((response) => {
+    api.get('/call/employee/presenceFilter', {}).then((response) => {
       setInput(response.data);
+      console.log(input);
     });
   }, [refreshKey]);
 
@@ -195,7 +186,7 @@ export default function CallReport() {
     const data = {
       intervalTime: intervalTime,
     };
-    const response = await api.post('/call/employee/presencePointFilter', data);
+    const response = await api.post('/call/employee/presenceFilter', data);
 
     setInput(response.data);
   }
@@ -209,9 +200,9 @@ export default function CallReport() {
 
     let response = [];
     if (intervalTime.length == 0) {
-      response = await api.get('/call/employee/presencePointFilter');
+      response = await api.get('/call/employee/presenceFilter');
     } else {
-      response = await api.post('/call/employee/presencePointFilter', data);
+      response = await api.post('/call/employee/presenceFilter', data);
     }
 
     setCsvData(response.data);
@@ -222,10 +213,11 @@ export default function CallReport() {
       500
     );
     setHeaders([
-      { label: 'ID da Chamada', key: 'id' },
-      { label: 'ID do Funcionário', key: 'employeeId' },
-      { label: 'Departamento', key: 'area' },
-      { label: 'Ponto', key: 'passedPoint' },
+      { label: 'ID DO CHAMADA', key: 'id' },
+      { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
+      { label: 'NOME', key: 'name' },
+      { label: 'DEPARTAMENTO', key: 'area' },
+      { label: 'PRESENÇA', key: 'presence' },
     ]);
   }
   function openNotificationWithIcon(type, message, description) {
@@ -243,13 +235,11 @@ export default function CallReport() {
       description: description,
     });
   }
-
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: 'relatorioDePonto.csv',
+    filename: 'relatórioDeFalta.csv',
   };
-
   return (
     <Layout
       style={{
@@ -279,7 +269,7 @@ export default function CallReport() {
           {!ready && (
             <Button type="submit" className="buttonGreen" onClick={Input}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
-              Relatório de Ponto
+              Relatório de Faltas
             </Button>
           )}
           {ready && (
