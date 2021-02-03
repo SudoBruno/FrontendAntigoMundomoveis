@@ -13,6 +13,7 @@ import {
   FileExcelOutlined,
   UserOutlined,
   SearchOutlined,
+  SignalFilled
 } from '@ant-design/icons';
 import { FaCouch, FaWarehouse } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
@@ -91,6 +92,9 @@ import PlantingMount from '../../pages/Planting/Mount';
 import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
+
+import DefectLevel from '../../pages/Quality/DefectLevel/index';
+import Quality from '../../pages/Quality/Defect/index'
 
 const userName = localStorage.getItem('userName');
 
@@ -421,6 +425,20 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <Seccionadora />,
   },
+  {
+    path: '/quality/defectLevel',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <DefectLevel />,
+  },
+  {
+    path: '/quality/defect',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Quality />,
+  },
+
+
 ];
 
 class App extends React.Component {
@@ -530,9 +548,7 @@ class App extends React.Component {
                 title="Cadastros"
                 icon={<PlusOutlined />}
               >
-                <Menu.Item key="4" icon={<RightSquareOutlined />}>
-                  <Link to="/production-Line">Linha de produção</Link>
-                </Menu.Item>
+
 
                 <Menu.Item key="7" icon={<RightSquareOutlined />}>
                   <Link to="/sub-product">Subproduto</Link>
@@ -701,6 +717,38 @@ class App extends React.Component {
                     <Link to="/expedition/output/defect">Saídas</Link>
                   </Menu.Item>
                 </SubMenu>
+              </SubMenu>
+            )}
+
+            {localStorage.getItem('acess_level') === '1' && (
+              <SubMenu
+                key="quality"
+                title="Qualidade"
+                icon={
+                  <span className="anticon anticon-bank">
+                    <SignalFilled e size={16} color="#fff" />
+                  </span>
+                }
+              >
+                <SubMenu
+                  key="defectLevelInsert"
+                  title="Cadastros"
+                  icon={<PlusOutlined />}
+                >
+
+                  <Menu.Item key="4" icon={<RightSquareOutlined />}>
+                    <Link to="/quality/defectLevel">Nível de Defeito
+                  </Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="3" icon={<RightSquareOutlined />}>
+                    <Link to="/quality/defect">Defeito
+                  </Link>
+                  </Menu.Item>
+
+                </SubMenu>
+
+
               </SubMenu>
             )}
             {localStorage.getItem('acess_level') === '1' && (
