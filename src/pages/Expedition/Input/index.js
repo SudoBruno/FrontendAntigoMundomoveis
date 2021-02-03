@@ -100,8 +100,8 @@ export default function ExpeditionInput() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -175,9 +175,17 @@ export default function ExpeditionInput() {
 
   const [refreshKey, setRefreshKey] = useState(0);
   const [input, setInput] = useState([]);
-  const [csvData, setCsvData] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [status, setStatus] = useState(false);
+
+  const [headers, setHeaders] = useState([
+    { label: 'Codigo fornecedor', key: 'code' },
+    { label: 'Produto', key: 'product' },
+    { label: 'Rua', key: 'street' },
+    { label: 'Data armazenado', key: 'input' },
+    { label: 'Cod. Barras', key: 'barCode' },
+    { label: 'Volume', key: 'volume' },
+  ]);
+  // const [ready, setReady] = useState(false);
   const [intervalTime, setIntervalTime] = useState([]);
   useEffect(() => {
     api.get('expedition/input', {}).then((response) => {
@@ -185,7 +193,9 @@ export default function ExpeditionInput() {
     });
   }, [refreshKey]);
 
-  async function Filter() {
+  async function Filter(e) {
+    e.preventDefault();
+
     const data = {
       intervalTime: intervalTime,
     };
@@ -194,34 +204,11 @@ export default function ExpeditionInput() {
     setInput(response.data);
   }
 
-  async function Input() {
-    setReady(false);
-
-    const data = {
-      intervalTime: intervalTime,
-    };
-    let response = [];
-    if (intervalTime.length == 0) {
-      response = await api.get('expedition/input');
-    } else {
-      response = await api.post('expedition/input/filter', data);
-    }
-
-    setCsvData(response.data);
-    setTimeout(
-      function () {
-        setReady(true);
-      }.bind(this),
-      500
-    );
-    setHeaders([
-      { lable: 'Codigo fornecedor', key: 'code' },
-      { lable: 'Produto', key: 'product' },
-      { lable: 'Rua', key: 'street' },
-      { lable: 'Data armazenado', key: 'input' },
-      { lable: 'Produto', key: 'barCode' },
-    ]);
-  }
+  const csvReport = {
+    data: input,
+    headers: headers,
+    filename: 'ralatorio_entrada_no_estoque.csv',
+  };
   return (
     <Layout
       style={{
@@ -244,24 +231,35 @@ export default function ExpeditionInput() {
               color: '#3b4357',
               marginLeft: 8,
             }}
-            onClick={Filter}
+            onClick={(e) => Filter(e)}
           />
         </Col>
         <Col span={12} align="end">
-          {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Input}>
-              <FileExcelOutlined style={{ marginRight: 8 }} />
-              Entrada
-            </Button>
-          )}
-          {ready && (
-            <Button className="buttonGreen">
-              <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
+          <Button className="buttonGreen">
+            {status == false && (
+              <>
+                <DownloadOutlined
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setStatus(true);
+                  }}
+                  style={{ marginRight: 8 }}
+                />
+                Baixar
+              </>
+            )}
+            {status == true && (
+              <CSVLink
+                {...csvReport}
+                separator={';'}
+                onClick={() => {
+                  setStatus(false);
+                }}
+              >
                 Download
               </CSVLink>
-            </Button>
-          )}
+            )}
+          </Button>
         </Col>
       </Row>
 
