@@ -148,6 +148,7 @@ export default function PCP() {
           dataIndex: 'id',
           key: 'id',
 
+          sorter: (a, b) => this.compareByAlph(a.id, b.id),
           ...this.getColumnSearchProps('id'),
         },
         {
@@ -155,13 +156,14 @@ export default function PCP() {
           dataIndex: 'name',
           key: 'name',
 
-          sorter: (a, b) => this.compareByAlph(a.age, b.age),
+          sorter: (a, b) => this.compareByAlph(a.name, b.name),
           ...this.getColumnSearchProps('name'),
         },
         {
           title: 'Data inicial',
           dataIndex: 'initial_date',
           key: 'initial_date',
+          sorter: (a, b) => this.compareByAlph(a.initial_date, b.initial_date),
           ...this.getColumnSearchProps('initial_date'),
         },
         {
@@ -216,16 +218,7 @@ export default function PCP() {
         },
       ];
 
-      return (
-        <Table
-          columns={columns}
-          dataSource={productionPlanControl}
-          onChange={(e) => {
-            setPagination(e);
-          }}
-          pagination={pagination}
-        />
-      );
+      return <Table columns={columns} dataSource={productionPlanControl} />;
     }
   }
   const [status, setStatus] = useState(false);

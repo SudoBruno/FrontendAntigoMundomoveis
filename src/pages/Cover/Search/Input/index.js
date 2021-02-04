@@ -205,29 +205,14 @@ export default function CoverInput() {
       <Row style={{ marginBottom: 16 }}>
         <Col span={24} align="end">
           <Button className="buttonGreen">
-            {status == false && (
-              <>
-                <DownloadOutlined
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setStatus(true);
-                  }}
-                  style={{ marginRight: 8 }}
-                />
-                Baixar
-              </>
-            )}
-            {status == true && (
-              <CSVLink
-                {...csvReport}
-                separator={';'}
-                onClick={() => {
-                  setStatus(false);
-                }}
-              >
-                Download
-              </CSVLink>
-            )}
+            <DownloadOutlined />
+            <CSVLink
+              {...csvReport}
+              separator={';'}
+              style={{ color: '#fff', marginLeft: 8 }}
+            >
+              Download
+            </CSVLink>
           </Button>
         </Col>
       </Row>
