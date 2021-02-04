@@ -13,7 +13,7 @@ import {
   FileExcelOutlined,
   UserOutlined,
   SearchOutlined,
-  SignalFilled
+  SignalFilled,
 } from '@ant-design/icons';
 import { FaCouch, FaWarehouse } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
@@ -95,7 +95,7 @@ import PlantingStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
 
 import DefectLevel from '../../pages/Quality/DefectLevel/index';
-import Quality from '../../pages/Quality/Defect/index'
+import Quality from '../../pages/Quality/Defect/index';
 
 const userName = localStorage.getItem('userName');
 
@@ -444,8 +444,6 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <Quality />,
   },
-
-
 ];
 
 class App extends React.Component {
@@ -555,8 +553,6 @@ class App extends React.Component {
                 title="Cadastros"
                 icon={<PlusOutlined />}
               >
-
-
                 <Menu.Item key="7" icon={<RightSquareOutlined />}>
                   <Link to="/sub-product">Subproduto</Link>
                 </Menu.Item>
@@ -574,87 +570,90 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
             )}
-            {localStorage.getItem('acess_level') === '4' && (
-              <SubMenu
-                key="WnsInsumos"
-                title="Almoxarifado"
-                icon={
-                  <span className="anticon anticon-bank">
-                    <FiPackage size={16} color="#fff" />
-                  </span>
-                }
-              >
-                {localStorage.getItem('acess_level') === '1' && (
-                  <SubMenu
-                    key="WnsInsumosCadastros"
-                    title="Cadastros"
-                    icon={<PlusOutlined />}
-                  >
-                    <Menu.Item key="11" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawWarehouse">Almoxarifados</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="12" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawSupplier">Fornecedores</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="15" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="13" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawMaterial">Insumos</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="14" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawPosition">Posições</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-
-                {localStorage.getItem('acess_level') === '4' ||
-                  (localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('acess_level') === '4' ||
+              (localStorage.getItem('acess_level') === '1' && (
+                <SubMenu
+                  key="WnsInsumos"
+                  title="Almoxarifado"
+                  icon={
+                    <span className="anticon anticon-bank">
+                      <FiPackage size={16} color="#fff" />
+                    </span>
+                  }
+                >
+                  {localStorage.getItem('acess_level') === '1' && (
                     <SubMenu
-                      key="WnsInsumosOperacao"
-                      title="Operações"
-                      icon={<ShoppingCartOutlined />}
+                      key="WnsInsumosCadastros"
+                      title="Cadastros"
+                      icon={<PlusOutlined />}
                     >
-                      <Menu.Item key="16" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawEntry">Entradas</Link>
+                      <Menu.Item key="11" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawWarehouse">Almoxarifados</Link>
                       </Menu.Item>
 
-                      <Menu.Item key="17" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawStorage">Armazenagens</Link>
+                      <Menu.Item key="12" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawSupplier">Fornecedores</Link>
                       </Menu.Item>
 
-                      <Menu.Item key="18" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawExit">Saídas</Link>
+                      <Menu.Item key="15" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
+                      </Menu.Item>
+
+                      <Menu.Item key="13" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawMaterial">Insumos</Link>
+                      </Menu.Item>
+
+                      <Menu.Item key="14" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawPosition">Posições</Link>
                       </Menu.Item>
                     </SubMenu>
-                  ))}
+                  )}
 
-                <SubMenu
-                  key="WnsInsumosSearches"
-                  title="Consultas"
-                  icon={<SearchOutlined />}
-                >
-                  <Menu.Item key="19" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawStorage/Search">Estoque</Link>
-                  </Menu.Item>
+                  {localStorage.getItem('acess_level') === '4' ||
+                    (localStorage.getItem('acess_level') === '1' && (
+                      <SubMenu
+                        key="WnsInsumosOperacao"
+                        title="Operações"
+                        icon={<ShoppingCartOutlined />}
+                      >
+                        <Menu.Item key="16" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawEntry">Entradas</Link>
+                        </Menu.Item>
 
-                  <Menu.Item key="21" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
-                  </Menu.Item>
-                  <Menu.Item key="32" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
-                  </Menu.Item>
+                        <Menu.Item key="17" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawStorage">Armazenagens</Link>
+                        </Menu.Item>
 
-                  <Menu.Item key="33" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawMaterial/pcp">PCP's</Link>
-                  </Menu.Item>
+                        <Menu.Item key="18" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawExit">Saídas</Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    ))}
+
+                  <SubMenu
+                    key="WnsInsumosSearches"
+                    title="Consultas"
+                    icon={<SearchOutlined />}
+                  >
+                    <Menu.Item key="19" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawStorage/Search">Estoque</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="21" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
+                    </Menu.Item>
+                    <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawMaterial/Search/entry">
+                        Rel. entrada
+                      </Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="33" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawMaterial/pcp">PCP's</Link>
+                    </Menu.Item>
+                  </SubMenu>
                 </SubMenu>
-              </SubMenu>
-            )}
+              ))}
 
             {localStorage.getItem('acess_level') === '1' && (
               <SubMenu
@@ -742,20 +741,14 @@ class App extends React.Component {
                   title="Cadastros"
                   icon={<PlusOutlined />}
                 >
-
                   <Menu.Item key="4" icon={<RightSquareOutlined />}>
-                    <Link to="/quality/defectLevel">Nível de Defeito
-                  </Link>
+                    <Link to="/quality/defectLevel">Nível de Defeito</Link>
                   </Menu.Item>
 
                   <Menu.Item key="3" icon={<RightSquareOutlined />}>
-                    <Link to="/quality/defect">Defeito
-                  </Link>
+                    <Link to="/quality/defect">Defeito</Link>
                   </Menu.Item>
-
                 </SubMenu>
-
-
               </SubMenu>
             )}
             {localStorage.getItem('acess_level') === '1' && (
