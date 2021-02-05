@@ -553,6 +553,9 @@ class App extends React.Component {
                 title="Cadastros"
                 icon={<PlusOutlined />}
               >
+                <Menu.Item key="productionLine" icon={<RightSquareOutlined />}>
+                  <Link to="/production-line">Linha de Produção</Link>
+                </Menu.Item>
                 <Menu.Item key="7" icon={<RightSquareOutlined />}>
                   <Link to="/sub-product">Subproduto</Link>
                 </Menu.Item>
