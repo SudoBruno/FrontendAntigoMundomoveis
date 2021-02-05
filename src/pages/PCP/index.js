@@ -28,19 +28,17 @@ import {
 } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import confirm from 'antd/lib/modal/confirm';
 
 const Option = Select.Option;
 
 export default function PCP() {
   class SearchTable extends React.Component {
     state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
       loading: false,
       searchText: '',
       searchedColumn: '',
+      pagination: pagination,
     };
 
     getColumnSearchProps = (dataIndex) => ({
@@ -60,9 +58,9 @@ export default function PCP() {
             onChange={(e) =>
               setSelectedKeys(e.target.value ? [e.target.value] : [])
             }
-            onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
+            onPressEnter={() => {
+              this.handleSearch(selectedKeys, confirm, dataIndex);
+            }}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
           <Space>
@@ -120,20 +118,23 @@ export default function PCP() {
     };
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
+      // console.log('aq');
       confirm();
       this.setState({
         searchText: selectedKeys[0],
         searchedColumn: dataIndex,
+        pagination: pagination,
       });
     };
 
     handleReset = (clearFilters) => {
       clearFilters();
-      this.setState({ searchText: '' });
+
+      this.setState({ searchText: '', pagination: pagination });
     };
 
     handleTableChange = (pagination, filters, sorter) => {
-      this.fetch({
+      this.setState({
         sortField: sorter.field,
         sortOrder: sorter.order,
         pagination,
@@ -182,26 +183,44 @@ export default function PCP() {
                   <BarcodeOutlined style={{ marginLeft: 20 }} />
                 </Link>
                 <>
-                  {status == false && (
-                    <DownloadOutlined
-                      onClick={() => {
-                        handleDownload(record);
-                        setStatus(true);
-                      }}
-                    />
-                  )}
-                  {status == true && (
-                    <CSVLink
-                      {...csvReport}
-                      style={{ color: '#000' }}
-                      separator={';'}
-                      onClick={() => {
-                        setStatus(false);
-                      }}
-                    >
-                      Download
-                    </CSVLink>
-                  )}
+                  {status == false &&
+                    data[0] != undefined &&
+                    data[0].pcpId != record.id && (
+                      <DownloadOutlined
+                        onClick={() => {
+                          handleDownload(record);
+                          setStatus(true);
+                          setPagination(this.state.pagination);
+                        }}
+                      />
+                    )}
+                  {status == true &&
+                    data[0] != undefined &&
+                    data[0].pcpId != record.id && (
+                      <DownloadOutlined
+                        onClick={() => {
+                          handleDownload(record);
+                          setStatus(true);
+                          setPagination(this.state.pagination);
+                        }}
+                      />
+                    )}
+
+                  {status == true &&
+                    data[0] != undefined &&
+                    data[0].pcpId == record.id && (
+                      <CSVLink
+                        {...csvReport}
+                        style={{ color: '#000' }}
+                        separator={';'}
+                        onClick={() => {
+                          setStatus(false);
+                          setData([{}]);
+                        }}
+                      >
+                        Download
+                      </CSVLink>
+                    )}
                 </>
                 <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
@@ -218,7 +237,15 @@ export default function PCP() {
         },
       ];
 
-      return <Table columns={columns} dataSource={productionPlanControl} />;
+      return (
+        <Table
+          columns={columns}
+          dataSource={productionPlanControl}
+          onChange={this.handleTableChange}
+          pagination={this.state.pagination}
+          rowKey="id"
+        />
+      );
     }
   }
   const [status, setStatus] = useState(false);
