@@ -47,6 +47,9 @@ export default function Logon(params) {
       } else if (response.data.acess_level === '5') {
         history.push('/cover/launch');
         setLoading('none');
+      } else if (response.data.acess_level === '6') {
+        history.push('/callList');
+        setLoading('none');
       }
       setLoading('none');
     } catch (error) {

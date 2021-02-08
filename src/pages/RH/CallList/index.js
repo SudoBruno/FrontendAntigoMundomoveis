@@ -104,8 +104,8 @@ export default function CallList() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -349,6 +349,7 @@ export default function CallList() {
             label="Selecione o Departamento"
             labelAlign={'left'}
             style={{ marginLeft: 90, marginTop: 20 }}
+            className="departament"
           >
             <Select
               showSearch
@@ -382,7 +383,7 @@ export default function CallList() {
             marginTop: 20,
           }}
         >
-          <button className="btn-enviar" onClick={(e) => startCallList(e)}>
+          <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
             Iniciar Chamada
           </button>
         </Col>
