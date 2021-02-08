@@ -207,7 +207,7 @@ export default function ExpeditionInput() {
   const csvReport = {
     data: input,
     headers: headers,
-    filename: 'ralatorio_entrada_no_estoque.csv',
+    filename: 'relatorio_entrada_no_estoque.csv',
   };
   return (
     <Layout

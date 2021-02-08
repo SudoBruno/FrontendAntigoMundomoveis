@@ -196,7 +196,7 @@ export default function CoverOutput() {
   const csvReport = {
     data: outputs,
     headers: headers,
-    filename: 'ralatorio_saida_no_estoque_de_capas.csv',
+    filename: 'relatorio_saida_no_estoque_de_capas.csv',
   };
   const [status, setStatus] = useState(false);
 

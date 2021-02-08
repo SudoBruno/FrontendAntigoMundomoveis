@@ -175,7 +175,7 @@ export default function CoverStock() {
   const csvReport = {
     data: stock,
     headers: headers,
-    filename: 'ralatorio_estoque_capas.csv',
+    filename: 'relatorio_estoque_capas.csv',
   };
   const [status, setStatus] = useState(false);
 

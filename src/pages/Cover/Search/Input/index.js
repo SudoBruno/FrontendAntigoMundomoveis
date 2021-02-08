@@ -189,7 +189,7 @@ export default function CoverInput() {
   const csvReport = {
     data: input,
     headers: headers,
-    filename: 'ralatorio_entrada_no_estoque_de_capas.csv',
+    filename: 'relatorio_entrada_no_estoque_de_capas.csv',
   };
   const [status, setStatus] = useState(false);
 
