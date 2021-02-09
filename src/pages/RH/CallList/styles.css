@@ -11,16 +11,6 @@
     background-color: #5cb85c;
 }
 
-@media screen and (max-width: 650px) {
-    .call-list-buttons {
-        font-size: 1.3rem;
-        grid-template-columns: 100%;
-    }
-    .call-list-buttons input {
-        max-width: 100%;
-    }
-}
-
 input[type='file'] {
     display: none
 }
@@ -39,6 +29,17 @@ input[type='file'] {
 }
 
 .btn-enviar {
+    background-color: #5cb85c;
+    width: 30%;
+    color: #fff;
+    font-weight: bold;
+    padding: 14px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-iniciar-chamada{
     background-color: #5cb85c;
     width: 30%;
     color: #fff;
@@ -105,4 +106,29 @@ input[type='file'] {
     background-color: #527eb8;
     color: #fff;
     
+}
+
+@media screen and (max-width: 767px) {
+  .departament {
+   width: 100%;
+   
+  }
+  .btn-iniciar-chamada {
+    background-color: #5cb85c;
+    width: 70%;
+    height: 35%;
+    margin-top: 60%;
+    margin-left: 0%;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .input-file {
+      display: none;
+  }
+  .btn-enviar{
+      display: none;
+  }
 }
