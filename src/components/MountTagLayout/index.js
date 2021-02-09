@@ -34,7 +34,7 @@ function TagLayout() {
   }, [barCode]);
   useEffect(() => {
     api.get(`plating/mount/tag/${mountId}`, {}).then((response) => {
-      if (response.data.length > 0) {
+      if (response.data[0] != null) {
         setBarCodes(response.data);
       }
     });
@@ -44,6 +44,9 @@ function TagLayout() {
     <>
       <div className="amountTag">
         {barCodes.map((item) => {
+          {
+            console.log(item);
+          }
           return (
             <>
               <span>
@@ -64,7 +67,10 @@ function TagLayout() {
                     {item.amount}
                   </p>
                 </div>
-                <div className="text">
+                <div className="platingUser">
+                  <p>{item.user}</p>
+                </div>
+                <div className="platingAmount">
                   <b style={{ fontSize: 16 }}>Quantidade:_________</b>
                   <b style={{ fontSize: 16 }}>Quantidade:_________</b>
                   <b style={{ fontSize: 16 }}>Quantidade:_________</b>

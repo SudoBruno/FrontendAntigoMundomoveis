@@ -309,9 +309,8 @@ export default function ExpeditionLaunch() {
   }
 
   async function EditBarCode(e) {
-    let newCode = e.replace(/-/g, '');
     let data = {
-      code: newCode,
+      code: e,
       warehouse_id,
       street_id,
       drop,
@@ -464,8 +463,8 @@ export default function ExpeditionLaunch() {
                 size="large"
                 value={street_name}
                 onChange={(e) => {
-                  setStreetId(e[0])
-                  setStreetName(e[1])
+                  setStreetId(e[0]);
+                  setStreetName(e[1]);
                 }}
 
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
@@ -473,7 +472,7 @@ export default function ExpeditionLaunch() {
                 {street.map((option) => {
                   return (
                     <>
-                      <Option key={option.id} value={[option.id,option.name]}>
+                      <Option key={option.id} value={[option.id, option.name]}>
                         {option.name}
                       </Option>
                     </>
