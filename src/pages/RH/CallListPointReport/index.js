@@ -213,11 +213,10 @@ export default function CallReport() {
       500
     );
     setHeaders([
-      { label: 'ID DO CHAMADA', key: 'id' },
+      { label: 'ID DA CHAMADA', key: 'id' },
       { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
       { label: 'NOME', key: 'name' },
       { label: 'DEPARTAMENTO', key: 'area' },
-      { label: 'PRESENÇA', key: 'presence' },
     ]);
   }
   function openNotificationWithIcon(type, message, description) {
@@ -238,7 +237,7 @@ export default function CallReport() {
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: 'relatórioDeFalta.csv',
+    filename: 'relatórioDePonto.csv',
   };
   return (
     <Layout
