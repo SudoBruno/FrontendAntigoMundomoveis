@@ -100,8 +100,8 @@ export default function CallReport() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -186,7 +186,7 @@ export default function CallReport() {
     const data = {
       intervalTime: intervalTime,
     };
-    const response = await api.post('/call/employee/presenceFilter', data);
+    const response = await api.post('/call/employee/presencePointFilter', data);
 
     setInput(response.data);
   }
@@ -200,9 +200,9 @@ export default function CallReport() {
 
     let response = [];
     if (intervalTime.length == 0) {
-      response = await api.get('/call/employee/presenceFilter');
+      response = await api.get('/call/employee/presencePointFilter');
     } else {
-      response = await api.post('/call/employee/presenceFilter', data);
+      response = await api.post('/call/employee/presencePointFilter', data);
     }
 
     setCsvData(response.data);
