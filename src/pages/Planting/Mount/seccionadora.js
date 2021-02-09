@@ -692,6 +692,7 @@ export default function Seccionadora() {
                 size="large"
                 value={sectorName}
                 onChange={(e) => handleSelectSector(e)}
+                style={{ borderStyle: 'solid', borderColor: 'red' }}
 
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >

@@ -21,6 +21,19 @@ span {
     grid-template-rows: 30px;
 }
 
+.platingAmount {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 30px;
+    text-align: center;
+}
+
+.platingUser {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 .tag-one {
     display: grid;
     grid-template-rows: 30px 20px 100px;
