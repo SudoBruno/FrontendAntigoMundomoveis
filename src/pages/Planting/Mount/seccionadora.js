@@ -258,6 +258,8 @@ export default function Seccionadora() {
 
   const [previousPlatingMountId, setPreviousPlatingMountId] = useState(0);
 
+  const [loading, setLoading] = useState(false);
+
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
       message: message,
@@ -298,6 +300,7 @@ export default function Seccionadora() {
     color: color,
   };
   const handleCreateMount = async () => {
+    setLoading(true);
     try {
       await api.post('plating/seccionadora/mount', data);
       openNotificationWithIcon(
@@ -307,12 +310,14 @@ export default function Seccionadora() {
       );
       setRefreshKey((refreshKey) => refreshKey + 1);
       setShow(false);
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon(
         'error',
         'Erro ao criar o monte',
         'Erro ao criar um monte, procure o suporte'
       );
+      setLoading(false);
     }
   };
   const handleProductionPlanControl = async (e) => {
@@ -434,6 +439,7 @@ export default function Seccionadora() {
   };
 
   const nextSector = async () => {
+    setLoading(true);
     try {
       const response = await api.post('plating/mount/tags', dataNextSector);
       openNotificationWithIcon(
@@ -463,6 +469,7 @@ export default function Seccionadora() {
       ]);
       setPreviousPlatingMountId(0);
       setShowNextSector(false);
+      setLoading(false);
       var win = window.open(`/mount/tag/${previousPlatingMountId}`, '_blank');
       win.focus();
     } catch (error) {
@@ -471,6 +478,7 @@ export default function Seccionadora() {
         'Erro ao gerar etiqueta',
         'Erro ao passar para o proximo setor, tente novamente'
       );
+      setLoading(false);
     }
   };
 
@@ -507,7 +515,12 @@ export default function Seccionadora() {
           <Button key="back" type="default" onClick={handleClose}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={handleCreateMount}>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleCreateMount}
+          >
             Salvar
           </Button>,
         ]}
@@ -692,6 +705,7 @@ export default function Seccionadora() {
                 size="large"
                 value={sectorName}
                 onChange={(e) => handleSelectSector(e)}
+                style={{ borderStyle: 'solid', borderColor: 'red' }}
 
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
@@ -718,7 +732,12 @@ export default function Seccionadora() {
           <Button key="back" type="default" onClick={handleClose}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={nextSector}>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={nextSector}
+          >
             Salvar
           </Button>,
         ]}
