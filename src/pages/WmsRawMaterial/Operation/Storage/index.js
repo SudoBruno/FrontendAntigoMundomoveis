@@ -111,8 +111,8 @@ export default function SubProduct() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -613,6 +613,7 @@ export default function SubProduct() {
                     labelCol={{ span: 23 }}
                     label="Almoxarifado"
                     labelAlign={'left'}
+
                   >
                     <Select
                       showSearch
@@ -700,6 +701,7 @@ export default function SubProduct() {
                   title="Novo SubProduto"
                   style={{ width: '100%' }}
                   onClick={handleAddClick}
+                  hidden={itensStorage.warehouse && itensStorage.amount ? false : true}
                 >
                   <PlusOutlined />
                 </Button>

@@ -107,8 +107,8 @@ export default function Entry() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -584,7 +584,7 @@ export default function Entry() {
           return (
             <>
               <Row gutter={24}>
-                <Col span={9}>
+                <Col span={20}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="Insumo:"
@@ -651,7 +651,7 @@ export default function Entry() {
                     />
                   </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="Valor unitário do insumo"
@@ -673,10 +673,10 @@ export default function Entry() {
                   </Form.Item>
                 </Col>
 
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
                     labelCol={{ span: 23 }}
-                    label="Valor unitário (R$)"
+                    label="Valor Total (R$)"
                     labelAlign={'left'}
                   >
                     <Input
