@@ -92,7 +92,8 @@ import CallReportPoint from '../..//pages/RH/CallListPointReport';
 import PlantingMount from '../../pages/Planting/Mount';
 import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
-import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
+import PlantingDayProductionMount from '../../pages/Planting/Search/DayProductionMount';
+import PlantingDayDefectMount from '../../pages/Planting/Search/DayDefectMount';
 
 import DefectLevel from '../../pages/Quality/DefectLevel/index';
 import Quality from '../../pages/Quality/Defect/index';
@@ -421,10 +422,16 @@ const routes = [
     main: () => <PlantingStockMount />,
   },
   {
-    path: '/production/mount',
+    path: '/day/production/mount',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <PlantingProductionMount />,
+    main: () => <PlantingDayProductionMount />,
+  },
+  {
+    path: '/day/defect/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingDayDefectMount />,
   },
   {
     path: '/seccionadora/mount',
@@ -888,14 +895,17 @@ class App extends React.Component {
                   title="Consultas"
                   icon={<SearchOutlined />}
                 >
-                  <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
+                  {/* <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
                     <Link to="/stock/mount">Na Linha</Link>
-                  </Menu.Item>
+                  </Menu.Item> */}
                   <Menu.Item
                     key="mountProduction"
                     icon={<RightSquareOutlined />}
                   >
-                    <Link to="/production/mount">Em Produção</Link>
+                    <Link to="/day/production/mount">produzido</Link>
+                  </Menu.Item>
+                  <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
+                    <Link to="/day/defect/mount">Defeitos</Link>
                   </Menu.Item>
                 </SubMenu>
               </SubMenu>
