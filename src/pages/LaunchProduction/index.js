@@ -396,7 +396,7 @@ export default function LaunchProduction() {
               <Input
                 name="amount"
                 placeholder="Digite o código"
-                type={'number'}
+                type={'text'}
                 // value={product.amount}
                 onChange={(e) => setCode(e.target.value)}
               />
