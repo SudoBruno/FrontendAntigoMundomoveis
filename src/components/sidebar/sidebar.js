@@ -467,14 +467,14 @@ class App extends React.Component {
   render() {
     const isAuthenticated =
       (localStorage.getItem('userId') !== null &&
-        localStorage.getItem('acess_level') === '1') ||
-      localStorage.getItem('acess_level') === '4' ||
-      localStorage.getItem('acess_level') === '5';
+        localStorage.getItem('access_level') === '1') ||
+      localStorage.getItem('access_level') === '4' ||
+      localStorage.getItem('access_level') === '5';
 
     if (!isAuthenticated) {
       return <Redirect to="/" />;
     }
-    // if (localStorage.getItem('acess_level') === '5') {
+    // if (localStorage.getItem('access_level') === '5') {
     //   return <Redirect to="cover/launch" />;
     // }
 
@@ -498,7 +498,7 @@ class App extends React.Component {
           collapsible
           collapsed={this.state.collapsed}
         >
-          {localStorage.getItem('acess_level') === '1' && (
+          {localStorage.getItem('access_level') === '1' && (
             <div
               className="logo"
               style={{ textAlign: 'center', paddingTop: '0.48rem' }}
@@ -506,7 +506,7 @@ class App extends React.Component {
               Painel Administrativo
             </div>
           )}
-          {localStorage.getItem('acess_level') === '4' && (
+          {localStorage.getItem('access_level') === '4' && (
             <div
               className="logo"
               style={{ textAlign: 'center', paddingTop: '0.48rem' }}
@@ -516,12 +516,12 @@ class App extends React.Component {
           )}
 
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <Menu.Item key="1" icon={<DashboardOutlined />}>
                 <Link to="/profile">Dashboard</Link>
               </Menu.Item>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="2"
                 title="PCP"
@@ -554,7 +554,7 @@ class App extends React.Component {
                 </SubMenu>
               </SubMenu>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="pcpCadastros"
                 title="Cadastros"
@@ -580,8 +580,8 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
             )}
-            {(localStorage.getItem('acess_level') === '4' ||
-              localStorage.getItem('acess_level') === '1') && (
+            {(localStorage.getItem('access_level') === '4' ||
+              localStorage.getItem('access_level') === '1') && (
               <SubMenu
                 key="WnsInsumos"
                 title="Almoxarifado"
@@ -591,7 +591,7 @@ class App extends React.Component {
                   </span>
                 }
               >
-                {localStorage.getItem('acess_level') === '1' && (
+                {localStorage.getItem('access_level') === '1' && (
                   <SubMenu
                     key="WnsInsumosCadastros"
                     title="Cadastros"
@@ -619,8 +619,8 @@ class App extends React.Component {
                   </SubMenu>
                 )}
 
-                {(localStorage.getItem('acess_level') === '4' ||
-                  localStorage.getItem('acess_level') === '1') && (
+                {(localStorage.getItem('access_level') === '4' ||
+                  localStorage.getItem('access_level') === '1') && (
                   <SubMenu
                     key="WnsInsumosOperacao"
                     title="Operações"
@@ -663,7 +663,7 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="expedition"
                 title="Expedição"
@@ -734,7 +734,7 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="quality"
                 title="Qualidade"
@@ -759,7 +759,7 @@ class App extends React.Component {
                 </SubMenu>
               </SubMenu>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu key="rh" title="RH" icon={<UserOutlined />}>
                 <SubMenu
                   key="RhCadastros"
@@ -827,14 +827,14 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {(localStorage.getItem('acess_level') === '1' ||
-              localStorage.getItem('acess_level') === '5') && (
+            {(localStorage.getItem('access_level') === '1' ||
+              localStorage.getItem('access_level') === '5') && (
               <SubMenu
                 key="cover"
                 title="Controle de capas"
                 icon={<RightSquareOutlined />}
               >
-                {localStorage.getItem('acess_level') === '1' && (
+                {localStorage.getItem('access_level') === '1' && (
                   <SubMenu
                     key="registerCover"
                     title="Cadastros"
@@ -852,14 +852,14 @@ class App extends React.Component {
                   </SubMenu>
                 )}
 
-                {(localStorage.getItem('acess_level') === '1' ||
-                  localStorage.getItem('acess_level') === '5') && (
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '5') && (
                   <Menu.Item key="37" icon={<BarcodeOutlined />}>
                     <Link to="/cover/launch">Lançamento</Link>
                   </Menu.Item>
                 )}
-                {(localStorage.getItem('acess_level') === '1' ||
-                  localStorage.getItem('acess_level') === '5') && (
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '5') && (
                   <SubMenu
                     key="ExpeditionSearches"
                     title="Consultas"
@@ -879,7 +879,7 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
                 <Menu.Item
                   key="mountSeccionadora"
