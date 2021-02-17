@@ -18,6 +18,7 @@ import {
   Col,
   DatePicker,
 } from 'antd';
+import { format } from 'date-fns';
 const { RangePicker } = DatePicker;
 const Option = Select.Option;
 
@@ -135,10 +136,10 @@ export default function ProductionReport() {
       const columns = [
         {
           title: 'Código Fornecedor',
-          dataIndex: 'code',
-          key: 'code',
+          dataIndex: 'reference',
+          key: 'reference',
 
-          ...this.getColumnSearchProps('code'),
+          ...this.getColumnSearchProps('reference'),
         },
         {
           title: 'Código de barras',
@@ -149,18 +150,18 @@ export default function ProductionReport() {
         },
         {
           title: 'Produto',
-          dataIndex: 'product',
-          key: 'product',
+          dataIndex: 'productName',
+          key: 'productName',
 
-          ...this.getColumnSearchProps('id'),
+          ...this.getColumnSearchProps('productName'),
         },
         {
           title: 'Cor',
-          dataIndex: 'color',
-          key: 'color',
+          dataIndex: 'colorName',
+          key: 'colorName',
 
-          sorter: (a, b) => this.compareByAlph(a.color, b.color),
-          ...this.getColumnSearchProps('color'),
+          sorter: (a, b) => this.compareByAlph(a.colorName, b.colorName),
+          ...this.getColumnSearchProps('colorName'),
         },
         {
           title: 'Data Lançamento',
@@ -170,15 +171,15 @@ export default function ProductionReport() {
         },
         {
           title: 'Linha',
-          dataIndex: 'linha',
-          key: 'linha',
-          ...this.getColumnSearchProps('linha'),
+          dataIndex: 'lineName',
+          key: 'lineName',
+          ...this.getColumnSearchProps('lineName'),
         },
         {
           title: 'Funcionário',
-          dataIndex: 'employee',
-          key: 'employee',
-          ...this.getColumnSearchProps('employee'),
+          dataIndex: 'employeeName',
+          key: 'employeeName',
+          ...this.getColumnSearchProps('employeeName'),
         },
       ];
 
@@ -189,7 +190,19 @@ export default function ProductionReport() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [production, setProduction] = useState([]);
   const [csvData, setCsvData] = useState([]);
-  const [headers, setHeaders] = useState([]);
+  const [headers, setHeaders] = useState([
+    { label: 'Linha', key: 'lineName' },
+    { label: 'Produto', key: 'productName' },
+    { label: 'Cor', key: 'colorName' },
+    { label: 'Lançamento', key: 'release' },
+    { label: 'Nome do funcionário', key: 'employeeName' },
+    { label: 'Cod. de barras', key: 'barCode' },
+    { label: 'Cod. interno', key: 'reference' },
+    { label: 'Nome do setor', key: 'factorySectorName' },
+    { label: 'PCP', key: 'pcpName' },
+    { label: 'Volume', key: 'volume' },
+    { label: 'Pontos', key: 'points' },
+  ]);
   const [ready, setReady] = useState(false);
   const [intervalTime, setIntervalTime] = useState([]);
   useEffect(() => {
@@ -212,28 +225,24 @@ export default function ProductionReport() {
       intervalTime: intervalTime,
     };
     let response = [];
+    console.log('1');
     if (intervalTime.length == 0) {
       response = await api.get('production/item');
+      setReady(true);
+      setCsvData(response.data);
     } else {
       response = await api.post('production/item', data);
+      setReady(true);
+      setCsvData(response.data);
+      console.log('2');
     }
-
-    setCsvData(response.data);
-    setTimeout(
-      function () {
-        setReady(true);
-      }.bind(this),
-      500
-    );
-    setHeaders([
-      { key: 'Código' },
-      { key: 'Produto' },
-      { key: 'Cor' },
-      { key: 'Lançado' },
-      { key: 'Linha' },
-      { key: 'Funcionário' },
-    ]);
+    console.log('3');
   }
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: `relatorioDeProdução${format(new Date(), 'dd-MM-yyyy')}.csv`,
+  };
   return (
     <Layout
       style={{
@@ -269,7 +278,12 @@ export default function ProductionReport() {
           {ready && (
             <Button className="buttonGreen">
               <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
+              <CSVLink
+                {...csvReport}
+                style={{ color: '#fff' }}
+                separator={';'}
+                onClick={setReady(false)}
+              >
                 Download
               </CSVLink>
             </Button>
