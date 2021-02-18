@@ -203,41 +203,31 @@ export default function ProductionReport() {
     { label: 'Volume', key: 'volume' },
     { label: 'Pontos', key: 'points' },
   ]);
+
   const [ready, setReady] = useState(false);
+  const [load, setLoad] = useState(false);
   const [intervalTime, setIntervalTime] = useState([]);
+
   useEffect(() => {
     api.get('production/item', {}).then((response) => {
       setProduction(response.data);
+      setCsvData(response.data);
     });
   }, [refreshKey]);
 
-  async function Filter() {
+  async function handleDownload() {
+    setLoad(true);
     const data = {
       intervalTime: intervalTime,
     };
+
     const response = await api.post('production/item', data);
+    setLoad(false);
 
     setProduction(response.data);
+    setCsvData(response.data);
   }
-  async function Production() {
-    setReady(false);
-    const data = {
-      intervalTime: intervalTime,
-    };
-    let response = [];
-    console.log('1');
-    if (intervalTime.length == 0) {
-      response = await api.get('production/item');
-      setReady(true);
-      setCsvData(response.data);
-    } else {
-      response = await api.post('production/item', data);
-      setReady(true);
-      setCsvData(response.data);
-      console.log('2');
-    }
-    console.log('3');
-  }
+
   const csvReport = {
     data: csvData,
     headers: headers,
@@ -265,29 +255,41 @@ export default function ProductionReport() {
               color: '#3b4357',
               marginLeft: 8,
             }}
-            onClick={Filter}
+            onClick={(e) => {
+              e.preventDefault();
+              handleDownload();
+            }}
           />
         </Col>
         <Col span={12} align="end">
-          {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Production}>
-              <FileExcelOutlined style={{ marginRight: 8 }} />
-              Relatório de produção
-            </Button>
-          )}
-          {ready && (
-            <Button className="buttonGreen">
-              <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink
-                {...csvReport}
-                style={{ color: '#fff' }}
-                separator={';'}
-                onClick={setReady(false)}
+          <Button className="buttonGreen" loading={load}>
+            {ready == false && (
+              <div
+                onClick={() => {
+                  setReady(true);
+                }}
               >
-                Download
-              </CSVLink>
-            </Button>
-          )}
+                <FileExcelOutlined style={{ marginRight: 8 }} />
+                Relatório de produção
+              </div>
+            )}
+
+            {ready == true && (
+              <>
+                <DownloadOutlined />
+                <CSVLink
+                  {...csvReport}
+                  separator={';'}
+                  style={{ color: '#fff', marginLeft: 8 }}
+                  onClick={() => {
+                    setReady(false);
+                  }}
+                >
+                  Baixar
+                </CSVLink>
+              </>
+            )}
+          </Button>
         </Col>
       </Row>
 

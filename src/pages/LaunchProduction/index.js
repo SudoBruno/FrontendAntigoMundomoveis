@@ -280,7 +280,7 @@ export default function LaunchProduction() {
       if (employee_id !== '') {
         LaunchCode(data);
       } else {
-        const response = await api.get(`employee/${e}`);
+        const response = await api.get(`launch/production/employee/${e}`);
         setEmployeeName(response.data.name);
         setEmployeeId(response.data.id);
       }
