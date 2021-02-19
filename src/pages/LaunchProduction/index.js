@@ -109,8 +109,8 @@ export default function LaunchProduction() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -271,6 +271,7 @@ export default function LaunchProduction() {
   }
 
   async function EditBarCode(e) {
+    console.log(e);
     let data = {
       code: e,
       employee_id,
@@ -281,6 +282,7 @@ export default function LaunchProduction() {
         LaunchCode(data);
       } else {
         const response = await api.get(`employee/${e}`);
+        console.log(response.data);
         setEmployeeName(response.data.name);
         setEmployeeId(response.data.id);
       }
@@ -373,7 +375,7 @@ export default function LaunchProduction() {
                   setEmployeeName(e[1]);
                 }}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {employee.map((option) => {
                   return (

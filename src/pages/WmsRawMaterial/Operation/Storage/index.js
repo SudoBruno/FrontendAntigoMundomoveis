@@ -326,24 +326,26 @@ export default function SubProduct() {
           );
         }
       } else {
-        // try {
-        //   const response = await api.put('sub-product', data);
-        //   handleClose();
-        //   setRefreshKey((refreshKey) => refreshKey + 1);
-        //   openNotificationWithIcon(
-        //     'success',
-        //     'Alterado com sucesso',
-        //     'O subproduto foi alterado com sucesso'
-        //   );
-        //   setId(0);
-        //   setName('');
-        // } catch (error) {
-        //   openNotificationWithIcon(
-        //     'error',
-        //     'Erro ao editar',
-        //     'O subproduto não foi editado'
-        //   );
-        // }
+        try {
+          console.log("OI MANO");
+          let response = await api.put('/wmsrm/operation/storage/edit', data);
+
+          handleClose();
+          setRefreshKey((refreshKey) => refreshKey + 1);
+          openNotificationWithIcon(
+            'success',
+            'Alterado com sucesso',
+            'O subproduto foi alterado com sucesso'
+          );
+          setId(0);
+          setName('');
+        } catch (error) {
+          openNotificationWithIcon(
+            'error',
+            'Erro ao editar',
+            'O subproduto não foi editado'
+          );
+        }
       }
     } catch (error) {
       openNotificationWithIcon(
@@ -414,7 +416,7 @@ export default function SubProduct() {
         list[index].remaining = list[index].remaining - item.amount;
       }
     });
-
+    console.log(list);
     setItensStorage(list);
     let response;
     response = await api.get('wmsrm/register/warehouse');
@@ -620,7 +622,10 @@ export default function SubProduct() {
                       placeholder="Selecione"
                       size="large"
                       value={itensStorage.warehouse}
-                      onChange={(e) => handleWarehouseChange(e, index)}
+                      onChange={(e) => {
+                        handleWarehouseChange(e, index);
+                        itensStorage.position = '';
+                      }}
                     >
                       {warehouse.map((option) => {
                         return (
