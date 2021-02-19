@@ -81,6 +81,7 @@ import NotProductionReport from '../../pages/NotProductionReport';
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Search/Stock';
+import SingleCoverStock from '../../pages/Cover/Search/SingleCoverStock';
 import CoverInput from '../../pages/Cover/Search/Input';
 import CoverOutput from '../../pages/Cover/Search/Output';
 import CoverWarehouse from '../../pages/Cover/Register/Warehouse';
@@ -367,6 +368,13 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <CoverStock />,
   },
+  {
+    path: '/single/cover/stock',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <SingleCoverStock />,
+  },
+
   {
     path: '/cover/input',
     exact: true,
@@ -865,6 +873,12 @@ class App extends React.Component {
                     title="Consultas"
                     icon={<SearchOutlined />}
                   >
+                    <Menu.Item
+                      key="singleCoverStock"
+                      icon={<FileExcelOutlined />}
+                    >
+                      <Link to="/single/cover/stock">Capas</Link>
+                    </Menu.Item>
                     <Menu.Item key="38" icon={<FileExcelOutlined />}>
                       <Link to="/cover/stock">Estoque</Link>
                     </Menu.Item>

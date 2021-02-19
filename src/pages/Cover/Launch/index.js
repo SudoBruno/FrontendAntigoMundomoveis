@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BarcodeOutlined,
-  UndoOutlined,
-  ToolOutlined,
-  SearchOutlined,
-  FileExcelOutlined,
   CheckOutlined,
   DownloadOutlined,
   UploadOutlined,
-  SwapOutlined,
-  RedoOutlined,
-  ExportOutlined,
 } from '@ant-design/icons';
 import BarcodeReader from 'react-barcode-reader';
 import { Route, Link, Redirect } from 'react-router-dom';
 import './style.css';
 
 import {
-  Table,
   Button,
   Row,
   Col,
   Input,
-  Space,
   Modal,
   Select,
   Divider,
