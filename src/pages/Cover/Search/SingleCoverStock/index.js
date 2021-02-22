@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { CSVDownload, CSVLink } from 'react-csv';
+
 import Highlighter from 'react-highlight-words';
-import {
-  SearchOutlined,
-  FileExcelOutlined,
-  DownloadOutlined,
-} from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import api from '../../../../services/api';
-import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
+import {
+  Layout,
+  Table,
+  Button,
+  Row,
+  Input,
+  Space,
+  Select,
+  Col,
+  Form,
+} from 'antd';
 
 const Option = Select.Option;
 
-export default function PlantingStockMount() {
+export default function SingleCoverStock() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -124,62 +130,77 @@ export default function PlantingStockMount() {
     render() {
       const columns = [
         {
-          title: 'PCP',
-          dataIndex: 'PCP',
-          key: 'PCP',
-          ...this.getColumnSearchProps('PCP'),
+          title: 'ID',
+          dataIndex: 'stockId',
+          key: 'stockId',
+          ...this.getColumnSearchProps('stockId'),
         },
         {
-          title: 'Produto',
-          dataIndex: 'product',
-          key: 'product',
+          title: 'Capa',
+          dataIndex: 'coverName',
+          key: 'coverName',
 
-          ...this.getColumnSearchProps('product'),
-        },
-        {
-          title: 'Sub Produto',
-          dataIndex: 'subProduct',
-          key: 'subProduct',
-          ...this.getColumnSearchProps('subProduct'),
-        },
-        {
-          title: 'Setor',
-          dataIndex: 'sector',
-          key: 'sector',
-          ...this.getColumnSearchProps('sector'),
+          ...this.getColumnSearchProps('coverName'),
         },
         {
           title: 'Quantidade',
-          dataIndex: 'amount',
-          key: 'amount',
-          ...this.getColumnSearchProps('amount'),
+          dataIndex: 'quantity',
+          key: 'quantity',
+          ...this.getColumnSearchProps('quantity'),
+        },
+
+        {
+          title: 'Almoxarifado',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+          ...this.getColumnSearchProps('warehouseName'),
+        },
+        {
+          title: 'Rua',
+          dataIndex: 'streetName',
+          key: 'streetName',
+          ...this.getColumnSearchProps('streetName'),
         },
       ];
 
-      return <Table columns={columns} dataSource={mounts} />;
+      return <Table columns={columns} dataSource={stock} />;
     }
   }
 
-  const [mounts, setMounts] = useState([{}]);
+  const [stock, setStock] = useState([]);
 
   const [headers, setHeaders] = useState([
-    { label: 'PCP', key: 'PCP' },
-    { label: 'Produto', key: 'product' },
-    { label: 'SubProduto', key: 'subProduct' },
-    { label: 'Setor', key: 'sector' },
-    { label: 'Quantidade', key: 'amount' },
+    { label: 'id', key: 'stockId' },
+    { label: 'Capa', key: 'coverName' },
+    { label: 'Quantidade', key: 'quantity' },
+    { label: 'Almoxarifado', key: 'warehouseName' },
+    { label: 'Rua', key: 'streetName' },
   ]);
+  const [covers, setCovers] = useState([]);
+  const [totalCover, setTotalCover] = useState(0);
+
+  const [coverName, setCoverName] = useState('');
+  const [coverId, setCoverId] = useState(0);
+
   useEffect(() => {
-    api.get('production/mount', {}).then((response) => {
-      setMounts(response.data);
+    api.get('cover/stock', {}).then((response) => {
+      setStock(response.data);
     });
   }, []);
 
-  const csvReport = {
-    data: mounts,
-    headers: headers,
-    filename: 'mount.csv',
+  useEffect(() => {
+    api.get('sub-product/cover', {}).then((response) => {
+      setCovers(response.data);
+    });
+  }, []);
+
+  const findCover = async (e) => {
+    const response = await api.get(`cover/stock/${e}`);
+
+    setStock(response.data.stock);
+    setTotalCover(response.data.total);
   };
+
   return (
     <Layout
       style={{
@@ -189,27 +210,36 @@ export default function PlantingStockMount() {
         minHeight: 280,
       }}
     >
-      <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="end">
-          <Button type="submit" className="buttonGreen">
-            <DownloadOutlined />
-            <CSVLink
-              {...csvReport}
-              style={{ color: '#fff', marginLeft: 8 }}
-              separator={';'}
+      <Row style={{ marginBottom: 16, justifyContent: 'center' }} gutter={5}>
+        <Col span={12}>
+          <Form.Item labelCol={{ span: 23 }} label="Capa:" labelAlign={'left'}>
+            <Select
+              showSearch
+              placeholder="Selecione"
+              size="large"
+              value={coverName}
+              onChange={async (e) => {
+                setCoverId(e[0]);
+                setCoverName(e[1]);
+                findCover(e[0]);
+              }}
             >
-              Download
-            </CSVLink>
-          </Button>
-
-          {/* {ready && (
-            <Button className="buttonGreen">
-              <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
-                Download
-              </CSVLink>
-            </Button>
-          )} */}
+              {covers.map((option) => {
+                return (
+                  <>
+                    <Option key={option.id} value={[option.id, option.name]}>
+                      {option.name}
+                    </Option>
+                  </>
+                );
+              })}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={2} style={{ marginTop: '1%', fontSize: '20px' }}>
+          <h1>
+            Total: <h1 style={{ marginTop: '2%' }}>{totalCover}</h1>
+          </h1>
         </Col>
       </Row>
 

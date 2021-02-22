@@ -261,8 +261,13 @@ export default function Product() {
     setClientCode(response.data.client_code);
 
     response = await api.get(`product-sector/${e.id}`);
-
-    setSelectProductsSectors(response.data);
+    if (response.data.length > 0) {
+      setSelectProductsSectors(response.data);
+    } else {
+      setSelectProductsSectors([
+        { subproduct: '', sector: '', points: '', order: '' },
+      ]);
+    }
 
     response = await api.get(`product-ins/${e.id}`);
     setSelectINS(response.data);

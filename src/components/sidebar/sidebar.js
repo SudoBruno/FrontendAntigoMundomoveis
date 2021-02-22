@@ -12,7 +12,6 @@ import {
   BarcodeOutlined,
   FileExcelOutlined,
   UserOutlined,
-  UserAddOutlined,
   SearchOutlined,
   SignalFilled,
 } from '@ant-design/icons';
@@ -82,6 +81,7 @@ import NotProductionReport from '../../pages/NotProductionReport';
 import './style.css';
 import CoverLaunch from '../../pages/Cover/Launch';
 import CoverStock from '../../pages/Cover/Search/Stock';
+import SingleCoverStock from '../../pages/Cover/Search/SingleCoverStock';
 import CoverInput from '../../pages/Cover/Search/Input';
 import CoverOutput from '../../pages/Cover/Search/Output';
 import CoverWarehouse from '../../pages/Cover/Register/Warehouse';
@@ -93,11 +93,11 @@ import CallReportPoint from '../..//pages/RH/CallListPointReport';
 import PlantingMount from '../../pages/Planting/Mount';
 import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingStockMount from '../../pages/Planting/Search/MountStock';
-import PlantingProductionMount from '../../pages/Planting/Search/ProductionMount';
+import PlantingDayProductionMount from '../../pages/Planting/Search/DayProductionMount';
+import PlantingDayDefectMount from '../../pages/Planting/Search/DayDefectMount';
 
 import DefectLevel from '../../pages/Quality/DefectLevel/index';
 import Quality from '../../pages/Quality/Defect/index';
-import CreateUser from '../../pages/CreateUser';
 
 const userName = localStorage.getItem('userName');
 
@@ -369,6 +369,13 @@ const routes = [
     main: () => <CoverStock />,
   },
   {
+    path: '/single/cover/stock',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <SingleCoverStock />,
+  },
+
+  {
     path: '/cover/input',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
@@ -423,10 +430,16 @@ const routes = [
     main: () => <PlantingStockMount />,
   },
   {
-    path: '/production/mount',
+    path: '/day/production/mount',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <PlantingProductionMount />,
+    main: () => <PlantingDayProductionMount />,
+  },
+  {
+    path: '/day/defect/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingDayDefectMount />,
   },
   {
     path: '/seccionadora/mount',
@@ -446,12 +459,6 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <Quality />,
   },
-  {
-    path: '/createUser',
-    exact: true,
-    sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <CreateUser />,
-  },
 ];
 
 class App extends React.Component {
@@ -468,14 +475,14 @@ class App extends React.Component {
   render() {
     const isAuthenticated =
       (localStorage.getItem('userId') !== null &&
-        localStorage.getItem('acess_level') === '1') ||
-      localStorage.getItem('acess_level') === '4' ||
-      localStorage.getItem('acess_level') === '5';
+        localStorage.getItem('access_level') === '1') ||
+      localStorage.getItem('access_level') === '4' ||
+      localStorage.getItem('access_level') === '5';
 
     if (!isAuthenticated) {
       return <Redirect to="/" />;
     }
-    // if (localStorage.getItem('acess_level') === '5') {
+    // if (localStorage.getItem('access_level') === '5') {
     //   return <Redirect to="cover/launch" />;
     // }
 
@@ -499,7 +506,7 @@ class App extends React.Component {
           collapsible
           collapsed={this.state.collapsed}
         >
-          {localStorage.getItem('acess_level') === '1' && (
+          {localStorage.getItem('access_level') === '1' && (
             <div
               className="logo"
               style={{ textAlign: 'center', paddingTop: '0.48rem' }}
@@ -507,7 +514,7 @@ class App extends React.Component {
               Painel Administrativo
             </div>
           )}
-          {localStorage.getItem('acess_level') === '4' && (
+          {localStorage.getItem('access_level') === '4' && (
             <div
               className="logo"
               style={{ textAlign: 'center', paddingTop: '0.48rem' }}
@@ -517,18 +524,12 @@ class App extends React.Component {
           )}
 
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <Menu.Item key="1" icon={<DashboardOutlined />}>
                 <Link to="/profile">Dashboard</Link>
               </Menu.Item>
             )}
-            <Menu.Item
-              key="productionReport"
-              icon={<UserAddOutlined />}
-            >
-              <Link to="/createUser"> Criar Usuário </Link>
-            </Menu.Item>
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="2"
                 title="PCP"
@@ -561,7 +562,7 @@ class App extends React.Component {
                 </SubMenu>
               </SubMenu>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="pcpCadastros"
                 title="Cadastros"
@@ -587,90 +588,90 @@ class App extends React.Component {
                 </Menu.Item>
               </SubMenu>
             )}
-            {(localStorage.getItem('acess_level') === '4' ||
-              localStorage.getItem('acess_level') === '1') && (
-                <SubMenu
-                  key="WnsInsumos"
-                  title="Almoxarifado"
-                  icon={
-                    <span className="anticon anticon-bank">
-                      <FiPackage size={16} color="#fff" />
-                    </span>
-                  }
-                >
-                  {localStorage.getItem('acess_level') === '1' && (
-                    <SubMenu
-                      key="WnsInsumosCadastros"
-                      title="Cadastros"
-                      icon={<PlusOutlined />}
-                    >
-                      <Menu.Item key="11" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawWarehouse">Almoxarifados</Link>
-                      </Menu.Item>
-
-                      <Menu.Item key="12" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawSupplier">Fornecedores</Link>
-                      </Menu.Item>
-
-                      <Menu.Item key="15" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
-                      </Menu.Item>
-
-                      <Menu.Item key="13" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawMaterial">Insumos</Link>
-                      </Menu.Item>
-
-                      <Menu.Item key="14" icon={<RightSquareOutlined />}>
-                        <Link to="/wmsRawPosition">Posições</Link>
-                      </Menu.Item>
-                    </SubMenu>
-                  )}
-
-                  {(localStorage.getItem('acess_level') === '4' ||
-                    localStorage.getItem('acess_level') === '1') && (
-                      <SubMenu
-                        key="WnsInsumosOperacao"
-                        title="Operações"
-                        icon={<ShoppingCartOutlined />}
-                      >
-                        <Menu.Item key="16" icon={<RightSquareOutlined />}>
-                          <Link to="/wmsRawEntry">Entradas</Link>
-                        </Menu.Item>
-
-                        <Menu.Item key="17" icon={<RightSquareOutlined />}>
-                          <Link to="/wmsRawStorage">Armazenagens</Link>
-                        </Menu.Item>
-
-                        <Menu.Item key="18" icon={<RightSquareOutlined />}>
-                          <Link to="/wmsRawExit">Saídas</Link>
-                        </Menu.Item>
-                      </SubMenu>
-                    )}
-
+            {(localStorage.getItem('access_level') === '4' ||
+              localStorage.getItem('access_level') === '1') && (
+              <SubMenu
+                key="WnsInsumos"
+                title="Almoxarifado"
+                icon={
+                  <span className="anticon anticon-bank">
+                    <FiPackage size={16} color="#fff" />
+                  </span>
+                }
+              >
+                {localStorage.getItem('access_level') === '1' && (
                   <SubMenu
-                    key="WnsInsumosSearches"
-                    title="Consultas"
-                    icon={<SearchOutlined />}
+                    key="WnsInsumosCadastros"
+                    title="Cadastros"
+                    icon={<PlusOutlined />}
                   >
-                    <Menu.Item key="19" icon={<FileExcelOutlined />}>
-                      <Link to="/wmsRawStorage/Search">Estoque</Link>
+                    <Menu.Item key="11" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawWarehouse">Almoxarifados</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="21" icon={<FileExcelOutlined />}>
-                      <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
-                    </Menu.Item>
-                    <Menu.Item key="32" icon={<FileExcelOutlined />}>
-                      <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
+                    <Menu.Item key="12" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawSupplier">Fornecedores</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="33" icon={<FileExcelOutlined />}>
-                      <Link to="/wmsRawMaterial/pcp">PCP's</Link>
+                    <Menu.Item key="15" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="13" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawMaterial">Insumos</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="14" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawPosition">Posições</Link>
                     </Menu.Item>
                   </SubMenu>
-                </SubMenu>
-              )}
+                )}
 
-            {localStorage.getItem('acess_level') === '1' && (
+                {(localStorage.getItem('access_level') === '4' ||
+                  localStorage.getItem('access_level') === '1') && (
+                  <SubMenu
+                    key="WnsInsumosOperacao"
+                    title="Operações"
+                    icon={<ShoppingCartOutlined />}
+                  >
+                    <Menu.Item key="16" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawEntry">Entradas</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="17" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawStorage">Armazenagens</Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="18" icon={<RightSquareOutlined />}>
+                      <Link to="/wmsRawExit">Saídas</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+
+                <SubMenu
+                  key="WnsInsumosSearches"
+                  title="Consultas"
+                  icon={<SearchOutlined />}
+                >
+                  <Menu.Item key="19" icon={<FileExcelOutlined />}>
+                    <Link to="/wmsRawStorage/Search">Estoque</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="21" icon={<FileExcelOutlined />}>
+                    <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
+                  </Menu.Item>
+                  <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                    <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key="33" icon={<FileExcelOutlined />}>
+                    <Link to="/wmsRawMaterial/pcp">PCP's</Link>
+                  </Menu.Item>
+                </SubMenu>
+              </SubMenu>
+            )}
+
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="expedition"
                 title="Expedição"
@@ -741,7 +742,7 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu
                 key="quality"
                 title="Qualidade"
@@ -766,7 +767,7 @@ class App extends React.Component {
                 </SubMenu>
               </SubMenu>
             )}
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu key="rh" title="RH" icon={<UserOutlined />}>
                 <SubMenu
                   key="RhCadastros"
@@ -834,59 +835,65 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {(localStorage.getItem('acess_level') === '1' ||
-              localStorage.getItem('acess_level') === '5') && (
-                <SubMenu
-                  key="cover"
-                  title="Controle de capas"
-                  icon={<RightSquareOutlined />}
-                >
-                  {localStorage.getItem('acess_level') === '1' && (
-                    <SubMenu
-                      key="registerCover"
-                      title="Cadastros"
-                      icon={<PlusOutlined />}
+            {(localStorage.getItem('access_level') === '1' ||
+              localStorage.getItem('access_level') === '5') && (
+              <SubMenu
+                key="cover"
+                title="Controle de capas"
+                icon={<RightSquareOutlined />}
+              >
+                {localStorage.getItem('access_level') === '1' && (
+                  <SubMenu
+                    key="registerCover"
+                    title="Cadastros"
+                    icon={<PlusOutlined />}
+                  >
+                    <Menu.Item key="7" icon={<RightSquareOutlined />}>
+                      <Link to="/sub-product">Subproduto</Link>
+                    </Menu.Item>
+                    <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
+                      <Link to="/cover/warehouse">Estoques</Link>
+                    </Menu.Item>
+                    <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
+                      <Link to="/cover/street">Rua</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '5') && (
+                  <Menu.Item key="37" icon={<BarcodeOutlined />}>
+                    <Link to="/cover/launch">Lançamento</Link>
+                  </Menu.Item>
+                )}
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '5') && (
+                  <SubMenu
+                    key="ExpeditionSearches"
+                    title="Consultas"
+                    icon={<SearchOutlined />}
+                  >
+                    <Menu.Item
+                      key="singleCoverStock"
+                      icon={<FileExcelOutlined />}
                     >
-                      <Menu.Item key="7" icon={<RightSquareOutlined />}>
-                        <Link to="/sub-product">Subproduto</Link>
-                      </Menu.Item>
-                      <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
-                        <Link to="/cover/warehouse">Estoques</Link>
-                      </Menu.Item>
-                      <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
-                        <Link to="/cover/street">Rua</Link>
-                      </Menu.Item>
-                    </SubMenu>
-                  )}
+                      <Link to="/single/cover/stock">Capas</Link>
+                    </Menu.Item>
+                    <Menu.Item key="38" icon={<FileExcelOutlined />}>
+                      <Link to="/cover/stock">Estoque</Link>
+                    </Menu.Item>
+                    <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
+                      <Link to="/cover/input">Entrada</Link>
+                    </Menu.Item>
+                    <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
+                      <Link to="/cover/output">Saida</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+              </SubMenu>
+            )}
 
-                  {(localStorage.getItem('acess_level') === '1' ||
-                    localStorage.getItem('acess_level') === '5') && (
-                      <Menu.Item key="37" icon={<BarcodeOutlined />}>
-                        <Link to="/cover/launch">Lançamento</Link>
-                      </Menu.Item>
-                    )}
-                  {(localStorage.getItem('acess_level') === '1' ||
-                    localStorage.getItem('acess_level') === '5') && (
-                      <SubMenu
-                        key="ExpeditionSearches"
-                        title="Consultas"
-                        icon={<SearchOutlined />}
-                      >
-                        <Menu.Item key="38" icon={<FileExcelOutlined />}>
-                          <Link to="/cover/stock">Estoque</Link>
-                        </Menu.Item>
-                        <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
-                          <Link to="/cover/input">Entrada</Link>
-                        </Menu.Item>
-                        <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
-                          <Link to="/cover/output">Saida</Link>
-                        </Menu.Item>
-                      </SubMenu>
-                    )}
-                </SubMenu>
-              )}
-
-            {localStorage.getItem('acess_level') === '1' && (
+            {localStorage.getItem('access_level') === '1' && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
                 <Menu.Item
                   key="mountSeccionadora"
@@ -902,14 +909,17 @@ class App extends React.Component {
                   title="Consultas"
                   icon={<SearchOutlined />}
                 >
-                  <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
+                  {/* <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
                     <Link to="/stock/mount">Na Linha</Link>
-                  </Menu.Item>
+                  </Menu.Item> */}
                   <Menu.Item
                     key="mountProduction"
                     icon={<RightSquareOutlined />}
                   >
-                    <Link to="/production/mount">Em Produção</Link>
+                    <Link to="/day/production/mount">produzido</Link>
+                  </Menu.Item>
+                  <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
+                    <Link to="/day/defect/mount">Defeitos</Link>
                   </Menu.Item>
                 </SubMenu>
               </SubMenu>

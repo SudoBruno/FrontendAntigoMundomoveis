@@ -31,23 +31,23 @@ export default function Logon(params) {
 
       localStorage.setItem('userId', response.data.id);
       localStorage.setItem('userName', response.data.name);
-      localStorage.setItem('acess_level', response.data.acess_level);
+      localStorage.setItem('access_level', response.data.access_level);
       if (
-        response.data.acess_level === '1' ||
-        response.data.acess_level === '4'
+        response.data.access_level === '1' ||
+        response.data.access_level === '4'
       ) {
         history.push('/profile');
         setLoading('none');
-      } else if (response.data.acess_level === '2') {
+      } else if (response.data.access_level === '2') {
         history.push('/launch-product');
         setLoading('none');
-      } else if (response.data.acess_level === '3') {
+      } else if (response.data.access_level === '3') {
         history.push('/launch-expedition');
         setLoading('none');
-      } else if (response.data.acess_level === '5') {
+      } else if (response.data.access_level === '5') {
         history.push('/cover/launch');
         setLoading('none');
-      } else if (response.data.acess_level === '6') {
+      } else if (response.data.access_level === '6') {
         history.push('/callList');
         setLoading('none');
       }

@@ -109,8 +109,8 @@ export default function LaunchProduction() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -281,8 +281,7 @@ export default function LaunchProduction() {
       if (employee_id !== '') {
         LaunchCode(data);
       } else {
-        const response = await api.get(`employee/${e}`);
-        console.log(response.data);
+        const response = await api.get(`launch/production/employee/${e}`);
         setEmployeeName(response.data.name);
         setEmployeeId(response.data.id);
       }
@@ -375,7 +374,7 @@ export default function LaunchProduction() {
                   setEmployeeName(e[1]);
                 }}
 
-              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {employee.map((option) => {
                   return (
@@ -398,7 +397,7 @@ export default function LaunchProduction() {
               <Input
                 name="amount"
                 placeholder="Digite o código"
-                type={'number'}
+                type={'text'}
                 // value={product.amount}
                 onChange={(e) => setCode(e.target.value)}
               />

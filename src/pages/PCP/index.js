@@ -269,6 +269,7 @@ export default function PCP() {
 
   const handleDownload = async (e) => {
     const response = await api.get(`production/product-plan-control/${e.id}`);
+    console.log(response);
 
     setData(response.data);
   };

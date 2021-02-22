@@ -18,7 +18,7 @@ function TagLayout() {
 
   return (
     <>
-      <div class="tags">
+      <div className="tags">
         {barCodes.map((barCode, index) => {
           return (
             <span>
