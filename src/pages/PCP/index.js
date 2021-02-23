@@ -26,7 +26,7 @@ import {
   DatePicker,
   Popconfirm,
 } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 
@@ -107,8 +107,8 @@ export default function PCP() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -175,6 +175,10 @@ export default function PCP() {
           render: (text, record) => {
             return (
               <React.Fragment>
+                <EditOutlined
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => { handleEdit(record); setIsEdit(true) }}
+                />
                 <Link
                   to={`/pcp/${record.id}`}
                   style={{ color: 'rgb(0,0,0,0.65', marginRight: 20 }}
@@ -266,11 +270,10 @@ export default function PCP() {
   const [productionLineName, setProductionLineName] = useState('');
   const [productionPlanControl, setProductionPlanControl] = useState([]);
   const [colors, setColors] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleDownload = async (e) => {
     const response = await api.get(`production/product-plan-control/${e.id}`);
-    console.log(response);
-
     setData(response.data);
   };
 
@@ -304,7 +307,7 @@ export default function PCP() {
     setProductionLineName('');
     setShow(false);
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => { setShow(true) };
 
   useEffect(() => {
     api.get('product-plan-control ', {}).then((response) => {
@@ -334,7 +337,16 @@ export default function PCP() {
     setId(e.id);
     setName(e.name);
 
-    const response = await api.get(`production-line-sector/${e.id}`);
+    const response = await api.get(`/production-plan-control/${e.id}`);
+    setDateInitial(response.data[0].initialDate);
+    setDateFinal(response.data[0].finalDate);
+    setProductionLineId(response.data[0].productionLineId)
+    setProductionLineName(response.data[0].productionLineName);
+
+    setSelectProducts(response.data);
+    console.log(response.data);
+
+    setIsEdit(true);
 
     handleShow();
   }
@@ -368,7 +380,7 @@ export default function PCP() {
 
   async function handleRegister(e) {
     e.preventDefault();
-
+    setIsEdit(false);
     if (dateFinal < dateInitial) {
       openNotificationWithIcon(
         'error',
@@ -380,7 +392,7 @@ export default function PCP() {
     const data = {
       id,
       name,
-      selectProduct,
+      selectProduct: selectProduct,
       dateFinal,
       dateInitial,
       selectProductionLine: productionLineId,
@@ -416,8 +428,7 @@ export default function PCP() {
         }
       } else {
         try {
-          const response = await api.put('product-plan-control', data);
-
+          const response = await api.put('/production-plan-control', data);
           handleClose();
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -500,7 +511,7 @@ export default function PCP() {
             <Button
               className="buttonGreen"
               style={{ marginRight: 5, marginTop: 3, fontSize: '13px' }}
-              onClick={handleShow}
+              onClick={() => { handleShow(); setIsEdit(false) }}
             >
               <PlusOutlined />
               Novo PCP
@@ -587,7 +598,7 @@ export default function PCP() {
                   setProductionLineName(e[1]);
                 }}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {productionLines.map((option) => {
                   return (
@@ -608,7 +619,7 @@ export default function PCP() {
         {selectProduct.map((product, index) => {
           return (
             <>
-              <Row gutter={5}>
+              <Row gutter={5} hidden={isEdit == true ? true : false}>
                 <Col span={16}>
                   <Form.Item
                     labelCol={{ span: 23 }}
@@ -616,13 +627,13 @@ export default function PCP() {
                     labelAlign={'left'}
                   >
                     <Select
-                      showSearch
+                      showSearchs
                       placeholder="Selecione"
                       size="large"
                       value={product.name}
                       onChange={(e) => HandleChange(e, index)}
 
-                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {products.map((option) => {
                         return (
