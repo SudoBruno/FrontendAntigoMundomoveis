@@ -589,7 +589,7 @@ export default function PCP() {
               labelAlign={'left'}
             >
               <Select
-                // showSearch
+                showSearch
                 placeholder="Selecione"
                 size="large"
                 value={productionLineName}
@@ -627,7 +627,7 @@ export default function PCP() {
                     labelAlign={'left'}
                   >
                     <Select
-                      showSearchs
+                      showSearch
                       placeholder="Selecione"
                       size="large"
                       value={product.name}
