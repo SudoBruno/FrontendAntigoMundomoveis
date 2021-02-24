@@ -111,8 +111,8 @@ export default function SubProduct() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -255,52 +255,6 @@ export default function SubProduct() {
   async function handleRegister(e) {
     e.preventDefault();
 
-    itensStorages.map((item) => {
-      // if (item.lote === '' || item.lote === undefined) {
-      //   openNotificationWithIcon(
-      //     'error',
-      //     'Erro ao adicionar',
-      //     'O lote não foi definido'
-      //   );
-      // }
-      if (item.amount === '' || item.amount === undefined || item.amount < 0) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao adicionar',
-          'Essa quantidade não é valida'
-        );
-        return;
-      }
-      if (item.entry === '' || item.entry === undefined) {
-        openNotificationWithIcon('error', 'Erro ao adicionar', 'Entrada não');
-        return;
-      }
-      if (item.ins === '' || item.ins === undefined) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao adicionar',
-          'INS não selecionado'
-        );
-        return;
-      }
-
-      if (item.position === '' || item.position === undefined) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao adicionar',
-          'Posição nao selecionada'
-        );
-        return;
-      }
-      if (item.warehouse === '' || item.warehouse === undefined) {
-        openNotificationWithIcon(
-          'error',
-          'Erro ao adicionar',
-          'Almoxarifado não selecionado'
-        );
-        return;
-      }
-    });
     const data = {
       id,
       storages: itensStorages,
@@ -327,7 +281,6 @@ export default function SubProduct() {
         }
       } else {
         try {
-          console.log("OI MANO");
           let response = await api.put('/wmsrm/operation/storage/edit', data);
 
           handleClose();
@@ -379,7 +332,7 @@ export default function SubProduct() {
     setName('');
     setId(0);
 
-    setItensStorage([{ ins_name: '' }]);
+    setItensStorage([{ insName: '' }]);
 
     setShow(false);
   };
@@ -391,8 +344,8 @@ export default function SubProduct() {
   const handleINSChange = async (e, index) => {
     const list = [...itensStorages];
 
-    list[index].ins = e[0];
-    list[index].ins_name = `${e[1]} - ${e[2]}`;
+    list[index].insId = e[0];
+    list[index].insName = `${e[1]} - ${e[2]}`;
 
     const response = await api.get(`rawmaterial/entry/${e[0]}`);
     setEntry(response.data);
@@ -402,21 +355,21 @@ export default function SubProduct() {
 
   const handleEntryChange = async (e, index) => {
     const list = [...itensStorages];
-    list[index].entry = e[0];
-    list[index].entryitens = e[1];
-    list[index].entry_name = e[2];
+    list[index].entryId = e[0];
+    list[index].entryItensId = e[1];
+    list[index].entryName = e[2];
     list[index].remaining = e[3];
 
     list.map((item) => {
       if (
-        item.entryitens === list[index].entryitens &&
-        item.ins === list[index].ins &&
+        item.entryitensId === list[index].entryitensId &&
+        item.insId === list[index].insId &&
         item.amount !== undefined
       ) {
         list[index].remaining = list[index].remaining - item.amount;
       }
     });
-    console.log(list);
+
     setItensStorage(list);
     let response;
     response = await api.get('wmsrm/register/warehouse');
@@ -424,7 +377,7 @@ export default function SubProduct() {
 
     try {
       const remaining = await api.get(
-        `wmsrm/operation/storage/remaining/${list[index].ins}/${list[index].entry}`
+        `wmsrm/operation/storage/remaining/${list[index].insId}/${list[index].entryId}`
       );
       // list[index].remaining = remaining.data.quantity;
     } catch (error) {
@@ -438,7 +391,8 @@ export default function SubProduct() {
 
   const handleWarehouseChange = async (e, index) => {
     const list = [...itensStorages];
-    list[index].warehouse = e;
+    list[index].warehouseId = e[0];
+    list[index].warehouseName = e[1];
 
     const response = await api.get(`wmsrm/register/position/warehouse/${e}`);
     setPosition(response.data);
@@ -447,7 +401,8 @@ export default function SubProduct() {
   };
   const handlePositionChange = async (e, index) => {
     const list = [...itensStorages];
-    list[index].position = e;
+    list[index].positionId = e[0];
+    list[index].positionName = e[1];
 
     setItensStorage(list);
   };
@@ -552,7 +507,7 @@ export default function SubProduct() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={itensStorage.ins_name}
+                      value={itensStorage.insName}
                       onChange={(e) => handleINSChange(e, index)}
                     >
                       {ins.map((option) => {
@@ -585,9 +540,10 @@ export default function SubProduct() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={itensStorage.entry_name}
+                      value={itensStorage.entryName}
                       onChange={(e) => handleEntryChange(e, index)}
                     >
+                      {console.log(entry)}
                       {entry.map((option) => {
                         return (
                           <>
@@ -615,22 +571,24 @@ export default function SubProduct() {
                     labelCol={{ span: 23 }}
                     label="Almoxarifado"
                     labelAlign={'left'}
-
                   >
                     <Select
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={itensStorage.warehouse}
+                      value={itensStorage.warehouseName}
                       onChange={(e) => {
                         handleWarehouseChange(e, index);
-                        itensStorage.position = '';
+                        itensStorage.positionName = '';
                       }}
                     >
                       {warehouse.map((option) => {
                         return (
                           <>
-                            <Option key={option.id} value={option.id}>
+                            <Option
+                              key={option.id}
+                              value={[option.id, option.description]}
+                            >
                               {option.description}
                             </Option>
                           </>
@@ -649,14 +607,17 @@ export default function SubProduct() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={itensStorage.position}
+                      value={itensStorage.positionName}
                       onChange={(e) => handlePositionChange(e, index)}
                     >
                       {position.map((option) => {
                         return (
                           <>
-                            <Option key={option.id} value={option.id}>
-                              {option.position_name}
+                            <Option
+                              key={option.id}
+                              value={[option.id, option.positionName]}
+                            >
+                              {option.positionName}
                             </Option>
                           </>
                         );
@@ -706,7 +667,11 @@ export default function SubProduct() {
                   title="Novo SubProduto"
                   style={{ width: '100%' }}
                   onClick={handleAddClick}
-                  hidden={itensStorage.warehouse && itensStorage.amount ? false : true}
+                  hidden={
+                    itensStorage.warehouseId && itensStorage.amount
+                      ? false
+                      : true
+                  }
                 >
                   <PlusOutlined />
                 </Button>

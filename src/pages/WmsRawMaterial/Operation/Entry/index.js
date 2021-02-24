@@ -107,8 +107,8 @@ export default function Entry() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -283,7 +283,7 @@ export default function Entry() {
         description: '',
         errorRawMaterial: '',
         errorQuantity: '',
-        unitaryValue: ''
+        unitaryValue: '',
       },
     ]);
 
@@ -309,7 +309,7 @@ export default function Entry() {
 
   const HandleChangeQuantity = (value, index) => {
     var NewArray = [...rawMaterials];
-    console.log(rawMaterials)
+
     NewArray[index].quantity = value;
     NewArray[index].gradeValues =
       NewArray[index].unitaryValue *
@@ -370,15 +370,12 @@ export default function Entry() {
     setDescription(e.name);
     setFiscalNumber(e.fiscalNumber);
     setIdUser(e.user_id + ' - ' + e.user);
-    setLockedEntry(e.locked_entry); //Close entry
+    setLockedEntry(e.closed_entry); //Close entry
+    console.log(e.locked_entry, 'set', e);
 
-
-    console.log(e.id);
     const resp = await api.get(`/wmsrm/operation/entry-itens/${e.id}`);
-    console.log(resp.data, 'oi');
 
     setRawMaterials(resp.data);
-
 
     handleShow();
   }
@@ -461,7 +458,6 @@ export default function Entry() {
             setId(0);
             setDescription('');
             setErrorDescription('');
-
 
             handleClose();
           } catch (error) {
@@ -547,8 +543,9 @@ export default function Entry() {
               labelAlign={'left'}
               required
             >
+              {console.log(locked_entry)}
               <Input
-                disabled={locked_entry === true ? true : false}
+                disabled={locked_entry}
                 name="description"
                 placeholder="Descreva a entrada"
                 onChange={(e) => {
@@ -569,7 +566,7 @@ export default function Entry() {
               required
             >
               <Input
-                disabled={locked_entry === true ? true : false}
+                disabled={locked_entry}
                 name="fiscalNumber"
                 placeholder="Digite o número da nota fiscal"
                 onChange={(e) => {
@@ -608,7 +605,7 @@ export default function Entry() {
                     required
                   >
                     <Select
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       showSearch
                       placeholder="Selecione o insumo"
                       size="large"
@@ -620,9 +617,12 @@ export default function Entry() {
                       }
                       onChange={(e) => HandleChangeRawMaterial(e, index)}
                       value={
-                        selectRawMaterial.ins + ' / ' +
+                        selectRawMaterial.ins +
+                        ' / ' +
                         selectRawMaterial.description +
-                        ' (' + selectRawMaterial.un_measure + ')'
+                        ' (' +
+                        selectRawMaterial.un_measure +
+                        ')'
                       }
                     >
                       {dropRawMaterial.map((option) => {
@@ -663,6 +663,7 @@ export default function Entry() {
                       name="quantity"
                       type="number"
                       max="999999999"
+                      disabled={locked_entry}
                       step="0.001"
                       value={selectRawMaterial.quantity}
                       onChange={(e) =>
@@ -679,7 +680,7 @@ export default function Entry() {
                     required
                   >
                     <Input
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       name="price"
                       type="number"
                       min="0"
@@ -700,7 +701,7 @@ export default function Entry() {
                     labelAlign={'left'}
                   >
                     <Input
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       name="price"
                       type="number"
                       min="0"
@@ -708,7 +709,6 @@ export default function Entry() {
                       step="0.01"
                       disabled
                       value={selectRawMaterial.gradeValues}
-
                       style={{ width: '80%', marginRight: '5%' }}
                     />
 
@@ -724,7 +724,7 @@ export default function Entry() {
                 <Col span={24}>
                   {rawMaterials.length - 1 === index && (
                     <Button
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       key="primary"
                       title="Novo insumo"
                       style={{ width: '100%' }}
