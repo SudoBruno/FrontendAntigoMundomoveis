@@ -477,7 +477,8 @@ class App extends React.Component {
       (localStorage.getItem('userId') !== null &&
         localStorage.getItem('access_level') === '1') ||
       localStorage.getItem('access_level') === '4' ||
-      localStorage.getItem('access_level') === '5';
+      localStorage.getItem('access_level') === '5' ||
+      localStorage.getItem('access_level') === '7';
 
     if (!isAuthenticated) {
       return <Redirect to="/" />;
@@ -893,7 +894,8 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('access_level') === '1' && (
+            {(localStorage.getItem('access_level') === '1' ||
+              localStorage.getItem('access_level') === '7') && (
               <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
                 <Menu.Item
                   key="mountSeccionadora"
@@ -904,24 +906,26 @@ class App extends React.Component {
                 <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
                   <Link to="/mount">Linha</Link>
                 </Menu.Item>
-                <SubMenu
-                  key="WnsInsumosSearches"
-                  title="Consultas"
-                  icon={<SearchOutlined />}
-                >
-                  {/* <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
+                {localStorage.getItem('access_level') === '1' && (
+                  <SubMenu
+                    key="WnsInsumosSearches"
+                    title="Consultas"
+                    icon={<SearchOutlined />}
+                  >
+                    {/* <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
                     <Link to="/stock/mount">Na Linha</Link>
                   </Menu.Item> */}
-                  <Menu.Item
-                    key="mountProduction"
-                    icon={<RightSquareOutlined />}
-                  >
-                    <Link to="/day/production/mount">produzido</Link>
-                  </Menu.Item>
-                  <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
-                    <Link to="/day/defect/mount">Defeitos</Link>
-                  </Menu.Item>
-                </SubMenu>
+                    <Menu.Item
+                      key="mountProduction"
+                      icon={<RightSquareOutlined />}
+                    >
+                      <Link to="/day/production/mount">produzido</Link>
+                    </Menu.Item>
+                    <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
+                      <Link to="/day/defect/mount">Defeitos</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
               </SubMenu>
             )}
             <Menu.Item key="40" icon={<ExportOutlined />}>

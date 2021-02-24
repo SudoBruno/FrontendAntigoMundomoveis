@@ -34,8 +34,10 @@ export default function Logon(params) {
       localStorage.setItem('access_level', response.data.access_level);
       if (
         response.data.access_level === '1' ||
-        response.data.access_level === '4'
+        response.data.access_level === '4' ||
+        response.data.access_level === '7'
       ) {
+        console.log('aq');
         history.push('/profile');
         setLoading('none');
       } else if (response.data.access_level === '2') {
@@ -71,14 +73,14 @@ export default function Logon(params) {
           <h1>Faça seu login</h1>
 
           <input
-            placeholder="Seu Usuario"
+            placeholder="Seu Usuário"
             value={user_name}
             onChange={(e) => SetUserName(e.target.value)}
           />
           <input
             placeholder="Sua Senha"
             type="password"
-            value={password}
+            // value={password}
             onChange={(e) => SetPassword(e.target.value)}
           />
 

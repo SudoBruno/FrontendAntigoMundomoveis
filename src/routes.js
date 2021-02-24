@@ -23,8 +23,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );
@@ -36,8 +36,8 @@ const ExpeditionRoute = ({ component: Component, ...rest }) => (
       Expedition() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );
@@ -49,8 +49,8 @@ const CoverRoute = ({ component: Component, ...rest }) => (
       Cover() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );
@@ -64,7 +64,7 @@ export default function Routes() {
         <PrivateRoute path="/pcp/:id" component={TagLayout} />
         <PrivateRoute path="/wmsrm/barcode/:id" component={Barcode} />
         <PrivateRoute path="/stock/barcode/:id" component={StockBarcode} />
-        <PrivateRoute path="/launch-product" component={LaunchProduction} />]
+        <PrivateRoute path="/launch-product" component={LaunchProduction} />
         <PrivateRoute path="/callList" component={CallList} />
         <PrivateRoute
           path="/mount/tag/:barCode/sector/:sectorId"
