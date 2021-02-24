@@ -202,6 +202,7 @@ export default function ProductionReport() {
     { label: 'PCP', key: 'pcpName' },
     { label: 'Volume', key: 'volume' },
     { label: 'Pontos', key: 'points' },
+    { label: 'MO/Vol.', key: 'laborCost' },
   ]);
 
   const [ready, setReady] = useState(false);
@@ -222,10 +223,10 @@ export default function ProductionReport() {
     };
 
     const response = await api.post('production/item', data);
-    setLoad(false);
 
     setProduction(response.data);
     setCsvData(response.data);
+    setLoad(false);
   }
 
   const csvReport = {
