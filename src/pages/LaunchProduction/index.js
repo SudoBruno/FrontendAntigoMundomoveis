@@ -247,8 +247,10 @@ export default function LaunchProduction() {
       let response;
       if (modalConfigure.title == '') {
         response = await api.post('bar-code', data);
+        setAmount((amount) => amount + 1);
       } else {
         response = await api.post(`bar-code/${modalConfigure.url}`, data);
+        setAmount((amount) => amount + 1);
       }
       if (modalConfigure.title == 'Lançamento Agrupado') {
         setEmployeeId('');
@@ -260,7 +262,6 @@ export default function LaunchProduction() {
         'Código lançado com sucesso'
       );
       setLaunched([...launched, response.data]);
-      setAmount((amount) => amount + 1);
     } catch (error) {
       openNotificationWithIcon(
         'error',
