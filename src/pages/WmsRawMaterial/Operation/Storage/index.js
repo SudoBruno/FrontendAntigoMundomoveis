@@ -180,7 +180,7 @@ export default function SubProduct() {
                   onClick={() => handleEdit(record)}
                 />{' '}
                 {/*onClick={() => handleEdit(record)} */}
-                <Popconfirm
+                {/* <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
                 >
@@ -188,7 +188,7 @@ export default function SubProduct() {
                     {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm>
+                </Popconfirm> */}
                 <Link
                   to={`/wmsrm/barcode/${record.id}`}
                   target="_blank"
@@ -494,6 +494,7 @@ export default function SubProduct() {
                       placeholder="Nome do lote"
                       value={itensStorage.lote}
                       onChange={(e) => handleInputChange(e, index)}
+                      disabled={itensStorage.locked}
                     />
                   </Form.Item>
                 </Col>
@@ -508,6 +509,7 @@ export default function SubProduct() {
                       placeholder="Selecione"
                       size="large"
                       value={itensStorage.insName}
+                      disabled={itensStorage.locked}
                       onChange={(e) => handleINSChange(e, index)}
                     >
                       {ins.map((option) => {
@@ -542,6 +544,7 @@ export default function SubProduct() {
                       size="large"
                       value={itensStorage.entryName}
                       onChange={(e) => handleEntryChange(e, index)}
+                      disabled={itensStorage.locked}
                     >
                       {console.log(entry)}
                       {entry.map((option) => {
@@ -581,6 +584,7 @@ export default function SubProduct() {
                         handleWarehouseChange(e, index);
                         itensStorage.positionName = '';
                       }}
+                      disabled={itensStorage.locked}
                     >
                       {warehouse.map((option) => {
                         return (
@@ -609,6 +613,7 @@ export default function SubProduct() {
                       size="large"
                       value={itensStorage.positionName}
                       onChange={(e) => handlePositionChange(e, index)}
+                      disabled={itensStorage.locked}
                     >
                       {position.map((option) => {
                         return (
@@ -637,6 +642,7 @@ export default function SubProduct() {
                       placeholder="Digite a quantidade"
                       value={itensStorage.amount}
                       onChange={(e) => handleInputChange(e, index)}
+                      disabled={itensStorage.locked}
                     />
                   </Form.Item>
                 </Col>
@@ -652,6 +658,7 @@ export default function SubProduct() {
                       value={itensStorage.remaining}
                       disabled={true}
                       style={{ width: '85%', marginRight: 10 }}
+                      disabled={itensStorage.locked}
                     />
                     {itensStorages.length !== 1 && (
                       <MinusCircleOutlined
@@ -672,6 +679,7 @@ export default function SubProduct() {
                       ? false
                       : true
                   }
+                  disabled={itensStorage.locked}
                 >
                   <PlusOutlined />
                 </Button>

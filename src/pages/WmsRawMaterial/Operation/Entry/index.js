@@ -185,14 +185,14 @@ export default function Entry() {
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleEdit(record)}
                 />
-                <Popconfirm
+                {/* <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
                 >
                   <a href="#" style={{ marginLeft: 20 }}>
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm>
+                </Popconfirm> */}
               </React.Fragment>
             );
           },
