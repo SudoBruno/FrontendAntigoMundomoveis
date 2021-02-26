@@ -23,8 +23,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );
@@ -36,8 +36,8 @@ const ExpeditionRoute = ({ component: Component, ...rest }) => (
       Expedition() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );
@@ -49,8 +49,8 @@ const CoverRoute = ({ component: Component, ...rest }) => (
       Cover() ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
     }
   />
 );

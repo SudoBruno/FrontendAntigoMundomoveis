@@ -18,7 +18,7 @@ import {
   Col,
   DatePicker,
 } from 'antd';
-
+import { format } from 'date-fns';
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
@@ -142,16 +142,16 @@ export default function ExpeditionInput() {
         },
         {
           title: 'Produto',
-          dataIndex: 'product',
-          key: 'product',
+          dataIndex: 'productName',
+          key: 'productName',
 
-          ...this.getColumnSearchProps('product'),
+          ...this.getColumnSearchProps('productName'),
         },
         {
           title: 'Rua',
-          dataIndex: 'street',
-          key: 'street',
-          ...this.getColumnSearchProps('street'),
+          dataIndex: 'streetName',
+          key: 'streetName',
+          ...this.getColumnSearchProps('streetName'),
         },
 
         {
@@ -176,14 +176,19 @@ export default function ExpeditionInput() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [input, setInput] = useState([]);
   const [status, setStatus] = useState(false);
+  const [load, setLoad] = useState(false);
 
   const [headers, setHeaders] = useState([
     { label: 'Codigo fornecedor', key: 'code' },
-    { label: 'Produto', key: 'product' },
-    { label: 'Rua', key: 'street' },
+    { label: 'Produto', key: 'productName' },
+    { label: 'Rua', key: 'streetName' },
     { label: 'Data armazenado', key: 'input' },
     { label: 'Cod. Barras', key: 'barCode' },
     { label: 'Volume', key: 'volume' },
+    { label: 'Quantidade de volumes', key: 'volumeQuantity' },
+    { label: 'MO/Volume', key: 'laborCost' },
+    { label: 'SKU', key: 'SKU' },
+    { label: 'Cod. cliente', key: 'clientId' },
   ]);
   // const [ready, setReady] = useState(false);
   const [intervalTime, setIntervalTime] = useState([]);
@@ -195,19 +200,23 @@ export default function ExpeditionInput() {
 
   async function Filter(e) {
     e.preventDefault();
-
+    setLoad(true);
     const data = {
       intervalTime: intervalTime,
     };
     const response = await api.post('expedition/input/filter', data);
 
     setInput(response.data);
+    setLoad(false);
   }
 
   const csvReport = {
     data: input,
     headers: headers,
-    filename: 'relatorio_entrada_no_estoque.csv',
+    filename: `relatorio_entrada_no_estoque${format(
+      new Date(),
+      'dd-MM-yyyy'
+    )}.csv`,
   };
   return (
     <Layout
@@ -237,16 +246,15 @@ export default function ExpeditionInput() {
         <Col span={12} align="end">
           <Button className="buttonGreen">
             {status == false && (
-              <>
-                <DownloadOutlined
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setStatus(true);
-                  }}
-                  style={{ marginRight: 8 }}
-                />
-                Baixar
-              </>
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  setStatus(true);
+                }}
+              >
+                <DownloadOutlined style={{ marginRight: 8 }} />
+                Relatório de entrada no estoque
+              </div>
             )}
             {status == true && (
               <CSVLink

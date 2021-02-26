@@ -692,7 +692,7 @@ export default function Product() {
             return (
               <>
                 <Row gutter={5}>
-                  <Col span={7}>
+                  <Col span={14}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="Subproduto"
@@ -720,7 +720,7 @@ export default function Product() {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={7}>
+                  <Col span={10}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="Setor:"
@@ -744,7 +744,7 @@ export default function Product() {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={3}>
+                  <Col span={8}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="quantidade:"
@@ -758,7 +758,7 @@ export default function Product() {
                       />
                     </Form.Item>
                   </Col>
-                  <Col span={3}>
+                  <Col span={8}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="order:"
@@ -772,7 +772,7 @@ export default function Product() {
                       />
                     </Form.Item>
                   </Col>
-                  <Col span={4}>
+                  <Col span={8}>
                     <Form.Item
                       labelCol={{ span: 23 }}
                       label="Pontos:"
@@ -809,109 +809,6 @@ export default function Product() {
           })}
 
           <Divider />
-
-          {/* Codigo pronto so oculto para nao complicar no começo */}
-          {/* {selectINS.map((INS, index) => {
-
-                        return (
-                            <>
-
-                                <Row gutter={5}>
-
-
-                                    <Col span={10}>
-                                        <Form.Item
-                                            labelCol={{ span: 23 }}
-                                            label="INS:"
-                                            labelAlign={"left"}>
-
-                                            <Select
-
-                                                placeholder="Selecione um INS"
-                                                size="large"
-                                                onChange={e => HandleChangeINS(e, index)}
-                                                value={INS.ins}
-                                            >
-                                                {
-                                                    arrayINS.map((option) => {
-
-                                                        return (
-                                                            <>
-
-
-                                                                <Option key={option.id} value={option.id}>{option.name}</Option>
-
-                                                            </>
-                                                        )
-                                                    })
-                                                }
-                                            </Select>
-
-
-
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={10}>
-                                        <Form.Item
-                                            labelCol={{ span: 23 }}
-                                            label="Setor:"
-                                            labelAlign={"left"}>
-
-                                            <Select
-
-                                                placeholder="Selecione um valor"
-                                                size="large"
-                                                onChange={e => HandleChangeINSSector(e, index)}
-                                                value={INS.sector}
-
-                                            >
-                                                {
-                                                    sectors.map((option) => {
-
-                                                        return (
-                                                            <>
-
-
-                                                                <Option key={option.id} value={option.id}>{option.name}</Option>
-
-                                                            </>
-                                                        )
-                                                    })
-                                                }
-                                            </Select>
-
-                                        </Form.Item>
-
-                                    </Col>
-                                    <Col span={4}>
-                                        <Form.Item
-                                            labelCol={{ span: 23 }}
-                                            label="Quantidade:"
-                                            labelAlign={"left"}
-                                        >
-
-                                            <Input
-                                                name="amount"
-                                                placeholder="Quantidade do INS"
-                                                value={INS.amount}
-                                                onChange={e => HandleChangeINSAmount(e, index)}
-                                                style={{ width: '80%', marginRight: 8 }}
-
-                                            />
-                                            <MinusCircleOutlined
-                                                onClick={() => handleRemoveClickINS(index)}
-                                            />
-
-                                        </Form.Item>
-                                    </Col>
-
-
-
-                                </Row>
-                            </>
-                        );
-                    })}
-                    <Button key="primary" title="Nova Linha" style={{ width: "100%" }} onClick={handleAddClickINS}><PlusOutlined />Adicionar INS</Button> */}
         </>
       </Modal>
 
