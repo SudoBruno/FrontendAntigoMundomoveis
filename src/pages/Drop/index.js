@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Tooltip } from '@material-ui/core/';
-import { format } from 'date-fns';
+import moment from 'moment';
 
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
@@ -196,7 +196,7 @@ export default function Drop() {
   const [id, setId] = useState(0);
   const [name, setName] = useState('');
   const [show, setShow] = useState(false);
-  const [dateInitial, setDateInitial] = useState(format(new Date()));
+  const [dateInitial, setDateInitial] = useState(moment());
 
   const [agendaDrop, setAgendaDrop] = useState([]);
   const [colors, setColors] = useState([]);
@@ -426,7 +426,7 @@ export default function Drop() {
               <DatePicker
                 style={{ height: 40, paddingTop: 8, width: '100%' }}
                 format="DD/MM/YYYY"
-                defaultValue={format(dateInitial, 'DD/MM/YYYY')}
+                defaultValue={moment(dateInitial, 'DD/MM/YYYY')}
                 onChange={(date) => setDateInitial(date._d)}
               />
             </Form.Item>

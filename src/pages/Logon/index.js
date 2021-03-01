@@ -8,10 +8,9 @@ import api from '../../services/api';
 import factory from '../../assets/factory.svg';
 import logo from '../../assets/logo.png';
 import { LoadingOutlined } from '@ant-design/icons';
-import Cookies from 'js-cookie';
 require('dotenv').config();
 
-export default function Logon() {
+export default function Logon(params) {
   const [user_name, SetUserName] = useState('');
   const [password, SetPassword] = useState('');
   const history = useHistory();
@@ -29,30 +28,28 @@ export default function Logon() {
     setLoading('');
     try {
       const response = await api.post('sessions', { user_name, password });
-      console.log(response);
 
-      Cookies.set('token', String(response.data.token));
-      localStorage.setItem('userId', response.data.user.id);
-      localStorage.setItem('userName', response.data.user.name);
-      localStorage.setItem('access_level', response.data.user.access_level);
+      localStorage.setItem('userId', response.data.id);
+      localStorage.setItem('userName', response.data.name);
+      localStorage.setItem('access_level', response.data.access_level);
       if (
-        response.data.user.access_level === '1' ||
-        response.data.user.access_level === '4' ||
-        response.data.user.access_level === '7'
+        response.data.access_level === '1' ||
+        response.data.access_level === '4' ||
+        response.data.access_level === '7'
       ) {
         console.log('aq');
         history.push('/profile');
         setLoading('none');
-      } else if (response.data.user.access_level === '2') {
+      } else if (response.data.access_level === '2') {
         history.push('/launch-product');
         setLoading('none');
-      } else if (response.data.user.access_level === '3') {
+      } else if (response.data.access_level === '3') {
         history.push('/launch-expedition');
         setLoading('none');
-      } else if (response.data.user.access_level === '5') {
+      } else if (response.data.access_level === '5') {
         history.push('/cover/launch');
         setLoading('none');
-      } else if (response.data.user.access_level === '6') {
+      } else if (response.data.access_level === '6') {
         history.push('/callList');
         setLoading('none');
       }

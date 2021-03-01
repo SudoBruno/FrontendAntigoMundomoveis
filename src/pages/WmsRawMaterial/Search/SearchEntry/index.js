@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+// import CSVDownload from 'react-json-to-csv';
 import { CSVLink } from 'react-csv';
 import { Layout, Button, Row, Col, DatePicker } from 'antd';
 
@@ -14,6 +14,7 @@ export default function RawMaterial() {
   useEffect(() => {
     api.post('wmsrm/operation/entry/resume').then((response) => {
       setEntry(response.data);
+     
     });
   }, []);
   const [intervalTime, setIntervalTime] = useState([]);
@@ -24,6 +25,7 @@ export default function RawMaterial() {
     };
     const response = await api.post('wmsrm/operation/entry/resume', data);
     setEntry(response.data);
+    
   }
   return (
     <Layout
@@ -52,15 +54,15 @@ export default function RawMaterial() {
         </Col>
         <Col span={12} align="end">
           <Button type="submit" className="buttonGreen">
-            <DownloadOutlined style={{ marginRight: 8 }} />
-            <CSVLink
-              data={entry}
-              filename="entrada Almoxarifado.csv"
-              style={{ color: '#fff' }}
-              separator={';'}
-            >
-              Download
-            </CSVLink>
+           
+          
+              <DownloadOutlined style={{ marginRight: 8 }} />
+              <CSVLink data={entry} filename='entrada Almoxarifado.csv' 
+              style={{ color: '#fff' }} separator={';'}>
+                Download
+              </CSVLink>
+            
+             
           </Button>
         </Col>
       </Row>
