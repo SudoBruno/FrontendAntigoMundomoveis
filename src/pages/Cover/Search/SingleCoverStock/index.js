@@ -210,8 +210,8 @@ export default function SingleCoverStock() {
         minHeight: 280,
       }}
     >
-      <Row style={{ marginBottom: 16, justifyContent: 'center' }} gutter={5}>
-        <Col span={12}>
+      <Row gutter={5}>
+        <Col span={20}>
           <Form.Item labelCol={{ span: 23 }} label="Capa:" labelAlign={'left'}>
             <Select
               showSearch
