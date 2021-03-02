@@ -19,7 +19,7 @@ import {
 } from 'antd';
 
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, UploadOutlined } from '@ant-design/icons';
+import { SearchOutlined, UploadOutlined, RetweetOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './styles.css';
 
@@ -176,6 +176,8 @@ export default function CallList() {
   const [area, setArea] = useState(0);
   const [areaName, setAreaName] = useState('');
   const [areas, setAreas] = useState([]);
+  const [callListId, setCallListId] = useState([]);
+  const [employeeName, setEmployeeName] = useState([]);
   const [callList, setCallList] = useState([
     {
       name: '',
@@ -200,6 +202,7 @@ export default function CallList() {
     });
   }, []);
 
+
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
       message: message,
@@ -208,6 +211,7 @@ export default function CallList() {
   }
 
   const [show, setShow] = useState(false);
+  const [showReplacement, setShowReplacement] = useState(false);
 
   const isPresent = async (e) => {
     e.preventDefault();
@@ -299,9 +303,12 @@ export default function CallList() {
 
   const handleClose = () => {
     setShow(false);
+    setShowReplacement(false);
+    setEmployeeName('');
   };
 
   const handleShow = () => setShow(true);
+  const handleShowReplacement = () => setShowReplacement(true)
 
   const alterCallList = async (e) => {
     const response = await api.get(`/call-list/${e}`);
@@ -317,6 +324,15 @@ export default function CallList() {
     e.preventDefault();
 
     setShow(true);
+  }
+
+  async function handleTranserEmployee(e) {
+    e.preventDefault();
+    const data = {
+      callListId: callListId,
+      area: area
+    }
+    console.log(data);
   }
 
   return (
@@ -372,8 +388,11 @@ export default function CallList() {
                 );
               })}
             </Select>
+
           </Form.Item>
+
         </Col>
+
         <Col
           span={12}
           style={{
@@ -383,9 +402,100 @@ export default function CallList() {
             marginTop: 20,
           }}
         >
+
+
           <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
             Iniciar Chamada
           </button>
+
+          <Button
+            type="primary"
+            icon={<RetweetOutlined />}
+            size={30}
+            style={{ marginLeft: 10 }}
+            onClick={handleShowReplacement}
+          >
+            Troca de Colaborador
+        </Button>
+
+          <Modal
+            visible={showReplacement}
+            width={700}
+            title={'Troca de Colaborador'}
+            onCancel={handleClose}
+            footer={[
+              <Button key="back" type="default" onClick={handleClose}>
+                {' '}
+                Cancelar
+              </Button>,
+              <Button key="submit" type="primary" onClick={handleTranserEmployee}>
+                {' '}
+                Salvar
+              </Button>,
+            ]}
+          >
+            <Row gutter={5}>
+              <Col span={13}>
+                <Form.Item
+                  labelCol={{ span: 23 }}
+                  label="Funcionario"
+                  labelAlign={'left'}
+                >
+                  <Select
+                    showSearch
+                    placeholder="Selecione"
+                    size="large"
+                    value={employeeName}
+                    onChange={(e) => {
+                      setCallListId(e[0]);
+                      setEmployeeName(e[1]);
+                    }}
+                  >
+                    {callList.map((option) => {
+                      return (
+                        <>
+                          <Option key={option.id} value={[option.id, option.name]}>
+                            {option.name}
+                          </Option>
+                        </>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Col>
+
+            </Row>
+
+            <Row>
+              <Col span={10}>
+                <Form.Item
+                  labelCol={{ span: 23 }}
+                  label="Setor"
+                  labelAlign={'left'}
+                >
+                  <Select
+                    showSearch
+                    placeholder="Selecione"
+                    size="large"
+                    value={callList[refreshKey].area}
+                  >
+                    {areas.map((option) => {
+                      return (
+                        <>
+                          <Option key={option.id} value={[option.id, option.name]}>
+                            {option.name}
+                          </Option>
+                        </>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+
+          </Modal>
+
         </Col>
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
@@ -477,6 +587,7 @@ export default function CallList() {
             </Button>
           </Col>
         </Row>
+
       </Modal>
       <SearchTable />
     </Layout>
