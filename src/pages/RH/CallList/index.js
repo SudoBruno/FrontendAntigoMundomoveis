@@ -175,6 +175,10 @@ export default function CallList() {
   const [employee, setEmployee] = useState([]);
   const [area, setArea] = useState(0);
   const [areaName, setAreaName] = useState('');
+  const [transferAreas, setTransferAreas] = useState([]);
+  const [transferAreaName, setTransferAreaName] = useState([]);
+  const [transferAreaId, setTransferAreaId] = useState('');
+
   const [areas, setAreas] = useState([]);
   const [callListId, setCallListId] = useState([]);
   const [employeeName, setEmployeeName] = useState([]);
@@ -199,6 +203,11 @@ export default function CallList() {
   useEffect(() => {
     api.get('department', {}).then((response) => {
       setAreas(response.data);
+    });
+  }, []);
+  useEffect(() => {
+    api.get('department', {}).then((response) => {
+      setTransferAreas(response.data);
     });
   }, []);
 
@@ -328,10 +337,32 @@ export default function CallList() {
 
   async function handleTranserEmployee(e) {
     e.preventDefault();
+
     const data = {
       callListId: callListId,
-      area: area
+      area: area,
+      transferAreaId: transferAreaId
     }
+
+    if (!transferAreaId || !callListId) {
+      openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
+    }
+
+    if (transferAreaId && employeeName) {
+      try {
+        const response = await api.put('/call/employee-transfer/', data);
+        openNotificationWithIcon(
+          'success',
+          'Sucesso',
+          'Transferência Concluida'
+        );
+        handleClose();
+      } catch (error) {
+        openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
+        console.log(error);
+      }
+    }
+
     console.log(data);
   }
 
@@ -470,10 +501,43 @@ export default function CallList() {
               <Col span={10}>
                 <Form.Item
                   labelCol={{ span: 23 }}
-                  label="Setor"
+                  label="Setor De Remanejamento"
                   labelAlign={'left'}
                 >
                   <Select
+                    showSearch
+                    placeholder="Selecione"
+                    size="large"
+                    value={transferAreaName}
+                    onChange={(e) => {
+                      setTransferAreaId(e[0]);
+                      setTransferAreaName(e[1])
+                    }}
+                  >
+                    {transferAreas.map((option) => {
+                      return (
+                        <>
+                          <Option key={option.id} value={[option.id, option.name]}>
+                            {option.name}
+                          </Option>
+                        </>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={10}>
+                <Form.Item
+                  hidden
+                  labelCol={{ span: 23 }}
+                  label="Setor De Remanejamento"
+                  labelAlign={'left'}
+                >
+                  <Select
+
                     showSearch
                     placeholder="Selecione"
                     size="large"
