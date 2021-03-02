@@ -33,12 +33,13 @@ export default function Logon() {
       localStorage.setItem('userId', response.data.user.id);
       localStorage.setItem('userName', response.data.user.name);
       localStorage.setItem('access_level', response.data.user.access_level);
+
+      api.defaults.headers.authorization = response.data.token;
       if (
         response.data.user.access_level === '1' ||
         response.data.user.access_level === '4' ||
         response.data.user.access_level === '7'
       ) {
-        console.log('aq');
         history.push('/profile');
         setLoading('none');
       } else if (response.data.user.access_level === '2') {
