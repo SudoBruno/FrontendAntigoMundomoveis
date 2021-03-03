@@ -187,7 +187,7 @@ export default function CallReport() {
       intervalTime: intervalTime,
     };
     const response = await api.post('/call/employee/presencePointFilter', data);
-
+    console.log(response);
     setInput(response.data);
   }
 
