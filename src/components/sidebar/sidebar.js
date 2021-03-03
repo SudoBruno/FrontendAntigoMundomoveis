@@ -20,6 +20,7 @@ import { FiPackage } from 'react-icons/fi';
 import { BsListCheck } from 'react-icons/bs';
 
 import logo from '../../assets/logo.png';
+import Cookies from 'js-cookie';
 
 //////////////////////////////////////////////////////////////////
 //REGISTER
@@ -489,6 +490,7 @@ class App extends React.Component {
 
     function handleLogout(e) {
       localStorage.clear();
+      Cookies.remove('token');
 
       return <Redirect to="/" />;
     }

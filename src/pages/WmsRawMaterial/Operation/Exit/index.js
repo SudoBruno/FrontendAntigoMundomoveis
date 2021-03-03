@@ -202,7 +202,7 @@ export default function SubProduct() {
                   onClick={() => handleEdit(record)}
                 />{' '}
                 {/*onClick={() => handleEdit(record)} */}
-                <Popconfirm
+                {/* <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
                 >
@@ -210,7 +210,7 @@ export default function SubProduct() {
                     {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm>
+                </Popconfirm> */}
               </React.Fragment>
             );
           },
@@ -253,35 +253,34 @@ export default function SubProduct() {
     const list = [...itensExit];
     try {
       response = await api.get(`wmsrm/operation/exit/barcode/${barcode}`);
+      list[index].ins = response.data.exit[0].id_rawmaterial;
+      list[index].lote = response.data.exit[0].id;
+      list[index].warehouse = response.data.exit[0].id_warehouse;
+      list[index].position = response.data.exit[0].id_position;
+
+      list[
+        index
+      ].ins_name = `${response.data.exit[0].ins} - ${response.data.exit[0].description}`;
+
+      setWarehouse(response.data.warehouse);
+      try {
+        list[index].remaining = response.data.position[0].quantity;
+      } catch (error) {
+        setRemaining(0);
+        openNotificationWithIcon(
+          'error',
+          'Quantidade inexistente',
+          'Quantidade nao existe'
+        );
+      }
+
+      setPosition(response.data.position);
+      setLote(response.data.lote);
+
+      setItensExit(list);
     } catch (error) {
       openNotificationWithIcon('error', 'Erro ao adicionar', 'Código invalido');
     }
-
-    list[index].ins = response.data.exit[0].id_rawmaterial;
-    list[index].lote = response.data.exit[0].id;
-    list[index].warehouse = response.data.exit[0].id_warehouse;
-    list[index].position = response.data.exit[0].id_position;
-
-    list[
-      index
-    ].ins_name = `${response.data.exit[0].ins} - ${response.data.exit[0].description}`;
-
-    setWarehouse(response.data.warehouse);
-    try {
-      list[index].remaining = response.data.position[0].quantity;
-    } catch (error) {
-      setRemaining(0);
-      openNotificationWithIcon(
-        'error',
-        'Quantidade inexistente',
-        'Quantidade nao existe'
-      );
-    }
-
-    setPosition(response.data.position);
-    setLote(response.data.lote);
-
-    setItensExit(list);
   }
 
   async function handleEdit(e) {

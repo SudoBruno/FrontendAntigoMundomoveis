@@ -272,6 +272,7 @@ export default function LaunchProduction() {
   }
 
   async function EditBarCode(e) {
+    console.log(e);
     let data = {
       code: e,
       employee_id,

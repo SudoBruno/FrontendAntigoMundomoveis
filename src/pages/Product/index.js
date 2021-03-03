@@ -408,11 +408,6 @@ export default function Product() {
     list.splice(index, 1);
     setSelectProductsSectors(list);
   };
-  const handleRemoveClickINS = (index) => {
-    const list = [...selectINS];
-    list.splice(index, 1);
-    setSelectINS(list);
-  };
 
   // handle click event of the Add button
   const handleAddClick = (e, index) => {
@@ -437,9 +432,6 @@ export default function Product() {
     ]);
   };
 
-  const handleAddClickINS = () => {
-    setSelectINS([...selectINS, { ins: '', sector: '', amount: '' }]);
-  };
   function HandleChange(e, index) {
     var NewArray = [...selectProductsSectors];
 
@@ -450,34 +442,11 @@ export default function Product() {
     setSelectProductsSectors(NewArray);
   }
 
-  function HandleChangeINSAmount(e, index) {
-    var NewArray = [...selectINS];
-
-    var { name, value } = e.target;
-
-    NewArray[index][name] = value;
-
-    setSelectINS(NewArray);
-  }
-
   function HandleChangeSector(value, index) {
     var NewArray = [...selectProductsSectors];
-
-    NewArray[index].sector = value;
+    NewArray[index].sectorId = value[0];
+    NewArray[index].sectorName = value[1];
     setSelectProductsSectors(NewArray);
-  }
-
-  function HandleChangeINS(value, index) {
-    var NewArray = [...selectINS];
-
-    NewArray[index].ins = value;
-    setSelectINS(NewArray);
-  }
-  function HandleChangeINSSector(value, index) {
-    var NewArray = [...selectINS];
-
-    NewArray[index].sector = value;
-    setSelectINS(NewArray);
   }
 
   function HandleChangeSubProduct(value, index) {
@@ -727,15 +696,19 @@ export default function Product() {
                       labelAlign={'left'}
                     >
                       <Select
+                        showSearch
                         placeholder="Selecione um valor"
                         size="large"
                         onChange={(e) => HandleChangeSector(e, index)}
-                        value={selectProductSector.sector}
+                        value={selectProductSector.sectorName}
                       >
                         {sectors.map((option) => {
                           return (
                             <>
-                              <Option key={option.id} value={option.id}>
+                              <Option
+                                key={option.id}
+                                value={[option.id, option.name]}
+                              >
                                 {option.name}
                               </Option>
                             </>
@@ -755,6 +728,7 @@ export default function Product() {
                         value={selectProductSector.amount}
                         onChange={(e) => HandleChange(e, index)}
                         // style={{ width: '80%', marginRight: 8 }}
+                        type="number"
                       />
                     </Form.Item>
                   </Col>
@@ -769,6 +743,7 @@ export default function Product() {
                         value={selectProductSector.order}
                         onChange={(e) => HandleChange(e, index)}
                         // style={{ width: '80%', marginRight: 8 }}
+                        type="number"
                       />
                     </Form.Item>
                   </Col>
@@ -804,11 +779,10 @@ export default function Product() {
                     Subproduto
                   </Button>
                 )}
+                <Divider />
               </>
             );
           })}
-
-          <Divider />
         </>
       </Modal>
 

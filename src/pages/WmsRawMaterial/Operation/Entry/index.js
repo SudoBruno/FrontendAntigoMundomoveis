@@ -185,14 +185,14 @@ export default function Entry() {
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleEdit(record)}
                 />
-                <Popconfirm
+                {/* <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
                 >
                   <a href="#" style={{ marginLeft: 20 }}>
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
-                </Popconfirm>
+                </Popconfirm> */}
               </React.Fragment>
             );
           },
@@ -217,7 +217,15 @@ export default function Entry() {
   const [id_user, setIdUser] = useState(userId + ' - ' + user);
   const [rawMaterials, setRawMaterials] = useState([
     {
+      id: 0,
       id_rawmaterial: '',
+      quantity: '',
+      gradeValues: '',
+      ins: '',
+      coefficient: '',
+      gradeValues: '',
+      un_measure: '',
+      description: '',
       errorRawMaterial: '',
       errorQuantity: '',
     },
@@ -268,8 +276,14 @@ export default function Entry() {
         id_rawmaterial: '',
         quantity: '',
         price: '',
+        ins: '',
+        coefficient: '',
+        gradeValues: '',
+        un_measure: '',
+        description: '',
         errorRawMaterial: '',
         errorQuantity: '',
+        unitaryValue: '',
       },
     ]);
 
@@ -284,6 +298,9 @@ export default function Entry() {
 
     NewArray[index].id_rawmaterial = value[0];
     NewArray[index].coefficient = value[1];
+    NewArray[index].ins = value[2];
+    NewArray[index].description = value[3];
+    NewArray[index].un_measure = value[4];
     NewArray[index].nameRawMaterial = `${value[2]} / ${value[3]} (${value[4]})`;
     NewArray[index].errorRawMaterial = '';
 
@@ -294,8 +311,8 @@ export default function Entry() {
     var NewArray = [...rawMaterials];
 
     NewArray[index].quantity = value;
-    NewArray[index].price =
-      NewArray[index].gradeValues *
+    NewArray[index].gradeValues =
+      NewArray[index].unitaryValue *
       NewArray[index].coefficient *
       parseFloat(value.replace(',', '.'));
     NewArray[index].errorQuantity = '';
@@ -306,7 +323,11 @@ export default function Entry() {
   const HandleChangePrice = (value, index) => {
     var NewArray = [...rawMaterials];
 
-    NewArray[index].price = value;
+    NewArray[index].unitaryValue = value;
+    NewArray[index].gradeValues =
+      value *
+      NewArray[index].coefficient *
+      parseFloat(NewArray[index].quantity);
 
     setRawMaterials(NewArray);
   };
@@ -314,8 +335,8 @@ export default function Entry() {
   const HandleChangeGradeValue = (value, index) => {
     var NewArray = [...rawMaterials];
 
-    NewArray[index].gradeValues = value;
-    NewArray[index].price =
+    NewArray[index].unitaryValue = value;
+    NewArray[index].gradeValues =
       value *
       NewArray[index].coefficient *
       parseFloat(NewArray[index].quantity);
@@ -346,11 +367,11 @@ export default function Entry() {
 
   async function handleEdit(e) {
     setId(e.id);
-    setDescription(e.description);
+    setDescription(e.name);
     setFiscalNumber(e.fiscalNumber);
     setIdUser(e.user_id + ' - ' + e.user);
-
-    setLockedEntry(e.locked_entry); //Close entry
+    setLockedEntry(e.closed_entry); //Close entry
+    console.log(e.locked_entry, 'set', e);
 
     const resp = await api.get(`/wmsrm/operation/entry-itens/${e.id}`);
 
@@ -361,7 +382,6 @@ export default function Entry() {
 
   async function handleRegister(e) {
     e.preventDefault();
-
     const idUserLogged = id_user.split('-')[0];
 
     const data = {
@@ -426,7 +446,7 @@ export default function Entry() {
           }
         } else {
           try {
-            await api.post(`/wmsrm/operation/entry/edit`, data);
+            await api.put(`/wmsrm/operation/entry/edit/`, data);
 
             setRefreshKey((refreshKey) => refreshKey + 1);
             openNotificationWithIcon(
@@ -438,14 +458,6 @@ export default function Entry() {
             setId(0);
             setDescription('');
             setErrorDescription('');
-            setRawMaterials([
-              {
-                rawmaterial: '',
-                quantity: '',
-                errorRawMaterial: '',
-                errorQuantity: '',
-              },
-            ]);
 
             handleClose();
           } catch (error) {
@@ -531,8 +543,9 @@ export default function Entry() {
               labelAlign={'left'}
               required
             >
+              {console.log(locked_entry)}
               <Input
-                disabled={locked_entry === true ? true : false}
+                disabled={locked_entry}
                 name="description"
                 placeholder="Descreva a entrada"
                 onChange={(e) => {
@@ -553,7 +566,7 @@ export default function Entry() {
               required
             >
               <Input
-                disabled={locked_entry === true ? true : false}
+                disabled={locked_entry}
                 name="fiscalNumber"
                 placeholder="Digite o número da nota fiscal"
                 onChange={(e) => {
@@ -584,7 +597,7 @@ export default function Entry() {
           return (
             <>
               <Row gutter={24}>
-                <Col span={9}>
+                <Col span={20}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="Insumo:"
@@ -592,7 +605,7 @@ export default function Entry() {
                     required
                   >
                     <Select
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       showSearch
                       placeholder="Selecione o insumo"
                       size="large"
@@ -603,7 +616,14 @@ export default function Entry() {
                           .indexOf(input.toLowerCase()) >= 0
                       }
                       onChange={(e) => HandleChangeRawMaterial(e, index)}
-                      value={selectRawMaterial.nameRawMaterial}
+                      value={
+                        selectRawMaterial.ins +
+                        ' / ' +
+                        selectRawMaterial.description +
+                        ' (' +
+                        selectRawMaterial.un_measure +
+                        ')'
+                      }
                     >
                       {dropRawMaterial.map((option) => {
                         return (
@@ -643,6 +663,7 @@ export default function Entry() {
                       name="quantity"
                       type="number"
                       max="999999999"
+                      disabled={locked_entry}
                       step="0.001"
                       value={selectRawMaterial.quantity}
                       onChange={(e) =>
@@ -651,7 +672,7 @@ export default function Entry() {
                     />
                   </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="Valor unitário do insumo"
@@ -659,36 +680,35 @@ export default function Entry() {
                     required
                   >
                     <Input
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       name="price"
                       type="number"
                       min="0"
                       max="999999999"
                       step="0.01"
-                      value={selectRawMaterial.gradeValues}
+                      value={selectRawMaterial.unitaryValue}
                       onChange={(e) => {
-                        HandleChangeGradeValue(e.target.value, index);
+                        HandleChangePrice(e.target.value, index);
                       }}
                     />
                   </Form.Item>
                 </Col>
 
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
                     labelCol={{ span: 23 }}
-                    label="Valor unitário (R$)"
+                    label="Valor Total (R$)"
                     labelAlign={'left'}
                   >
                     <Input
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       name="price"
                       type="number"
                       min="0"
                       max="999999999"
                       step="0.01"
                       disabled
-                      value={selectRawMaterial.price}
-                      onChange={(e) => HandleChangePrice(e.target.value, index)}
+                      value={selectRawMaterial.gradeValues}
                       style={{ width: '80%', marginRight: '5%' }}
                     />
 
@@ -704,7 +724,7 @@ export default function Entry() {
                 <Col span={24}>
                   {rawMaterials.length - 1 === index && (
                     <Button
-                      disabled={locked_entry === true ? true : false}
+                      disabled={locked_entry}
                       key="primary"
                       title="Novo insumo"
                       style={{ width: '100%' }}
