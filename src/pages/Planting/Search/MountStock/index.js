@@ -11,7 +11,7 @@ import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
 
 const Option = Select.Option;
 
-export default function PlantingStockMount() {
+export default function PlantingReportStockMount() {
   class SearchTable extends React.Component {
     state = {
       pagination: {

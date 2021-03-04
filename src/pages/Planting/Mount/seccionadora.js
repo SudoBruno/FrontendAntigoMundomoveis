@@ -27,7 +27,6 @@ import {
 } from '@ant-design/icons';
 
 import Highlighter from 'react-highlight-words';
-import { post } from 'jquery';
 
 const Option = Select.Option;
 

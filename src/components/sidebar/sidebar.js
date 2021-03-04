@@ -93,10 +93,13 @@ import CallReport from '../..//pages/RH/CallReport';
 import CallReportPoint from '../..//pages/RH/CallListPointReport';
 import PlantingMount from '../../pages/Planting/Mount';
 import Seccionadora from '../../pages/Planting/Mount/seccionadora';
-import PlantingStockMount from '../../pages/Planting/Search/MountStock';
+import PlantingReportStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingDayProductionMount from '../../pages/Planting/Search/DayProductionMount';
 import PlantingDayDefectMount from '../../pages/Planting/Search/DayDefectMount';
-
+import PlantingStockMount from '../../pages/Planting/Stock/mount';
+import PlantingDefect from '../../pages/Planting/Defect';
+import PlantingWarehouse from '../../pages/Planting/Warehouse';
+import PlantingStreet from '../../pages/Planting/Street';
 import DefectLevel from '../../pages/Quality/DefectLevel/index';
 import Quality from '../../pages/Quality/Defect/index';
 
@@ -425,11 +428,36 @@ const routes = [
     main: () => <PlantingMount />,
   },
   {
-    path: '/stock/mount',
+    path: '/report/stock/mount',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingReportStockMount />,
+  },
+  {
+    path: '/plating/mount/stock',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <PlantingStockMount />,
   },
+  {
+    path: '/plating/defect',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingDefect />,
+  },
+  {
+    path: '/plating/warehouse',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingWarehouse />,
+  },
+  {
+    path: '/plating/street',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingStreet />,
+  },
+
   {
     path: '/day/production/mount',
     exact: true,
@@ -442,6 +470,7 @@ const routes = [
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <PlantingDayDefectMount />,
   },
+
   {
     path: '/seccionadora/mount',
     exact: true,
@@ -908,9 +937,15 @@ class App extends React.Component {
                 <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
                   <Link to="/mount">Linha</Link>
                 </Menu.Item>
+                <Menu.Item
+                  key="platingStockMount"
+                  icon={<RightSquareOutlined />}
+                >
+                  <Link to="/plating/mount/stock">Estoque montes</Link>
+                </Menu.Item>
                 {localStorage.getItem('access_level') === '1' && (
                   <SubMenu
-                    key="WnsInsumosSearches"
+                    key="platingSearches"
                     title="Consultas"
                     icon={<SearchOutlined />}
                   >
@@ -925,6 +960,32 @@ class App extends React.Component {
                     </Menu.Item>
                     <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
                       <Link to="/day/defect/mount">Defeitos</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+                {localStorage.getItem('access_level') === '1' && (
+                  <SubMenu
+                    key="platingCad"
+                    title="Cadastros"
+                    icon={<PlusOutlined />}
+                  >
+                    <Menu.Item
+                      key="platingDefect"
+                      icon={<RightSquareOutlined />}
+                    >
+                      <Link to="/plating/defect">Defeitos</Link>
+                    </Menu.Item>
+                    <Menu.Item
+                      key="platingWarehouse"
+                      icon={<RightSquareOutlined />}
+                    >
+                      <Link to="/plating/warehouse">Armazém</Link>
+                    </Menu.Item>
+                    <Menu.Item
+                      key="platingStreet"
+                      icon={<RightSquareOutlined />}
+                    >
+                      <Link to="/plating/street">Rua</Link>
                     </Menu.Item>
                   </SubMenu>
                 )}
