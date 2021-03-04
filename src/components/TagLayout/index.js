@@ -44,6 +44,7 @@ function TagLayout() {
                             <div style={{ marginLeft: 20 }}>
                               <BarCode
                                 value={barCode.code[i]}
+                                textPosition={"top"}
                                 width={1}
                                 height={28}
                                 fontSize={12}
@@ -93,6 +94,7 @@ function TagLayout() {
                         <BarCode
                           value={barCode.code}
                           width={1}
+
                           height={20}
                           fontSize={10}
                         />

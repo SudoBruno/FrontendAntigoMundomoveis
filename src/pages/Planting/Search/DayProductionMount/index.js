@@ -103,8 +103,8 @@ export default function PlantingDayProductionMount() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -114,7 +114,7 @@ export default function PlantingDayProductionMount() {
     };
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
-      // console.log('aq');
+
       confirm();
       this.setState({
         searchText: selectedKeys[0],

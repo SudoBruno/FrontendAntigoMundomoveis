@@ -107,8 +107,8 @@ export default function Entry() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -543,7 +543,7 @@ export default function Entry() {
               labelAlign={'left'}
               required
             >
-              {console.log(locked_entry)}
+              { }
               <Input
                 disabled={locked_entry}
                 name="description"
