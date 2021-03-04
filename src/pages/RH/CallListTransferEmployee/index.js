@@ -32,7 +32,7 @@ import api from '../../../services/api';
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
-export default function CallReport() {
+export default function CallListTransferEmployee() {
     class SearchTable extends React.Component {
         state = {
             pagination: {
@@ -145,13 +145,13 @@ export default function CallReport() {
         render() {
             const columns = [
                 {
-                    title: 'ID Funcionário',
+                    title: 'ID DA TRANSFERÊNCIA',
                     dataIndex: 'id',
                     key: 'id',
                     ...this.getColumnSearchProps('id'),
                 },
                 {
-                    title: 'Nome',
+                    title: 'NOME',
                     dataIndex: 'name',
                     key: 'name',
 
@@ -159,18 +159,26 @@ export default function CallReport() {
                     ...this.getColumnSearchProps('name'),
                 },
                 {
-                    title: 'Departamento',
-                    dataIndex: 'area',
+                    title: 'AREA ATUAL',
+                    dataIndex: 'actualyArea',
+                    key: 'actualyArea',
+
+                    sorter: (a, b) => this.compareByAlph(a.name, b.name),
+                    ...this.getColumnSearchProps('name'),
+                },
+                {
+                    title: 'FOI PARA',
+                    dataIndex: 'transferArea',
                     key: 'area',
                     sorter: (a, b) => this.compareByAlph(a.area, b.area),
                     ...this.getColumnSearchProps('area'),
                 },
                 {
-                    title: 'Presente:',
-                    dataIndex: 'presence',
-                    key: 'presence',
-                    sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
-                    ...this.getColumnSearchProps('presence'),
+                    title: 'EFETUADO EM',
+                    dataIndex: 'createdAt',
+                    key: 'createdAt',
+                    sorter: (a, b) => this.compareByAlph(a.createdAt, b.createdAt),
+                    ...this.getColumnSearchProps('createdAt'),
                 },
             ];
 
@@ -197,8 +205,6 @@ export default function CallReport() {
             intervalTime: intervalTime,
         };
         const response = await api.post('/call/employee/transferFilter', data);
-        console.log(response);
-        console.log("asdadasd");
         setInput(response.data);
 
     }
@@ -213,8 +219,6 @@ export default function CallReport() {
         let response = [];
         if (intervalTime.length == 0) {
             response = await api.get('/call/employee/transferFilter');
-            console.log('wiii');
-            console.log(response);
         } else {
             response = await api.post('/call/employee/transferFilter', data);
         }
@@ -226,11 +230,11 @@ export default function CallReport() {
             }.bind(this),
         );
         setHeaders([
-            { label: 'ID DO CHAMADA', key: 'id' },
-            { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
+            { label: 'ID DA TRANSFERÊNCIA', key: 'id' },
             { label: 'NOME', key: 'name' },
-            { label: 'DEPARTAMENTO', key: 'area' },
-            { label: 'PRESENÇA', key: 'presence' },
+            { label: 'AREA ATUAL', key: 'actualyArea' },
+            { label: 'FOI PARA', key: 'transferArea' },
+            { label: 'EFETUADO', key: 'createdAt' },
         ]);
     }
     function openNotificationWithIcon(type, message, description) {
