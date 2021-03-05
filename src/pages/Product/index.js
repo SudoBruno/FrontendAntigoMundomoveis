@@ -19,6 +19,7 @@ import {
   EditOutlined,
   PlusOutlined,
   MinusCircleOutlined,
+  CopyOutlined,
 } from '@ant-design/icons';
 
 import { Tooltip } from '@material-ui/core/';
@@ -178,7 +179,10 @@ export default function Product() {
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleEdit(record)}
                 />{' '}
-                {/*onClick={() => handleEdit(record)} */}
+                <CopyOutlined
+                  style={{ cursor: 'pointer', marginLeft: 20 }}
+                  onClick={() => handleDuplicate(record)}
+                />
                 <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
@@ -246,6 +250,34 @@ export default function Product() {
     });
   }, []);
 
+  async function handleDuplicate(e) {
+    setId(0);
+    setName(e.name);
+    let response = await api.get(`product/${e.id}`);
+
+    setReference(response.data.reference);
+
+    setLaborCost(response.data.labor_cost);
+    setMaterialCost(response.data.material_cost);
+    setNewClient(response.data.client_id);
+    setColor(response.data.color_id);
+    setVolume(response.data.volume_quantity);
+    setClientCode(response.data.client_code);
+
+    response = await api.get(`product-sector/${e.id}`);
+    if (response.data.length > 0) {
+      setSelectProductsSectors(response.data);
+    } else {
+      setSelectProductsSectors([
+        { subproduct: '', sector: '', points: '', order: '' },
+      ]);
+    }
+
+    response = await api.get(`product-ins/${e.id}`);
+    setSelectINS(response.data);
+
+    handleShow();
+  }
   async function handleEdit(e) {
     setId(e.id);
     setName(e.name);
@@ -296,12 +328,14 @@ export default function Product() {
           const response = await api.post('product', data);
           handleClose();
           setRefreshKey((refreshKey) => refreshKey + 1);
+          setLoading(false);
           openNotificationWithIcon(
             'success',
             'Criado com sucesso',
             'O produto foi criado com sucesso'
           );
         } catch (error) {
+          setLoading(false);
           openNotificationWithIcon(
             'error',
             'Erro ao adicionar',
@@ -321,7 +355,9 @@ export default function Product() {
           );
           setId(0);
           setName('');
+          setLoading(false);
         } catch (error) {
+          setLoading(false);
           openNotificationWithIcon(
             'error',
             'Erro ao editar',
@@ -357,6 +393,7 @@ export default function Product() {
   }
 
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleClose = () => {
     setName('');
     setId(0);
@@ -492,7 +529,12 @@ export default function Product() {
             {' '}
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={handleRegister}>
+          <Button
+            loading={loading}
+            key="submit"
+            type="primary"
+            onClick={handleRegister}
+          >
             {' '}
             Salvar
           </Button>,
