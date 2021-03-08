@@ -118,7 +118,7 @@ export default function PCP() {
     };
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
-      // console.log('aq');
+
       confirm();
       this.setState({
         searchText: selectedKeys[0],
@@ -344,7 +344,7 @@ export default function PCP() {
     setProductionLineName(response.data[0].productionLineName);
 
     setSelectProducts(response.data);
-    console.log(response.data);
+
 
     setIsEdit(true);
 

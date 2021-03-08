@@ -27,6 +27,7 @@ export default function Logon() {
   async function handleLogin(e) {
     e.preventDefault();
     setLoading('');
+
     try {
       const response = await api.post('sessions', { user_name, password });
       Cookies.set('token', String(response.data.token));
@@ -63,6 +64,7 @@ export default function Logon() {
         'Usuário ou Senha incorretos'
       );
       setLoading('none');
+      console.error(error);
     }
   }
 

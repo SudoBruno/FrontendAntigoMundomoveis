@@ -45,7 +45,7 @@ function TagLayout() {
       <div className="amountTag">
         {barCodes.map((item) => {
           {
-            console.log(item);
+
           }
           return (
             <>

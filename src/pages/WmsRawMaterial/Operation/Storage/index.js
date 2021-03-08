@@ -111,8 +111,8 @@ export default function SubProduct() {
             textToHighlight={text.toString()}
           />
         ) : (
-          text
-        ),
+            text
+          ),
     });
 
     compareByAlph = (a, b) => {
@@ -546,7 +546,7 @@ export default function SubProduct() {
                       onChange={(e) => handleEntryChange(e, index)}
                       disabled={itensStorage.locked}
                     >
-                      {console.log(entry)}
+                      { }
                       {entry.map((option) => {
                         return (
                           <>
