@@ -208,6 +208,7 @@ export default function PlantingDefect() {
         'Sucesso em criar',
         'criado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(
@@ -232,6 +233,7 @@ export default function PlantingDefect() {
         'Sucesso em editar',
         'Editado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(
@@ -249,6 +251,7 @@ export default function PlantingDefect() {
         'Sucesso em editar',
         'Editado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(

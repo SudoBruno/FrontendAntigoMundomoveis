@@ -271,6 +271,7 @@ export default function PlantingStockMount() {
         response.data.message
       );
       setLoading(false);
+      setShow(false);
     } catch (error) {
       openNotificationWithIcon(
         'error',

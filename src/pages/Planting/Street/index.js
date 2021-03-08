@@ -229,6 +229,7 @@ export default function PlantingStreet() {
         'Sucesso em criar',
         'criado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(
@@ -257,6 +258,7 @@ export default function PlantingStreet() {
         'Sucesso em editar',
         'Editado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(
@@ -274,6 +276,7 @@ export default function PlantingStreet() {
         'Sucesso em editar',
         'Editado com sucesso'
       );
+      setShow(false);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon(
