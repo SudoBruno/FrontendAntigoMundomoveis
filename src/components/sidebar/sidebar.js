@@ -784,9 +784,7 @@ class App extends React.Component {
                 key="quality"
                 title="Qualidade"
                 icon={
-                  <span className="anticon anticon-bank">
-                    <SignalFilled e size={16} color="#fff" />
-                  </span>
+                  <SignalFilled e size={16} color="#fff" />
                 }
               >
                 <SubMenu
