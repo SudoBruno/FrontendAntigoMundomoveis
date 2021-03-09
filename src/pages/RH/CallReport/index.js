@@ -110,8 +110,8 @@ export default function CallReport() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -164,13 +164,6 @@ export default function CallReport() {
           key: 'area',
           sorter: (a, b) => this.compareByAlph(a.area, b.area),
           ...this.getColumnSearchProps('area'),
-        },
-        {
-          title: 'Presente:',
-          dataIndex: 'presence',
-          key: 'presence',
-          sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
-          ...this.getColumnSearchProps('presence'),
         },
       ];
 
