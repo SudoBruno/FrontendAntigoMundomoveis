@@ -177,6 +177,13 @@ export default function PlantingStockMount() {
           ...this.getColumnSearchProps('streetName'),
         },
         {
+          title: 'Defeito',
+          dataIndex: 'defectName',
+          key: 'defectName',
+          sorter: (a, b) => this.compareByAlph(a.defectName, b.defectName),
+          ...this.getColumnSearchProps('defectName'),
+        },
+        {
           title: 'Quantidade',
           dataIndex: 'amount',
           key: 'amount',
