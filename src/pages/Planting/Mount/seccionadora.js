@@ -612,6 +612,27 @@ export default function Seccionadora() {
                   >
                     Vermelho
                   </Option>
+                  <Option
+                    key={4}
+                    value={['pink', 'Rosa']}
+                    style={{ color: 'pink' }}
+                  >
+                    Rosa
+                  </Option>
+                  <Option
+                    key={5}
+                    value={['black', 'Preto']}
+                    style={{ color: 'black' }}
+                  >
+                    Preto
+                  </Option>
+                  <Option
+                    key={6}
+                    value={['green', 'Verde']}
+                    style={{ color: 'green' }}
+                  >
+                    Verde
+                  </Option>
                 </>
               </Select>
             </Form.Item>
@@ -805,6 +826,27 @@ export default function Seccionadora() {
                     style={{ color: 'red' }}
                   >
                     Vermelho
+                  </Option>
+                  <Option
+                    key={4}
+                    value={['pink', 'Rosa']}
+                    style={{ color: 'pink' }}
+                  >
+                    Rosa
+                  </Option>
+                  <Option
+                    key={5}
+                    value={['black', 'Preto']}
+                    style={{ color: 'black' }}
+                  >
+                    Preto
+                  </Option>
+                  <Option
+                    key={6}
+                    value={['green', 'Verde']}
+                    style={{ color: 'green' }}
+                  >
+                    Verde
                   </Option>
                 </>
               </Select>

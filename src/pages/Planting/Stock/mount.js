@@ -160,6 +160,23 @@ export default function PlantingStockMount() {
           ...this.getColumnSearchProps('productName'),
         },
         {
+          title: 'Armazém',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+
+          sorter: (a, b) =>
+            this.compareByAlph(a.warehouseName, b.warehouseName),
+          ...this.getColumnSearchProps('warehouseName'),
+        },
+        {
+          title: 'Rua',
+          dataIndex: 'streetName',
+          key: 'streetName',
+
+          sorter: (a, b) => this.compareByAlph(a.streetName, b.streetName),
+          ...this.getColumnSearchProps('streetName'),
+        },
+        {
           title: 'Quantidade',
           dataIndex: 'amount',
           key: 'amount',
