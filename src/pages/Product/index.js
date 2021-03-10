@@ -17,13 +17,15 @@ import {
 import {
   DeleteOutlined,
   EditOutlined,
+  FileExcelOutlined,
+  DownloadOutlined,
   PlusOutlined,
   MinusCircleOutlined,
   CopyOutlined,
 } from '@ant-design/icons';
 
 import { Tooltip } from '@material-ui/core/';
-
+import { CSVLink, CSVDownload } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import api from '../../services/api';
@@ -223,6 +225,10 @@ export default function Product() {
   const [selectProductsSectors, setSelectProductsSectors] = useState([
     { subproduct: '', sector: '', points: '', order: '' },
   ]);
+  const [csvData, setCsvData] = useState([]);
+  const [input, setInput] = useState([]);
+  const [headers, setHeaders] = useState([]);
+  const [ready, setReady] = useState(false);
 
   const data = {
     id: id,
@@ -278,6 +284,34 @@ export default function Product() {
 
     handleShow();
   }
+
+
+
+  async function Input() {
+    setReady(false);
+
+    const response = await api.get('/product-report');
+
+    setCsvData(response.data);
+    setTimeout(
+      function () {
+        setReady(true);
+      }.bind(this),
+      500
+    );
+    setHeaders([
+      { label: 'NOME', key: 'productName' },
+      { label: 'SETOR', key: 'sectorName' },
+      { label: 'PONTUAÇÃO', key: 'points' },
+    ]);
+  }
+
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: 'relatórioDeProduto.csv',
+  };
+
   async function handleEdit(e) {
     setId(e.id);
     setName(e.name);
@@ -433,6 +467,7 @@ export default function Product() {
     });
   }, []);
 
+
   const [subProduct, setSubProduct] = useState([]);
   const [client, setClient] = useState([]);
 
@@ -507,15 +542,37 @@ export default function Product() {
     >
       <Row style={{ marginBottom: 16 }}>
         <Col span={24} align="right">
+
+          {!ready && (
+            <Button type="submit" className="buttonGreen" onClick={Input}>
+              <FileExcelOutlined style={{ marginRight: 8 }} />
+              Relatório de Faltas
+            </Button>
+          )}
+          {ready && (
+            <Button className="buttonGreen">
+              <DownloadOutlined style={{ marginRight: 8 }} />
+              <CSVLink
+                {...csvReport}
+                data={csvData}
+                style={{ color: '#fff' }}
+                separator={';'}
+              >
+                Download
+              </CSVLink>
+            </Button>
+          )}
+
           <Tooltip title="Criar novo Produto" placement="right">
             <Button
               className="buttonGreen"
               icon={<PlusOutlined />}
-              style={{ marginRight: 5, marginTop: 3, fontSize: '14px' }}
-              onClick={handleShow}
+              style={{ marginLeft: 10, marginRight: 5, marginTop: 3, fontSize: '14px' }}
+              onClick={Input}
             >
               Novo produto
             </Button>
+
           </Tooltip>
         </Col>
       </Row>
@@ -646,7 +703,7 @@ export default function Product() {
                   value={color}
                   onChange={(e) => setColor(e)}
 
-                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                 >
                   {colors.map((option) => {
                     return (

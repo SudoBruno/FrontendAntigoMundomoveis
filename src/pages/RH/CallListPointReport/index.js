@@ -100,8 +100,8 @@ export default function CallReport() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -237,7 +237,7 @@ export default function CallReport() {
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: 'relatórioDePonto.csv',
+    filename: 'relatórioProdutos.csv',
   };
   return (
     <Layout
