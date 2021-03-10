@@ -96,7 +96,8 @@ import Seccionadora from '../../pages/Planting/Mount/seccionadora';
 import PlantingReportStockMount from '../../pages/Planting/Search/MountStock';
 import PlantingDayProductionMount from '../../pages/Planting/Search/DayProductionMount';
 import PlantingDayDefectMount from '../../pages/Planting/Search/DayDefectMount';
-import PlantingStockMount from '../../pages/Planting/Stock/mount';
+import PlantingInputMount from '../../pages/Planting/Stock/input';
+import PlantingOutputMount from '../../pages/Planting/Stock/output';
 import PlantingDefect from '../../pages/Planting/Defect';
 import PlantingWarehouse from '../../pages/Planting/Warehouse';
 import PlantingStreet from '../../pages/Planting/Street';
@@ -444,8 +445,15 @@ const routes = [
     path: '/plating/mount/stock',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <PlantingStockMount />,
+    main: () => <PlantingInputMount />,
   },
+  {
+    path: '/plating/mount/output/stock',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlantingOutputMount />,
+  },
+
   {
     path: '/plating/defect',
     exact: true,
@@ -783,9 +791,7 @@ class App extends React.Component {
               <SubMenu
                 key="quality"
                 title="Qualidade"
-                icon={
-                  <SignalFilled e size={16} color="#fff" />
-                }
+                icon={<SignalFilled e size={16} color="#fff" />}
               >
                 <SubMenu
                   key="defectLevelInsert"
@@ -957,6 +963,15 @@ class App extends React.Component {
                 >
                   <Link to="/plating/mount/stock">Estoque montes</Link>
                 </Menu.Item>
+                <Menu.Item
+                  key="platingOutputStockMount"
+                  icon={<RightSquareOutlined />}
+                >
+                  <Link to="/plating/mount/output/stock">
+                    Remover do estoque de montes
+                  </Link>
+                </Menu.Item>
+
                 {localStorage.getItem('access_level') === '1' && (
                   <SubMenu
                     key="platingSearches"
