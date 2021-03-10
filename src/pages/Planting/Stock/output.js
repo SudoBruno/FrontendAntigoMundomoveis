@@ -20,10 +20,11 @@ import Highlighter from 'react-highlight-words';
 import BarcodeReader from 'react-barcode-reader';
 
 import api from '../../../services/api';
+import { setRef } from '@material-ui/core';
 
 const Option = Select.Option;
 
-export default function PlantingStockMount() {
+export default function PlantingOutputMount() {
   class SearchTable extends React.Component {
     state = {
       pagination: {
@@ -177,6 +178,13 @@ export default function PlantingStockMount() {
           ...this.getColumnSearchProps('streetName'),
         },
         {
+          title: 'Defeito',
+          dataIndex: 'defectName',
+          key: 'defectName',
+          sorter: (a, b) => this.compareByAlph(a.defectName, b.defectName),
+          ...this.getColumnSearchProps('defectName'),
+        },
+        {
           title: 'Quantidade',
           dataIndex: 'amount',
           key: 'amount',
@@ -277,11 +285,11 @@ export default function PlantingStockMount() {
     defectId: defectId,
     amount: amount,
   };
-  async function handleStockMount() {
+  async function handleOutputStockMount() {
     setLoading(true);
 
     try {
-      const response = await api.post('plating/mount/stock/input', data);
+      const response = await api.post('plating/mount/stock/output', data);
       openNotificationWithIcon(
         'success',
         'Sucesso ao dar a entrada',
@@ -310,19 +318,34 @@ export default function PlantingStockMount() {
     setBarCode(e);
 
     const response = await api.get(`plating/stock/mount/tag/${e}`);
-    setPcpName(response.data.pcp);
 
-    setProductName(response.data.productName);
+    if (response.data.defectName === null) {
+      openNotificationWithIcon(
+        'error',
+        'Monte nao armazenado',
+        'esse monte nao foi armazenado'
+      );
+    } else {
+      setPcpName(response.data.pcp);
 
-    setColorName(response.data.color);
+      setProductName(response.data.productName);
 
-    setSubProductName(response.data.subProductName);
+      setColorName(response.data.color);
 
-    setAmount(response.data.amount);
+      setSubProductName(response.data.subProductName);
 
-    setBarCode(response.data.barCode);
+      setAmount(response.data.amountStock);
 
-    setShow(true);
+      setBarCode(response.data.barCode);
+
+      setStreetName(response.data.streetName);
+
+      setWarehouseName(response.data.warehouseName);
+
+      setDefectName(response.data.defectName);
+
+      setShow(true);
+    }
   };
 
   return (
@@ -347,7 +370,7 @@ export default function PlantingStockMount() {
             key="submit"
             type="primary"
             loading={loading}
-            onClick={handleStockMount}
+            onClick={handleOutputStockMount}
           >
             Salvar
           </Button>,
@@ -405,6 +428,7 @@ export default function PlantingStockMount() {
                 placeholder="Selecione"
                 size="large"
                 value={warehouseName}
+                disabled
                 onChange={(e) => handleWarehouse(e)}
 
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
@@ -434,6 +458,7 @@ export default function PlantingStockMount() {
                   setStreetId(e[0]);
                   setStreetName(e[1]);
                 }}
+                disabled
               >
                 {streets.map((option) => {
                   return (
@@ -463,6 +488,7 @@ export default function PlantingStockMount() {
                   setDefectId(e[0]);
                   setDefectName(e[1]);
                 }}
+                disabled
               >
                 {defects.map((option) => {
                   return (
