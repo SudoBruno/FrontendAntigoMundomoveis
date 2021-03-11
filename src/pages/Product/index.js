@@ -220,6 +220,7 @@ export default function Product() {
   const [color, setColor] = useState([]);
   const [colors, setColors] = useState([]);
 
+
   const [clientCode, setClientCode] = useState('');
 
   const [selectProductsSectors, setSelectProductsSectors] = useState([
@@ -287,7 +288,7 @@ export default function Product() {
 
 
 
-  async function Input() {
+  async function InputReport() {
     setReady(false);
 
     const response = await api.get('/product-report');
@@ -544,9 +545,9 @@ export default function Product() {
         <Col span={24} align="right">
 
           {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Input}>
+            <Button type="submit" className="buttonGreen" onClick={InputReport}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
-              Relatório de Faltas
+              Relatório de Produtos
             </Button>
           )}
           {ready && (
@@ -568,7 +569,7 @@ export default function Product() {
               className="buttonGreen"
               icon={<PlusOutlined />}
               style={{ marginLeft: 10, marginRight: 5, marginTop: 3, fontSize: '14px' }}
-              onClick={Input}
+              onClick={handleShow}
             >
               Novo produto
             </Button>
