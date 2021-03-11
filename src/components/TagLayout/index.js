@@ -32,6 +32,7 @@ function TagLayout() {
                   <div className="text">
                     <p>PCP: {barCode.PCP.toUpperCase()}</p>
                     <p>Volume: {barCode.volume.toUpperCase()}</p>
+                    <p>Cód.Fornc: {barCode.reference}</p>
                   </div>
                   <>
                     {barCode.sector.map((sectorBarCode, i) => {
