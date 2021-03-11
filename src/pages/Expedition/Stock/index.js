@@ -142,7 +142,12 @@ export default function ExpeditionStock() {
           key: 'street',
           ...this.getColumnSearchProps('street'),
         },
-
+        {
+          title: 'Almoxarifado',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+          ...this.getColumnSearchProps('warehouseName'),
+        },
         {
           title: 'Data Armazenado',
           dataIndex: 'stock',
@@ -183,13 +188,20 @@ export default function ExpeditionStock() {
       500
     );
     setHeaders([
-      { key: 'Codigo fornecedor' },
-      { key: 'Produto' },
-      { key: 'Rua' },
-      { key: 'Data armazenado' },
-      { key: 'Código de barras' },
+      { label: 'Codigo fornecedor', key: 'code' },
+      { label: 'Produto', key: 'product' },
+      { label: 'Rua', key: 'street' },
+      { label: 'Almoxarifado', key: 'warehouseName' },
+      { label: 'Data armazenado', key: 'stock' },
+      { label: 'Código de barras', key: 'barCode' },
     ]);
   }
+
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: 'relatórioDeEstoque.csv',
+  };
   return (
     <Layout
       style={{
@@ -210,7 +222,7 @@ export default function ExpeditionStock() {
           {ready && (
             <Button className="buttonGreen">
               <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink data={csvData} style={{ color: '#fff' }} separator={';'}>
+              <CSVLink {...csvReport} data={csvData} style={{ color: '#fff' }} separator={';'}>
                 Download
               </CSVLink>
             </Button>

@@ -80,7 +80,6 @@ input[type='file'] {
     background-color: #cc3204;
     color: #fff;
 }
-
 .absenceButton {
     background-color: #f3410b;
     color: #fff;
@@ -124,13 +123,11 @@ input[type='file'] {
     border: none;
     border-radius: 5px;
   }
-  
   .input-file {
       display: none;
   }
   .btn-enviar{
       display: none;
   }
-
 
 }

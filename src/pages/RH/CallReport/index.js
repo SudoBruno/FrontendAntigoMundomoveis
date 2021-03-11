@@ -193,7 +193,7 @@ export default function CallReport() {
     setInput(response.data);
   }
 
-  async function Input() {
+  async function InputReport() {
     setReady(false);
 
     const data = {
