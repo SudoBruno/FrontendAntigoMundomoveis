@@ -201,6 +201,13 @@ export default function SingleCoverStock() {
     setTotalCover(response.data.total);
   };
 
+  function HandleChangeCover(e) {
+    setCoverName(e[1]);
+    setCoverId(e[0]);
+
+    findCover(e[0]);
+  }
+
   return (
     <Layout
       style={{
@@ -211,18 +218,19 @@ export default function SingleCoverStock() {
       }}
     >
       <Row gutter={5}>
-        <Col span={20}>
-          <Form.Item labelCol={{ span: 23 }} label="Capa:" labelAlign={'left'}>
+        <Col span={22}>
+          <Form.Item
+            labelCol={{ span: 23 }}
+            style={{ maxWidth: '570px' }}
+            label="Capa:"
+            labelAlign={'left'}
+          >
             <Select
               showSearch
               placeholder="Selecione"
               size="large"
               value={coverName}
-              onChange={async (e) => {
-                setCoverId(e[0]);
-                setCoverName(e[1]);
-                findCover(e[0]);
-              }}
+              onChange={(e) => HandleChangeCover(e)}
             >
               {covers.map((option) => {
                 return (
@@ -236,7 +244,7 @@ export default function SingleCoverStock() {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={2} style={{ marginTop: '1%', fontSize: '20px' }}>
+        <Col style={{ marginTop: '1%', fontSize: '20px' }}>
           <h1>
             Total: <h1 style={{ marginTop: '2%' }}>{totalCover}</h1>
           </h1>
