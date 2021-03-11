@@ -17,16 +17,15 @@
   display: inline-block;
 }
 
-.text {
+.textTagProduction {
   display: grid;
   grid-template-columns: 190px 143px;
-  grid-template-rows: 30px;
-  margin-left: 60px;
+  grid-template-rows: 20px 15px;
 }
 
 .tag-one {
   display: grid;
-  grid-template-rows: 30px 20px 100px;
+  grid-template-rows: 30px 20px 10px 10px 100px;
   grid-template-columns: 190px 190px;
   grid-template-areas: 'title title ';
 }

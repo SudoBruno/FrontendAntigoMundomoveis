@@ -29,10 +29,12 @@ function TagLayout() {
                       {barCode.product.toUpperCase()}
                     </h2>
                   </div>
-                  <div className="text">
+                  <div className="textTagProduction">
                     <p>PCP: {barCode.PCP.toUpperCase()}</p>
-                    <p>Volume: {barCode.volume.toUpperCase()}</p>
-                    <p>Cód.Fornc: {barCode.reference}</p>
+                    <>
+                      <p>Volume: {barCode.volume.toUpperCase()}</p>
+                      <p>Cód.Fornc: {barCode.reference}</p>
+                    </>
                   </div>
                   <>
                     {barCode.sector.map((sectorBarCode, i) => {
@@ -45,7 +47,7 @@ function TagLayout() {
                             <div style={{ marginLeft: 20 }}>
                               <BarCode
                                 value={barCode.code[i]}
-                                textPosition={"top"}
+                                textPosition={'top'}
                                 width={1}
                                 height={28}
                                 fontSize={12}
@@ -95,7 +97,6 @@ function TagLayout() {
                         <BarCode
                           value={barCode.code}
                           width={1}
-
                           height={20}
                           fontSize={10}
                         />
