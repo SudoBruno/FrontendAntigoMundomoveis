@@ -104,8 +104,8 @@ export default function CallList() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -395,7 +395,7 @@ export default function CallList() {
             labelCol={{ span: 23 }}
             label="Selecione o Departamento"
             labelAlign={'left'}
-            style={{ marginLeft: 90, marginTop: 20 }}
+            style={{ marginTop: 20 }}
             className="departament"
           >
             <Select
@@ -423,7 +423,28 @@ export default function CallList() {
           </Form.Item>
 
         </Col>
+        <Col> <Button
+          type="primary"
+          icon={<RetweetOutlined />}
+          size={30}
+          style={{ marginLeft: 10, marginBottom: 0 }}
+          onClick={handleShowReplacement}
+        >
+          Troca de Colaborador
+        </Button>
+          <Col
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'left',
+              marginTop: 0,
+            }}>
+            <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
+              Iniciar Chamada
+          </button>
+          </Col>
 
+        </Col>
         <Col
           span={12}
           style={{
@@ -434,20 +455,6 @@ export default function CallList() {
           }}
         >
 
-
-          <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
-            Iniciar Chamada
-          </button>
-
-          <Button
-            type="primary"
-            icon={<RetweetOutlined />}
-            size={30}
-            style={{ marginLeft: 10 }}
-            onClick={handleShowReplacement}
-          >
-            Troca de Colaborador
-        </Button>
 
           <Modal
             visible={showReplacement}
