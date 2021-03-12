@@ -37,13 +37,10 @@ const Option = Select.Option;
 export default function Product() {
   class SearchTable extends React.Component {
     state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
       loading: false,
       searchText: '',
       searchedColumn: '',
+      pagination: pagination,
     };
 
     getColumnSearchProps = (dataIndex) => ({
@@ -127,16 +124,17 @@ export default function Product() {
       this.setState({
         searchText: selectedKeys[0],
         searchedColumn: dataIndex,
+        pagination: pagination,
       });
     };
 
     handleReset = (clearFilters) => {
       clearFilters();
-      this.setState({ searchText: '' });
+      this.setState({ searchText: '', pagination: pagination });
     };
 
     handleTableChange = (pagination, filters, sorter) => {
-      this.fetch({
+      this.setState({
         sortField: sorter.field,
         sortOrder: sorter.order,
         pagination,
@@ -179,7 +177,10 @@ export default function Product() {
               <React.Fragment>
                 <EditOutlined
                   style={{ cursor: 'pointer' }}
-                  onClick={() => handleEdit(record)}
+                  onClick={() => {
+                    handleEdit(record);
+                    setPagination(this.state.pagination);
+                  }}
                 />{' '}
                 <CopyOutlined
                   style={{ cursor: 'pointer', marginLeft: 20 }}
@@ -200,7 +201,15 @@ export default function Product() {
         },
       ];
 
-      return <Table columns={columns} dataSource={product} />;
+      return (
+        <Table
+          columns={columns}
+          dataSource={product}
+          onChange={this.handleTableChange}
+          pagination={this.state.pagination}
+          rowKey="id"
+        />
+      );
     }
   }
 
@@ -230,6 +239,7 @@ export default function Product() {
   const [input, setInput] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [ready, setReady] = useState(false);
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const data = {
     id: id,
