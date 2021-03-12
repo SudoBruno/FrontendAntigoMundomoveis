@@ -212,6 +212,16 @@ export default function ExpeditionLaunch() {
     setModalConfigure(modal);
     setShow(true);
   };
+  const handleLaunch = () => {
+    let modal = {
+      title: 'Lançamento de produtos na expedição',
+      url: 'launch',
+      hidden: true,
+      span: 24,
+    };
+    setModalConfigure(modal);
+    setShow(true);
+  };
   const handleOutput = () => {
     let modal = {
       title: 'Saida de produtos finalizados',
@@ -391,14 +401,14 @@ export default function ExpeditionLaunch() {
             <RedoOutlined style={{ marginRight: 8 }} />
             Estorno Saida
           </button>
-          {/* <button
+          <button
             type="submit"
-            className="expedition-input"
-            onClick={handleInput}
+            className="lancamento-agrupado"
+            onClick={handleLaunch}
           >
-            <DownloadOutlined style={{ marginRight: 8 }} />
-            Entrada
-          </button> */}
+            <BarcodeOutlined style={{ marginRight: 8 }} />
+            Lançar código
+          </button>
         </div>
         <div className="expedition-info">
           <h1>Entradas hoje: {expeditionInfo.input}</h1>
