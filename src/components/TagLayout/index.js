@@ -40,8 +40,8 @@ function TagLayout() {
                     {barCode.sector.map((sectorBarCode, i) => {
                       return (
                         <div className="sectorBarCode">
-                          <div style={{ height: 95 }}>
-                            <p className="sectorName" style={{ height: 40 }}>
+                          <div style={{ height: 93 }}>
+                            <p className="sectorName">
                               {sectorBarCode.toUpperCase()}
                             </p>
                             <div style={{ marginLeft: 20 }}>
