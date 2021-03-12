@@ -11,7 +11,7 @@
   display: inline-block;
 }
 
-span {
+.tagMountSpan {
   max-width: 396px;
 }
 

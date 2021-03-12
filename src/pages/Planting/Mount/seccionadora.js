@@ -525,7 +525,7 @@ export default function Seccionadora() {
         ]}
       >
         <Row gutter={5}>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
               <Select
                 showSearch
@@ -548,34 +548,7 @@ export default function Seccionadora() {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item
-              labelCol={{ span: 23 }}
-              label="Produto:"
-              labelAlign={'left'}
-            >
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={productName}
-                onChange={(e) => handleProduct(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                {products.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={[option.id, option.name]}>
-                        {option.name}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
               <Select
                 showSearch
@@ -634,6 +607,34 @@ export default function Seccionadora() {
                     Verde
                   </Option>
                 </>
+              </Select>
+            </Form.Item>
+          </Col>
+
+          <Col span={19}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={productName}
+                onChange={(e) => handleProduct(e)}
+
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              >
+                {products.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>

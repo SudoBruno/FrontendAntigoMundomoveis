@@ -45,11 +45,10 @@ function TagLayout() {
       <div className="amountTag">
         {barCodes.map((item) => {
           {
-
           }
           return (
             <>
-              <span>
+              <span className="tagMountSpan">
                 <div className="mountTitles">
                   <h2>Produto: {item.productName.toUpperCase()}</h2>
                   <h2>
