@@ -269,7 +269,7 @@ export default function CallReport() {
         </Col>
         <Col span={12} align="end">
           {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Input}>
+            <Button type="submit" className="buttonGreen" onClick={InputReport}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
               Relatório de Faltas
             </Button>

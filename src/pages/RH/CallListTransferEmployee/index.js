@@ -110,8 +110,8 @@ export default function CallListTransferEmployee() {
                         textToHighlight={text.toString()}
                     />
                 ) : (
-                        text
-                    ),
+                    text
+                ),
         });
 
         compareByAlph = (a, b) => {
@@ -209,7 +209,7 @@ export default function CallListTransferEmployee() {
 
     }
 
-    async function Input() {
+    async function InputReport() {
         setReady(false);
 
         const data = {
@@ -284,7 +284,7 @@ export default function CallListTransferEmployee() {
                 </Col>
                 <Col span={12} align="end">
                     {!ready && (
-                        <Button type="submit" className="buttonGreen" onClick={Input}>
+                        <Button type="submit" className="buttonGreen" onClick={InputReport}>
                             <FileExcelOutlined style={{ marginRight: 8 }} />
               Relatório de Faltas
                         </Button>
