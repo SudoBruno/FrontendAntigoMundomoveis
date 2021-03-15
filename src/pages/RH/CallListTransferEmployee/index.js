@@ -286,7 +286,7 @@ export default function CallListTransferEmployee() {
                     {!ready && (
                         <Button type="submit" className="buttonGreen" onClick={InputReport}>
                             <FileExcelOutlined style={{ marginRight: 8 }} />
-              Relatório de Faltas
+              Relatório de Movimentação
                         </Button>
                     )}
                     {ready && (

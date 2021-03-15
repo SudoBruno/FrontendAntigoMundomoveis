@@ -268,7 +268,7 @@ export default function CallReport() {
           {!ready && (
             <Button type="submit" className="buttonGreen" onClick={Input}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
-              Relatório de Faltas
+              Relatório de Ponto
             </Button>
           )}
           {ready && (
