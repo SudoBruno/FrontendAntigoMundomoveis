@@ -104,6 +104,7 @@ import PlantingStreet from '../../pages/Planting/Street';
 import DefectLevel from '../../pages/Quality/DefectLevel/index';
 import Defect from '../../pages/Quality/Defect/index';
 import CallListTransferEmployee from '../../pages/RH/CallListTransferEmployee/';
+import DefectReport from '../../pages/Quality/DefectReport';
 
 const userName = localStorage.getItem('userName');
 
@@ -508,7 +509,7 @@ const routes = [
     path: '/quality/defectReport',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
-    main: () => <defectReport />,
+    main: () => <DefectReport />,
   },
 ];
 
