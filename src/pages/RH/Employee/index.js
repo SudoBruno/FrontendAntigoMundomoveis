@@ -111,8 +111,8 @@ export default function Employee() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -179,7 +179,7 @@ export default function Employee() {
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleEdit(record)}
                 />
-                {/*onClick={() => handleEdit(record)} */}
+                {/* onClick={() => handleEdit(record)} */}
                 <Popconfirm
                   onConfirm={() => handleDeleteFunction(record.id)}
                   title="Confirmar remoção?"
@@ -237,9 +237,10 @@ export default function Employee() {
   const [shiftId, setShiftId] = useState(0);
   const [shiftName, setShiftName] = useState('');
 
-  const [admission, setAdmission] = useState(moment());
+  const [admission, setAdmission] = useState('');
 
   const [secullumId, setSecullumId] = useState('');
+  const [situation, setSituation] = useState('');
 
   const data = {
     admission,
@@ -264,6 +265,7 @@ export default function Employee() {
     phone,
     shiftId,
     secullumId,
+    situation,
   };
   useEffect(() => {
     api.get('employee', {}).then((response) => {
@@ -299,7 +301,7 @@ export default function Employee() {
   async function handleEdit(e) {
     setId(e.id);
     setName(e.name);
-    let response = await api.get(`employee/${e.id}`);
+    const response = await api.get(`employee/${e.id}`);
     setCPF(response.data.cpf);
     setPIS(response.data.PIS);
     setCTPS(response.data.CTPS);
@@ -325,7 +327,7 @@ export default function Employee() {
     setShiftId(response.data.shiftId);
     setShiftName(response.data.shiftName);
     setSecullumId(response.data.secullum_id);
-
+    setSituation(response.data.situation);
     handleShow();
   }
 
@@ -357,10 +359,11 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission();
+          setAdmission('');
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
+          setSituation('');
 
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -401,10 +404,11 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission(moment());
+          setAdmission('');
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
+          setSituation('');
         } catch (error) {
           openNotificationWithIcon(
             'error',
@@ -461,9 +465,11 @@ export default function Employee() {
     setSectorName('');
     setFactoryFunctionName('');
     setAreaName('');
+    setAdmission('');
     setShiftId(0);
     setShiftName('');
     setSecullumId('');
+    setSituation('');
 
     setShow(false);
   };
@@ -556,12 +562,19 @@ export default function Employee() {
                 label="Data de admissão:"
                 labelAlign={'left'}
               >
-                <DatePicker
-                  style={{ height: 40, paddingTop: 8, width: '100%' }}
-                  format="DD/MM/YYYY"
-                  defaultValue={moment(admission, 'DD/MM/YYYY')}
-                  onChange={(date) => setAdmission(date._d)}
-                />
+                {moment(admission, 'DD/MM/YYYY').isValid &&
+                  <DatePicker
+                    style={{ height: 40, paddingTop: 8, width: '100%' }}
+                    format="DD/MM/YYYY"
+                    value={moment(admission, 'DD/MM/YYYY')}
+                    onChange={(date) => {
+                      if (date == '' || date == null) {
+                        setAdmission('');
+                      } else {
+                        setAdmission(date._d);
+                      }
+                    }}
+                  />}
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -821,6 +834,8 @@ export default function Employee() {
                   value={city}
                 />
               </Form.Item>
+
+
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="ID Secullum"
@@ -832,6 +847,8 @@ export default function Employee() {
                   value={secullumId}
                 />
               </Form.Item>
+
+
             </Col>
 
             <Col span={2}>
@@ -847,7 +864,9 @@ export default function Employee() {
                   value={UF}
                 />
               </Form.Item>
+
             </Col>
+
             <Col span={8}>
               <Form.Item
                 labelCol={{ span: 23 }}
@@ -861,7 +880,19 @@ export default function Employee() {
                 />
                 {name == '' && <span style={{ color: 'red' }}>{error}</span>}
               </Form.Item>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Situação"
+                labelAlign={'left'}
+              >
+                <TextArea
+                  rows={3}
+                  onChange={(e) => setSituation(e.target.value)}
+                  value={situation}
+                />
+              </Form.Item>
             </Col>
+
             <Col span={6}>
               <Form.Item
                 labelCol={{ span: 23 }}
@@ -875,7 +906,10 @@ export default function Employee() {
                 />
                 {name == '' && <span style={{ color: 'red' }}>{error}</span>}
               </Form.Item>
+
+
             </Col>
+
           </Row>
           <Divider />
           <Row style={{ justifyContent: 'space-around' }}>
@@ -915,6 +949,7 @@ export default function Employee() {
                 )}
               </Form.Item>
             </Col>
+
             <Col span={8}>
               <Form.Item
                 labelCol={{ span: 23 }}
