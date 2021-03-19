@@ -194,6 +194,7 @@ export default function ExpeditionStock() {
       { label: 'Almoxarifado', key: 'warehouseName' },
       { label: 'Data armazenado', key: 'stock' },
       { label: 'Código de barras', key: 'barCode' },
+      { label: 'volume', key: 'volume' },
     ]);
   }
 
@@ -222,7 +223,12 @@ export default function ExpeditionStock() {
           {ready && (
             <Button className="buttonGreen">
               <DownloadOutlined style={{ marginRight: 8 }} />
-              <CSVLink {...csvReport} data={csvData} style={{ color: '#fff' }} separator={';'}>
+              <CSVLink
+                {...csvReport}
+                data={csvData}
+                style={{ color: '#fff' }}
+                separator={';'}
+              >
                 Download
               </CSVLink>
             </Button>
