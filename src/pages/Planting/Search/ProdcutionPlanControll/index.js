@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 
 const Option = Select.Option;
 
-export default function PlantingDayProductionMount() {
+export default function ProductionMount() {
   class SearchTable extends React.Component {
     state = {
       loading: false,
@@ -140,12 +140,28 @@ export default function PlantingDayProductionMount() {
     render() {
       const columns = [
         {
-          title: 'Dia de produção',
-          dataIndex: 'day',
-          key: 'day',
+          title: 'ID PCP',
+          dataIndex: 'PCPId',
+          key: 'PCPId',
 
-          sorter: (a, b) => this.compareByAlph(a.day, b.day),
-          ...this.getColumnSearchProps('day'),
+          sorter: (a, b) => this.compareByAlph(a.PCPId, b.PCPId),
+          ...this.getColumnSearchProps('PCPId'),
+        },
+        {
+          title: 'Nome PCP',
+          dataIndex: 'PCPName',
+          key: 'PCPName',
+
+          sorter: (a, b) => this.compareByAlph(a.PCPName, b.PCPName),
+          ...this.getColumnSearchProps('PCPName'),
+        },
+        {
+          title: 'Data criação do pcp',
+          dataIndex: 'PCPCreated',
+          key: 'PCPCreated',
+
+          sorter: (a, b) => this.compareByAlph(a.PCPCreated, b.PCPCreated),
+          ...this.getColumnSearchProps('PCPCreated'),
         },
 
         {
@@ -157,44 +173,29 @@ export default function PlantingDayProductionMount() {
             return (
               <React.Fragment>
                 <>
-                  {status == false &&
-                    data[0] != undefined &&
-                    data[0].filter != record.filter && (
-                      <DownloadOutlined
-                        onClick={() => {
-                          handleDownload(record);
-                          setStatus(true);
-                          setPagination(this.state.pagination);
-                        }}
-                      />
-                    )}
-                  {status == true &&
-                    data[0] != undefined &&
-                    data[0].filter != record.filter && (
-                      <DownloadOutlined
-                        onClick={() => {
-                          handleDownload(record.filter);
-                          setStatus(true);
-                          setPagination(this.state.pagination);
-                        }}
-                      />
-                    )}
+                  {status == false && (
+                    <DownloadOutlined
+                      onClick={() => {
+                        handleDownload(record);
+                        setStatus(true);
+                        setPagination(this.state.pagination);
+                      }}
+                    />
+                  )}
 
-                  {status == true &&
-                    data[0] != undefined &&
-                    data[0].filter == record.filter && (
-                      <CSVLink
-                        {...csvReport}
-                        style={{ color: '#000' }}
-                        separator={';'}
-                        onClick={() => {
-                          setStatus(false);
-                          setData([{}]);
-                        }}
-                      >
-                        Download
-                      </CSVLink>
-                    )}
+                  {status == true && (
+                    <CSVLink
+                      {...csvReport}
+                      style={{ color: '#000' }}
+                      separator={';'}
+                      onClick={() => {
+                        setStatus(false);
+                        setData([{}]);
+                      }}
+                    >
+                      Download
+                    </CSVLink>
+                  )}
                 </>
               </React.Fragment>
             );
@@ -219,16 +220,19 @@ export default function PlantingDayProductionMount() {
   const [mountDayProduction, setMountDayProduction] = useState([{}]);
 
   useEffect(() => {
-    api.get('plating/mount/search/day/production', {}).then((response) => {
+    api.get('plating/mount/search/production/pcp', {}).then((response) => {
       setMountDayProduction(response.data);
     });
   }, []);
 
   const handleDownload = async (e) => {
-    const response = await api.get(`plating/mount/search/production/day/${e}`);
-    console.log(response);
+    console.log(e);
+    const response = await api.get(
+      `plating/mount/search/production/pcp/${e.PCPId}`
+    );
 
     setData(response.data);
+    setStatus(true);
   };
 
   const [data, setData] = useState([{}]);
@@ -245,7 +249,7 @@ export default function PlantingDayProductionMount() {
   const csvReport = {
     data: data,
     headers: headers,
-    filename: 'relatorioProduzidoPorHoraChaparia.csv',
+    filename: 'relatorioProduzidoPorPCPChaparia.csv',
   };
 
   return (
