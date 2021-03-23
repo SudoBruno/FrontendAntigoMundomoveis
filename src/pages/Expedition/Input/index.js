@@ -182,6 +182,7 @@ export default function ExpeditionInput() {
     { label: 'Codigo fornecedor', key: 'code' },
     { label: 'Produto', key: 'productName' },
     { label: 'Rua', key: 'streetName' },
+    { label: 'Armazém', key: 'warehouseName' },
     { label: 'Data armazenado', key: 'input' },
     { label: 'Cod. Barras', key: 'barCode' },
     { label: 'Volume', key: 'volume' },

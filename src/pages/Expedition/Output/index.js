@@ -208,11 +208,12 @@ export default function ExpeditionOutput() {
       500
     );
     setHeaders([
-      { key: 'Codigo fornecedor' },
-      { key: 'Produto' },
-      { key: 'Rua' },
-      { key: 'Data armazenado' },
-      { key: 'Código de barras' },
+      { label: 'Codigo fornecedor', key: 'code' },
+      { label: 'Produto', key: 'product' },
+      { label: 'Rua', key: 'warehouseName' },
+      { label: 'Almoxarifado', key: 'warehouseName' },
+      { label: 'Data armazenado', key: 'warehouseName' },
+      { label: 'Código de barras', key: 'warehouseName' },
     ]);
   }
   return (
