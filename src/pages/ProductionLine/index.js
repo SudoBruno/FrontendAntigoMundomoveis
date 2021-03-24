@@ -214,12 +214,22 @@ export default function ProductionLine() {
   const [error, setError] = useState('');
   const [maximumProduction, setMaximumProduction] = useState('');
   const [lastSector, setLastSector] = useState(1);
+  const [selectShifts, setSelectShifts] = useState([{ sector: '' }])
+  const [shift, setShift] = useState([]);
+  const [shiftId, setShiftId] = useState(0);
+  const [shiftName, setShiftName] = useState('');
 
   useEffect(() => {
     api.get('production-line', {}).then((response) => {
       setProductionLine(response.data);
     });
   }, [refreshKey]);
+
+  useEffect(() => {
+    api.get('shift', {}).then((response) => {
+      setShift(response.data);
+    });
+  }, []);
 
   async function handleEdit(e) {
     setId(e.id);
@@ -344,9 +354,25 @@ export default function ProductionLine() {
     setSelectSector(list);
   };
 
+  const handleRemoveShiftClick = (index) => {
+    const list = [...selectShifts];
+    list.splice(index, 1);
+    setSelectShifts(list);
+  };
+
+  const handleRemoveShiftOnClick = (index) => {
+    const list = [...selectShifts];
+    list.splice(index, 1);
+    setSelectShifts(list);
+  };
+
   // handle click event of the Add button
   const handleAddClick = () => {
     setSelectSector([...selectSectors, { sector: '', sequence: '' }]);
+  };
+
+  const handleAddShiftClick = () => {
+    setSelectShifts([...selectSectors, { shift: '' }]);
   };
 
   const [id, setId] = useState(0);
@@ -373,8 +399,26 @@ export default function ProductionLine() {
     // selectSectors[index].sequence = value
   }
 
+  function HandleChangeShift(value, index) {
+    var NewArray = [...selectShifts];
+
+    NewArray[index].sequence = value;
+    setSelectSector(NewArray);
+
+    // selectSectors[index].sequence = value
+  }
+
   function HandleSectorChange(value, index) {
     var NewArray = [...selectSectors];
+
+    NewArray[index].sector = value;
+    setSelectSector(NewArray);
+
+    // selectSectors[index].sequence = value
+  }
+
+  function HandleSectorChangeShift(value, index) {
+    var NewArray = [...selectShifts];
 
     NewArray[index].sector = value;
     setSelectSector(NewArray);
@@ -450,7 +494,9 @@ export default function ProductionLine() {
             </Form.Item>
           </Col>
         </Row>
+
         <Row>
+
           <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
@@ -464,7 +510,7 @@ export default function ProductionLine() {
                 value={lastSector}
                 onChange={(e) => setLastSector(e)}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {sectors.map((option) => {
                   return (
@@ -481,6 +527,68 @@ export default function ProductionLine() {
         </Row>
 
         <Divider />
+
+        {selectShifts.map((selectShift, index) => {
+          return (
+            <>
+              <Row gutter={5}>
+                <Col span={16}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Nome do setor:"
+                    labelAlign={'left'}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Selecione"
+                      size="large"
+                      value={shiftName}
+                      onChange={(e) => {
+                        setShiftId(e[0]);
+                        HandleChangeShift(e, index)
+                        console.log(shift)
+                      }}
+
+                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                    >
+                      {shift.map((option) => {
+                        return (
+                          <>
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          </>
+                        );
+                      })}
+                    </Select>
+
+                  </Form.Item>
+                  <Col>
+                    <Form.Item>
+                      {selectShifts.length !== 1 && (
+                        <MinusCircleOutlined
+                          onClick={() => handleRemoveShiftClick(index)}
+                        />
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Col>
+
+              </Row>
+
+              {selectShifts.length - 1 === index && (
+                <Button
+                  key="primary"
+                  title="Nova Linha"
+                  style={{ width: '100%' }}
+                  onClick={handleAddShiftClick}
+                >
+                  <PlusOutlined />
+                </Button>
+              )}
+            </>
+          );
+        })}
 
         {selectSectors.map((selectSector, index) => {
           return (
@@ -499,7 +607,7 @@ export default function ProductionLine() {
                       value={selectSector.sector}
                       onChange={(e) => HandleSectorChange(e, index)}
 
-                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {sectors.map((option) => {
                         return (
