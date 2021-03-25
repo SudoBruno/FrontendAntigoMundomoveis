@@ -217,7 +217,7 @@ export default function CoverLaunch() {
           </Col>
         </Row>
         <Row gutter={5}>
-          <Col span={12}>
+          <Col span={20}>
             <Form.Item
               labelCol={{ span: 23 }}
               label="Capa:"
@@ -245,6 +245,9 @@ export default function CoverLaunch() {
               </Select>
             </Form.Item>
           </Col>
+
+        </Row>
+        <Row>
           <Col span={12}>
             <Form.Item
               labelCol={{ span: 23 }}
@@ -259,8 +262,7 @@ export default function CoverLaunch() {
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </Form.Item>
-          </Col>
-        </Row>
+          </Col></Row>
         <Row hidden={modalConfigure.hidden}>
           <Col span={24}>
             <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
