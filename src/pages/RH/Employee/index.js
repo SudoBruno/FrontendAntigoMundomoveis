@@ -237,7 +237,7 @@ export default function Employee() {
   const [shiftId, setShiftId] = useState(0);
   const [shiftName, setShiftName] = useState('');
 
-  const [admission, setAdmission] = useState('');
+  const [admission, setAdmission] = useState(moment());
 
   const [secullumId, setSecullumId] = useState('');
   const [situation, setSituation] = useState('');
@@ -359,7 +359,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission(moment());
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
@@ -404,7 +404,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission(moment());
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
@@ -465,7 +465,7 @@ export default function Employee() {
     setSectorName('');
     setFactoryFunctionName('');
     setAreaName('');
-    setAdmission('');
+    setAdmission(moment());
     setShiftId(0);
     setShiftName('');
     setSecullumId('');
