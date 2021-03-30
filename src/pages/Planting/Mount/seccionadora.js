@@ -355,29 +355,38 @@ export default function Seccionadora() {
     var NewArray = [...selectedSubProducts];
     var { name, value } = e.target;
     var totalAmount = +value;
-    selectedSubProducts.map((item, subProductIndex) => {
-      if (
-        selectedSubProducts[index].subProductId == item.subProductId &&
-        subProductIndex != index
-      ) {
-        totalAmount += +item.amount;
+    console.log(value);
+    if (value > 0 || value == '') {
+      selectedSubProducts.map((item, subProductIndex) => {
+        if (
+          selectedSubProducts[index].subProductId == item.subProductId &&
+          subProductIndex != index
+        ) {
+          totalAmount += +item.amount;
+        }
+      });
+
+      var subProductIndex = subProducts.findIndex(
+        (item) => item.id === selectedSubProducts[index].subProductId
+      );
+
+      if (subProducts[subProductIndex].amount < totalAmount) {
+        openNotificationWithIcon(
+          'error',
+          'Erro na quantidade',
+          'Tem mais itens no monte do que no PCP'
+        );
+      } else {
+        NewArray[index][name] = value;
+
+        setSelectSubProducts(NewArray);
       }
-    });
-
-    var subProductIndex = subProducts.findIndex(
-      (item) => item.id === selectedSubProducts[index].subProductId
-    );
-
-    if (subProducts[subProductIndex].amount < totalAmount) {
+    } else {
       openNotificationWithIcon(
         'error',
         'Erro na quantidade',
-        'Tem mais itens no monte do que no PCP'
+        'Valor nao pode ser negativo'
       );
-    } else {
-      NewArray[index][name] = value;
-
-      setSelectSubProducts(NewArray);
     }
   };
 
@@ -684,6 +693,8 @@ export default function Seccionadora() {
                     <Input
                       name="amount"
                       placeholder="Quantidade"
+                      type={'number'}
+                      min={0}
                       value={selectedSubProduct.amount}
                       onChange={(e) => HandleChange(e, index)}
                       style={{ width: '85%', marginRight: 8 }}
@@ -900,6 +911,8 @@ export default function Seccionadora() {
                     <Input
                       name="amount"
                       placeholder="Quantidade"
+                      type={'number'}
+                      min={0}
                       value={selectedSubProduct.amount}
                       onChange={(e) => HandleChange(e, index)}
                       style={{ width: '85%', marginRight: 8 }}
