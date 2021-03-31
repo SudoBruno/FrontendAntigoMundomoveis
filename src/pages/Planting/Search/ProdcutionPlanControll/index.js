@@ -237,13 +237,15 @@ export default function ProductionMount() {
 
   const [data, setData] = useState([{}]);
   const [headers, setHeaders] = useState([
+    { label: 'Código de barras', key: 'barCode' },
     { label: 'PCP', key: 'pcpName' },
     { label: 'Produto', key: 'productName' },
     { label: 'SubProduto', key: 'subProductName' },
-    { label: 'Setor', key: 'sector' },
-    { label: 'Hora produzido', key: 'hour' },
-    { label: 'Dia', key: 'day' },
-    { label: 'Total', key: 'total' },
+    { label: 'Setor', key: 'sectorName' },
+    { label: 'Hora Iniciado', key: 'start' },
+    { label: 'Quantidade Iniciado', key: 'amountInput' },
+    { label: 'Hora Finalizado', key: 'finish' },
+    { label: 'Quantidade Finalizado', key: 'amountOutput' },
   ]);
 
   const csvReport = {
