@@ -189,11 +189,11 @@ export default function PlantingMount() {
         },
         {
           title: 'PCP',
-          dataIndex: 'pcp',
-          key: 'pcp',
+          dataIndex: 'pcpName',
+          key: 'pcpName',
 
-          sorter: (a, b) => this.compareByAlph(a.pcp, b.pcp),
-          ...this.getColumnSearchProps('pcp'),
+          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
+          ...this.getColumnSearchProps('pcpName'),
         },
         {
           title: 'Começou',

@@ -36,10 +36,7 @@ const Option = Select.Option;
 export default function Employee() {
   class SearchTable extends React.Component {
     state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
+      pagination: pagination,
       loading: false,
       searchText: '',
       searchedColumn: '',
@@ -126,16 +123,17 @@ export default function Employee() {
       this.setState({
         searchText: selectedKeys[0],
         searchedColumn: dataIndex,
+        pagination: pagination,
       });
     };
 
     handleReset = (clearFilters) => {
       clearFilters();
-      this.setState({ searchText: '' });
+      this.setState({ searchText: '', pagination: pagination });
     };
 
     handleTableChange = (pagination, filters, sorter) => {
-      this.fetch({
+      this.setState({
         sortField: sorter.field,
         sortOrder: sorter.order,
         pagination,
@@ -177,7 +175,10 @@ export default function Employee() {
               <React.Fragment>
                 <EditOutlined
                   style={{ cursor: 'pointer' }}
-                  onClick={() => handleEdit(record)}
+                  onClick={() => {
+                    handleEdit(record);
+                    setPagination(this.state.pagination);
+                  }}
                 />
                 {/* onClick={() => handleEdit(record)} */}
                 <Popconfirm
@@ -194,7 +195,12 @@ export default function Employee() {
         },
       ];
 
-      return <Table columns={columns} dataSource={employees} />;
+      return (
+        <Table columns={columns}
+          dataSource={employees}
+          onChange={this.handleTableChange}
+          pagination={this.state.pagination} />
+      );
     }
   }
 
@@ -237,10 +243,11 @@ export default function Employee() {
   const [shiftId, setShiftId] = useState(0);
   const [shiftName, setShiftName] = useState('');
 
-  const [admission, setAdmission] = useState('');
+  const [admission, setAdmission] = useState(moment());
 
   const [secullumId, setSecullumId] = useState('');
   const [situation, setSituation] = useState('');
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const data = {
     admission,
@@ -359,7 +366,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission(moment());
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
@@ -404,7 +411,7 @@ export default function Employee() {
           setResignation('');
           setReasonResignation('');
           setPhone('');
-          setAdmission('');
+          setAdmission(moment());
           setShiftId(0);
           setShiftName('');
           setSecullumId('');
@@ -465,7 +472,7 @@ export default function Employee() {
     setSectorName('');
     setFactoryFunctionName('');
     setAreaName('');
-    setAdmission('');
+    setAdmission(moment());
     setShiftId(0);
     setShiftName('');
     setSecullumId('');
@@ -562,7 +569,7 @@ export default function Employee() {
                 label="Data de admissão:"
                 labelAlign={'left'}
               >
-                {moment(admission, 'DD/MM/YYYY').isValid &&
+                {moment(admission, 'DD/MM/YYYY').isValid() &&
                   <DatePicker
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
                     format="DD/MM/YYYY"
@@ -574,7 +581,25 @@ export default function Employee() {
                         setAdmission(date._d);
                       }
                     }}
+
                   />}
+                {!moment(admission, 'DD/MM/YYYY').isValid() && (
+                  <DatePicker
+                    style={{ height: 40, paddingTop: 8, width: '100%' }}
+                    format="DD/MM/YYYY"
+                    onChange={(date) => {
+                      if (date == '' || date == null) {
+                        setAdmission('');
+                      } else {
+                        setAdmission(date._d);
+                      }
+                    }}
+                  />
+                )}
+
+
+
+
               </Form.Item>
             </Col>
             <Col span={8}>
