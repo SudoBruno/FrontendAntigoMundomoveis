@@ -569,7 +569,7 @@ export default function Employee() {
                 label="Data de admissão:"
                 labelAlign={'left'}
               >
-                {moment(admission, 'DD/MM/YYYY').isValid &&
+                {moment(admission, 'DD/MM/YYYY').isValid() &&
                   <DatePicker
                     style={{ height: 40, paddingTop: 8, width: '100%' }}
                     format="DD/MM/YYYY"
@@ -581,7 +581,25 @@ export default function Employee() {
                         setAdmission(date._d);
                       }
                     }}
+
                   />}
+                {!moment(admission, 'DD/MM/YYYY').isValid() && (
+                  <DatePicker
+                    style={{ height: 40, paddingTop: 8, width: '100%' }}
+                    format="DD/MM/YYYY"
+                    onChange={(date) => {
+                      if (date == '' || date == null) {
+                        setAdmission('');
+                      } else {
+                        setAdmission(date._d);
+                      }
+                    }}
+                  />
+                )}
+
+
+
+
               </Form.Item>
             </Col>
             <Col span={8}>
