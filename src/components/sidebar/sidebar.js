@@ -14,6 +14,7 @@ import {
   UserOutlined,
   SearchOutlined,
   SignalFilled,
+  ToolOutlined,
 } from '@ant-design/icons';
 import { FaCouch, FaWarehouse } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
@@ -106,6 +107,8 @@ import DefectLevel from '../../pages/Quality/DefectLevel/index';
 import Defect from '../../pages/Quality/Defect/index';
 import CallListTransferEmployee from '../../pages/RH/CallListTransferEmployee/';
 import DefectReport from '../../pages/Quality/DefectReport';
+
+import Machine from '../../pages/Machine';
 
 const userName = localStorage.getItem('userName');
 
@@ -516,6 +519,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <DefectReport />,
+  },
+  {
+    path: '/machine',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <Machine />,
   },
 ];
 
@@ -1049,6 +1058,13 @@ class App extends React.Component {
                     </Menu.Item>
                   </SubMenu>
                 )}
+              </SubMenu>
+            )}
+            {localStorage.getItem('access_level') === '1' && (
+              <SubMenu key="machines" title="Maquinas" icon={<ToolOutlined />}>
+                <Menu.Item key="machineCreate" icon={<RightSquareOutlined />}>
+                  <Link to="/machine">Cadastro</Link>
+                </Menu.Item>
               </SubMenu>
             )}
             <Menu.Item key="40" icon={<ExportOutlined />}>
