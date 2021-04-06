@@ -214,7 +214,7 @@ export default function ProductionLine() {
   const [error, setError] = useState('');
   const [maximumProduction, setMaximumProduction] = useState('');
   const [lastSector, setLastSector] = useState(1);
-  const [selectShifts, setSelectShifts] = useState([{ shifts: '' }])
+  const [selectShifts, setSelectShifts] = useState([{}]);
   const [shift, setShift] = useState([]);
   const [shiftId, setShiftId] = useState(0);
   const [shiftName, setShiftName] = useState('');
@@ -261,10 +261,12 @@ export default function ProductionLine() {
     const data = {
       id,
       sectors: selectSectors,
+      shifts: selectShifts,
       name,
       maximum_production: maximumProduction,
       last_sector: lastSector,
     };
+    console.log(data);
     if (name == '') {
       setError('Este campo deve ser preenchido');
       return;
@@ -367,7 +369,7 @@ export default function ProductionLine() {
   };
 
   const handleAddShiftClick = () => {
-    setSelectShifts([...selectShifts, { shift: '' }]);
+    setSelectShifts([...selectShifts, { id }]);
   };
 
   const [id, setId] = useState(0);
@@ -395,9 +397,8 @@ export default function ProductionLine() {
     // selectSectors[index].sequence = value
   }
 
-  function HandleChangeShift(value, index) {
+  function HandleShiftChange(value, index) {
     var NewArray = [...selectShifts];
-
     NewArray[index].id = value;
     console.log(NewArray[index].id);
 
@@ -534,7 +535,7 @@ export default function ProductionLine() {
                       value={selectShift.name}
                       onChange={(e) => {
                         setShiftId(e[0]);
-                        HandleChangeShift(e, index)
+                        HandleShiftChange(e, index)
                       }}
 
                     // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
