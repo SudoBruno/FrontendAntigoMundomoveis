@@ -1,5 +1,5 @@
-import { Layout, Row, Col, Button } from 'antd';
-import React, { useState, useEffect, useContext } from 'react';
+import { Layout, Row, Col } from 'antd';
+import React from 'react';
 
 import { MachineProvider } from '../../contexts/Machine/MachineContext';
 import { ButtonMachine } from '../../components/machine/ButtonMachine';
