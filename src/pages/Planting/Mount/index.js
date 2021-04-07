@@ -246,9 +246,9 @@ export default function PlantingMount() {
   const [mounts, setMounts] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [sectorId, setSectorId] = useState(0);
-  const [sectors, setSectors] = useState([]);
-  const [sectorName, setSectorName] = useState('');
-  const [showSector, setShowSector] = useState(true);
+  const [machines, setMachines] = useState([]);
+  const [machineId, setMachineId] = useState('');
+  const [showMachine, setShowMachine] = useState(true);
 
   const [alterMountRoute, setAlterMountRoute] = useState(false);
   const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
@@ -283,16 +283,25 @@ export default function PlantingMount() {
   }, [refreshKey]);
 
   useEffect(() => {
-    api.get('sector', {}).then((response) => {
-      setSectors(response.data);
+    api.get('machine', {}).then((response) => {
+      setMachines(response.data);
     });
   }, []);
 
-  const handleSelectSector = (e) => {
+  const handleSelectMachine = async (e) => {
     setRefreshKey((refreshKey) => refreshKey + 1);
-    setSectorId(e[0]);
-    setSectorName(e[1]);
-    setShowSector(false);
+    setMachineId(e);
+    const response = await api.get(`machine/${e}`);
+    setSectorId(response.data.factory_sector_id);
+    console.log(response.data);
+
+    const mounts = await api.get(
+      `plating/mount/sector/${response.data.factory_sector_id}`
+    );
+
+    setMounts(mounts.data);
+
+    setShowMachine(false);
   };
 
   function openNotificationWithIcon(type, message, description) {
@@ -464,27 +473,34 @@ export default function PlantingMount() {
 
       <SearchTable />
       {/* selecionar setor */}
-      <Modal title="Selecione o setor" visible={showSector} width={500}>
+      <Modal title="Selecione a maquina" visible={showMachine} width={500}>
         <Row gutter={5}>
           <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
-              label="Selecione seu setor:"
+              label="Selecione sua maquina:"
               labelAlign={'left'}
             >
               <Select
                 showSearch
                 placeholder="Selecione"
                 size="large"
-                value={sectorName}
-                onChange={(e) => handleSelectSector(e)}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                value={machineId}
+                onChange={(e) => handleSelectMachine(e)}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
               >
-                {sectors.map((option) => {
+                {machines.map((option) => {
                   return (
                     <>
-                      <Option key={option.id} value={[option.id, option.name]}>
+                      <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
                     </>
