@@ -394,6 +394,7 @@ export default function PlantingMount() {
           barCode,
           sectorId,
           employeeId: localStorage.getItem('userId'),
+          machineId,
         });
         setShowStart(false);
         openNotificationWithIcon(
@@ -423,6 +424,7 @@ export default function PlantingMount() {
           barCode,
           sectorId,
           employeeId: localStorage.getItem('userId'),
+          machineId,
         });
         setShowStartOtherSector(false);
         openNotificationWithIcon(
@@ -440,12 +442,6 @@ export default function PlantingMount() {
       }
     }
   };
-
-  // const alterAmount = () => {
-  //   if (!isAlterAmount) {
-  //     setShowReason(true);
-  //   }
-  // };
 
   const handleSaveReason = async () => {
     setShowReason(false);
@@ -739,6 +735,7 @@ export default function PlantingMount() {
         </Row>
       </Modal>
 
+      {/* modal quantidade diferente */}
       <Modal
         title="Percebemos que a quantidade que foi dada entrada é diferente da que chegou, descreva o motivo"
         visible={showReason}
