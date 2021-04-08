@@ -564,7 +564,7 @@ export default function CallList() {
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
         <Row gutter={5}>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item
               labelCol={{ span: 23 }}
               label="Funcionario"
@@ -575,7 +575,6 @@ export default function CallList() {
                 placeholder="Selecione"
                 size="large"
                 value={callList[refreshKey].name}
-                disabled
               >
                 {callList.map((option) => {
                   return (
