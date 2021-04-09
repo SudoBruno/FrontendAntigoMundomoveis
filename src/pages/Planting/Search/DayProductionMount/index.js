@@ -5,6 +5,7 @@ import {
   SearchOutlined,
   DownloadOutlined,
   DeleteOutlined,
+  FileExcelOutlined,
 } from '@ant-design/icons';
 import api from '../../../../services/api';
 import {
@@ -27,6 +28,7 @@ import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default function PlantingDayProductionMount() {
   class SearchTable extends React.Component {
@@ -34,7 +36,6 @@ export default function PlantingDayProductionMount() {
       loading: false,
       searchText: '',
       searchedColumn: '',
-      pagination: pagination,
     };
 
     getColumnSearchProps = (dataIndex) => ({
@@ -118,87 +119,81 @@ export default function PlantingDayProductionMount() {
       this.setState({
         searchText: selectedKeys[0],
         searchedColumn: dataIndex,
-        pagination: pagination,
       });
     };
 
     handleReset = (clearFilters) => {
       clearFilters();
 
-      this.setState({ searchText: '', pagination: pagination });
-    };
-
-    handleTableChange = (pagination, filters, sorter) => {
-      this.setState({
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        pagination,
-        ...filters,
-      });
+      this.setState({ searchText: '' });
     };
 
     render() {
       const columns = [
         {
-          title: 'Dia de produção',
-          dataIndex: 'day',
-          key: 'day',
+          title: 'PCP',
+          dataIndex: 'pcpName',
+          key: 'pcpName',
 
-          sorter: (a, b) => this.compareByAlph(a.day, b.day),
-          ...this.getColumnSearchProps('day'),
+          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
+          ...this.getColumnSearchProps('pcpName'),
         },
-
         {
-          title: 'Operação',
-          dataIndex: 'operacao',
-          align: 'center',
+          title: 'Nome do produto',
+          dataIndex: 'productName',
+          key: 'productName',
 
-          render: (text, record) => {
-            return (
-              <React.Fragment>
-                <>
-                  {status == false &&
-                    data[0] != undefined &&
-                    data[0].filter != record.filter && (
-                      <DownloadOutlined
-                        onClick={() => {
-                          handleDownload(record);
-                          setStatus(true);
-                          setPagination(this.state.pagination);
-                        }}
-                      />
-                    )}
-                  {status == true &&
-                    data[0] != undefined &&
-                    data[0].filter != record.filter && (
-                      <DownloadOutlined
-                        onClick={() => {
-                          handleDownload(record.filter);
-                          setStatus(true);
-                          setPagination(this.state.pagination);
-                        }}
-                      />
-                    )}
+          sorter: (a, b) => this.compareByAlph(a.productName, b.productName),
+          ...this.getColumnSearchProps('productName'),
+        },
+        {
+          title: 'Nome do SubProduto',
+          dataIndex: 'subProductName',
+          key: 'subProductName',
 
-                  {status == true &&
-                    data[0] != undefined &&
-                    data[0].filter == record.filter && (
-                      <CSVLink
-                        {...csvReport}
-                        style={{ color: '#000' }}
-                        separator={';'}
-                        onClick={() => {
-                          setStatus(false);
-                          setData([{}]);
-                        }}
-                      >
-                        Download
-                      </CSVLink>
-                    )}
-                </>
-              </React.Fragment>
-            );
-          },
+          sorter: (a, b) =>
+            this.compareByAlph(a.subProductName, b.subProductName),
+          ...this.getColumnSearchProps('subProductName'),
+        },
+        {
+          title: 'Setor',
+          dataIndex: 'sectorName',
+          key: 'sectorName',
+
+          sorter: (a, b) => this.compareByAlph(a.sectorName, b.sectorName),
+          ...this.getColumnSearchProps('sectorName'),
+        },
+        {
+          title: 'Inicio',
+          dataIndex: 'start',
+          key: 'start',
+
+          sorter: (a, b) => this.compareByAlph(a.start, b.start),
+          ...this.getColumnSearchProps('start'),
+        },
+        {
+          title: 'Quantidade iniciada',
+          dataIndex: 'amountInput',
+          key: 'amountInput',
+
+          sorter: (a, b) => this.compareByAlph(a.amountInput, b.amountInput),
+          ...this.getColumnSearchProps('amountInput'),
+        },
+        {
+          title: 'Fim',
+          dataIndex: 'finish',
+          key: 'finish',
+
+          sorter: (a, b) => this.compareByAlph(a.finish, b.finish),
+          ...this.getColumnSearchProps('finish'),
+        },
+        {
+          title: 'Quantidade finalizada',
+          dataIndex: 'amountOutput',
+          key: 'amountOutput',
+
+          sorter: (a, b) => this.compareByAlph(a.amountOutput, b.amountOutput),
+          ...this.getColumnSearchProps('amountOutput'),
         },
       ];
 
@@ -206,17 +201,14 @@ export default function PlantingDayProductionMount() {
         <Table
           columns={columns}
           dataSource={mountDayProduction}
-          onChange={this.handleTableChange}
-          pagination={this.state.pagination}
           rowKey="filter"
         />
       );
     }
   }
-  const [status, setStatus] = useState(false);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const [mountDayProduction, setMountDayProduction] = useState([{}]);
+  const [intervalTime, setIntervalTime] = useState([]);
 
   useEffect(() => {
     api.get('plating/mount/search/day/production', {}).then((response) => {
@@ -225,25 +217,30 @@ export default function PlantingDayProductionMount() {
   }, []);
 
   const handleDownload = async (e) => {
-    const response = await api.get(`plating/mount/search/production/day/${e}`);
-    console.log(response);
+    const response = await api.post('plating/mount/search/production/day', {
+      intervalTime,
+    });
 
-    setData(response.data);
+    setMountDayProduction(response.data);
   };
 
   const [data, setData] = useState([{}]);
+  const [ready, setReady] = useState(false);
+  const [load, setLoad] = useState(false);
   const [headers, setHeaders] = useState([
+    { label: 'Código de barras', key: 'barCode' },
     { label: 'PCP', key: 'pcpName' },
     { label: 'Produto', key: 'productName' },
     { label: 'SubProduto', key: 'subProductName' },
-    { label: 'Setor', key: 'sector' },
-    { label: 'Hora produzido', key: 'hour' },
-    { label: 'Dia', key: 'day' },
-    { label: 'Total', key: 'total' },
+    { label: 'Setor', key: 'sectorName' },
+    { label: 'Hora Iniciado', key: 'start' },
+    { label: 'Quantidade Iniciado', key: 'amountInput' },
+    { label: 'Hora Finalizado', key: 'finish' },
+    { label: 'Quantidade Finalizado', key: 'amountOutput' },
   ]);
 
   const csvReport = {
-    data: data,
+    data: mountDayProduction,
     headers: headers,
     filename: 'relatorioProduzidoPorHoraChaparia.csv',
   };
@@ -257,7 +254,56 @@ export default function PlantingDayProductionMount() {
         minHeight: 280,
       }}
     >
-      <Divider />
+      <Row style={{ marginBottom: 16 }} gutter={5}>
+        <Col span={12}>
+          <RangePicker
+            size="small"
+            placeholder={['data inicial', 'data final']}
+            onChange={setIntervalTime}
+          />
+          <SearchOutlined
+            style={{
+              fontSize: 18,
+              color: '#3b4357',
+              marginLeft: 8,
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              handleDownload();
+            }}
+          />
+        </Col>
+        <Col span={12} align="end">
+          <Button className="buttonGreen" loading={load}>
+            {ready == false && (
+              <div
+                onClick={() => {
+                  setReady(true);
+                }}
+              >
+                <FileExcelOutlined style={{ marginRight: 8 }} />
+                Relatório de produção
+              </div>
+            )}
+
+            {ready == true && (
+              <>
+                <DownloadOutlined />
+                <CSVLink
+                  {...csvReport}
+                  separator={';'}
+                  style={{ color: '#fff', marginLeft: 8 }}
+                  onClick={() => {
+                    setReady(false);
+                  }}
+                >
+                  Baixar
+                </CSVLink>
+              </>
+            )}
+          </Button>
+        </Col>
+      </Row>
 
       <SearchTable />
     </Layout>
