@@ -1,28 +1,28 @@
 .wmsTagBody {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.4fr 0.6fr;
 }
 
-/* .firstColum h4 {
-  margin-top: -10%;
-} */
-
-.wmsTags span {
-  max-width: 335px;
-}
-
-.wmsTags {
-  display: grid;
-  grid-template-columns: 1fr;
-  margin: 2%;
+.wmsTagHeader {
+  height: 60px;
+  margin-top: 16px;
 }
 
 .wmsTagBody {
-  padding: 6%;
+  padding-left: 6%;
 }
 
 .wmsTagBody b {
   font-size: 1rem;
+}
+
+.wmsTagBody p {
+  height: 30px;
+  margin: 0;
+}
+
+p {
+  margin: 0;
 }
 
 .operations {
@@ -33,4 +33,29 @@
 
 .wmsTagBarCode {
   margin-left: 25%;
+}
+
+.wmsTags {
+  width: 100%;
+  position: relative;
+  /*para alinhar os span no centro*/
+}
+
+.wmsTags span {
+  position: relative;
+  min-width: 100%;
+  max-height: 100%;
+  border: 1px solid black;
+  /* para os spans pegarem o width */
+  display: inline-block;
+}
+
+.operations p {
+  margin: 6px;
+}
+
+@media screen and (min-width: 500px) {
+  .wmsTags span {
+    min-width: 33.33%;
+  }
 }

@@ -21,8 +21,8 @@ function Barcode() {
   for (let i = 0; i < 5; i++) {
     content.push(
       <>
-        <p>________ - </p>
-        <p>________ =</p>
+        <p>____________ - </p>
+        <p>____________ =</p>
         <p>________</p>
       </>
     );
@@ -31,86 +31,48 @@ function Barcode() {
   return (
     <>
       <div className="wmsTags">
-        <span style={{ background: 'white' }}>
-          <div className="logo">
-            <Row>
-              <Col span={12} align={'left'}>
-                <img src={logo} style={{ height: '30px' }} />
-              </Col>
+        {informations.map((item) => {
+          return (
+            <span>
+              <img src={logo} style={{ height: '45px' }} />
 
-              <Col span={12}></Col>
-            </Row>
-          </div>
-          <Divider style={{ margin: '0px' }} />
-          <div className="wmsTagBody">
-            <div className="firstColum">
-              <b>Almoxarifado</b>
-              <p>pedro</p>
-              <b>Insumo</b>
-              <p>Nome</p>
-            </div>
-            <div className="secondColum">
-              <b>Posição</b>
-              <p>pedro</p>
-              <b>Posição</b>
-              <p>Quantidade</p>
-            </div>
-          </div>
-          <Divider style={{ margin: '0px' }} />
+              <Divider />
+              <div className="wmsTagBody">
+                <div className="firstColum">
+                  <b>Almoxarifado</b>
+                  <p>{item.warehouse}</p>
+                  <b>Insumo</b>
+                  <p>{item.ins_name}</p>
+                </div>
+                <div className="secondColum">
+                  <b>Posição</b>
+                  <p>{item.street}</p>
+                  <b>quantidade</b>
+                  <p>{item.quantity}</p>
+                </div>
+              </div>
+              <Divider />
 
-          <div className="operations">
-            <p>QTDE ATUAL</p>
-            <p>QTDE SAÍDA</p>
-            <p>RESULTADO</p>
+              <div className="operations">
+                <p>QTDE ATUAL</p>
+                <p>QTDE SAÍDA</p>
+                <p>RESULTADO</p>
 
-            {content}
-          </div>
-          <Divider style={{ marginTop: '8px' }} />
+                {content}
+              </div>
+              <Divider />
 
-          <div className="wmsTagBarCode">
-            <BarCode value={'12abhhf'} width={1} height={30} fontSize={20} />
-          </div>
-        </span>
-        <span style={{ background: 'white' }}>
-          <div className="logo">
-            <Row>
-              <Col span={12} align={'left'}>
-                <img src={logo} style={{ height: '30px' }} />
-              </Col>
-
-              <Col span={12}></Col>
-            </Row>
-          </div>
-          <Divider style={{ margin: '0px' }} />
-          <div className="wmsTagBody">
-            <div className="firstColum">
-              <b>Almoxarifado</b>
-              <p>pedro</p>
-              <b>Insumo</b>
-              <p>Nome</p>
-            </div>
-            <div className="secondColum">
-              <b>Posição</b>
-              <p>pedro</p>
-              <b>Quantidade</b>
-              <p>Quantidade</p>
-            </div>
-          </div>
-          <Divider style={{ margin: '0px' }} />
-
-          <div className="operations">
-            <p>QTDE ATUAL</p>
-            <p>QTDE SAÍDA</p>
-            <p>RESULTADO</p>
-
-            {content}
-          </div>
-          <Divider style={{ marginTop: '8px' }} />
-
-          <div className="wmsTagBarCode">
-            <BarCode value={'12abhhf'} width={1} height={30} fontSize={20} />
-          </div>
-        </span>
+              <div className="wmsTagBarCode">
+                <BarCode
+                  value={item.barcode}
+                  width={1}
+                  height={30}
+                  fontSize={20}
+                />
+              </div>
+            </span>
+          );
+        })}
       </div>
     </>
   );
