@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons';
 
 import Highlighter from 'react-highlight-words';
+import { PlatingMountProvider } from '../../../contexts/Plating/Mount/PlatingMountContext';
 
 const Option = Select.Option;
 
@@ -511,12 +512,17 @@ export default function Seccionadora() {
     >
       {/* <BarcodeReader onScan={handleScan} onError={handleScan} /> */}
       <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="right">
+        <Col span={12} align="left">
+          <Tooltip title="Seccionadora" placement="right">
+            <PlatingMountProvider />
+          </Tooltip>
+        </Col>
+        <Col span={12} align="right">
           <Tooltip title="Seccionadora" placement="right">
             <Button
               className="buttonGreen"
               icon={<PlusOutlined />}
-              style={{ marginRight: 5, marginTop: 3, fontSize: '14px' }}
+              style={{ marginRight: 5, fontSize: '14px' }}
               onClick={handleShow}
             >
               Seccionadora
