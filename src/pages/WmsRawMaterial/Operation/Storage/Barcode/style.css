@@ -1,65 +1,36 @@
-.pdf-page {
-    background-color: #FFF;
-    height:100%;
-    width:210mm;
-    display: block;
-    margin: 0 auto;
-    background-color: darkgray;
-}
-.col-50{
-    flex-basis: 40%;
-    margin-left: 5%;
+.wmsTagBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-#card{
-    height: 74,25mm;
-    display: block;
-    float: left;
-    background-color: #FFF;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-radius: 0.2rem;
+/* .firstColum h4 {
+  margin-top: -10%;
+} */
+
+.wmsTags span {
+  max-width: 335px;
 }
 
-.logo{
-  align-items: center;
-  justify-content: center;
+.wmsTags {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2%;
 }
 
-.table-header{
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    text-decoration-color: black;
-    text-decoration-style: bold;
+.wmsTagBody {
+  padding: 6%;
 }
 
-.ins{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.wmsTagBody b {
+  font-size: 1rem;
 }
 
-.operation-control{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.operations {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 2%;
 }
 
-.content-table{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 30px;
-}
-
-.barcode{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 6px;
+.wmsTagBarCode {
+  margin-left: 25%;
 }
