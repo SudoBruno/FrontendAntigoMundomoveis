@@ -35,13 +35,13 @@ function Barcode() {
           <div className="logo">
             <Row>
               <Col span={12} align={'left'}>
-                <img src={logo} style={{ height: '45px' }} />
+                <img src={logo} style={{ height: '30px' }} />
               </Col>
 
               <Col span={12}></Col>
             </Row>
           </div>
-          <Divider style={{ marginTop: '30px' }} />
+          <Divider style={{ margin: '0px' }} />
           <div className="wmsTagBody">
             <div className="firstColum">
               <b>Almoxarifado</b>
@@ -75,13 +75,13 @@ function Barcode() {
           <div className="logo">
             <Row>
               <Col span={12} align={'left'}>
-                <img src={logo} style={{ height: '45px' }} />
+                <img src={logo} style={{ height: '30px' }} />
               </Col>
 
               <Col span={12}></Col>
             </Row>
           </div>
-          <Divider style={{ marginTop: '30px' }} />
+          <Divider style={{ margin: '0px' }} />
           <div className="wmsTagBody">
             <div className="firstColum">
               <b>Almoxarifado</b>
@@ -92,7 +92,7 @@ function Barcode() {
             <div className="secondColum">
               <b>Posição</b>
               <p>pedro</p>
-              <b>Posição</b>
+              <b>Quantidade</b>
               <p>Quantidade</p>
             </div>
           </div>
@@ -108,7 +108,7 @@ function Barcode() {
           <Divider style={{ marginTop: '8px' }} />
 
           <div className="wmsTagBarCode">
-            <BarCode value={'12abhh222f'} width={1} height={30} fontSize={20} />
+            <BarCode value={'12abhhf'} width={1} height={30} fontSize={20} />
           </div>
         </span>
       </div>
