@@ -16,6 +16,8 @@ import {
   Dropdown,
   Tooltip,
   Checkbox,
+  Card,
+  Divider,
 } from 'antd';
 
 import Highlighter from 'react-highlight-words';
@@ -389,11 +391,13 @@ export default function CallList() {
           Enviar
         </button>
       </div>
+
       <Row>
         <Col span={8}>
-          <Form.Item
+
+          {/* <Form.Item
             labelCol={{ span: 23 }}
-            label="Selecione o Departamento"
+            label="Selecione a Localidade"
             labelAlign={'left'}
             style={{ marginTop: 20 }}
             className="departament"
@@ -420,9 +424,42 @@ export default function CallList() {
               })}
             </Select>
 
+          </Form.Item> */}
+
+          <Form.Item
+            labelCol={{ span: 23 }}
+            label="Selecione o Departamento"
+            labelAlign={'left'}
+            style={{ marginTop: 120 }} //20
+            className="departament"
+          >
+            <Select
+              showSearch
+              placeholder="Selecione"
+              size="large"
+              value={areaName}
+              onChange={(e) => {
+                alterCallList(e[0]);
+                setArea(e[0]);
+                setAreaName(e[1]);
+              }}
+            >
+              {areas.map((option) => {
+                return (
+                  <>
+                    <Option key={option.id} value={[option.id, option.name]}>
+                      {option.name}
+                    </Option>
+                  </>
+                );
+              })}
+            </Select>
+
           </Form.Item>
 
+
         </Col>
+
 
         <Col
           span={12}
@@ -430,7 +467,7 @@ export default function CallList() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'left',
-            marginTop: 20,
+            marginTop: 120,
           }}
         >
 
@@ -465,6 +502,8 @@ export default function CallList() {
               </Button>,
             ]}
           >
+
+
             <Row gutter={5}>
               <Col span={13}>
                 <Form.Item
@@ -496,6 +535,7 @@ export default function CallList() {
               </Col>
 
             </Row>
+
 
             <Row>
               <Col span={10}>
@@ -560,6 +600,27 @@ export default function CallList() {
 
           </Modal>
 
+        </Col>
+
+      </Row>
+      <Divider>
+
+      </Divider>
+      <Row gutter={8} style={{ marginTop: 10, marginBottom: 50, textAlign: 'center' }}>
+        <Col span={4}>
+          <Card title="TOTAL" bordered={true}>
+            30
+        </Card>
+        </Col>
+        <Col span={4} style={{ color: 'green' }}>
+          <Card title="PRESENTES" bordered={true}>
+            20
+        </Card>
+        </Col>
+        <Col span={4}>
+          <Card title="AUSENTES" color="green" bordered={true}>
+            10
+        </Card>
         </Col>
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
