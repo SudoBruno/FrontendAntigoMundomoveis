@@ -21,8 +21,14 @@ import api from '../../../services/api';
 import './style.css';
 import { PlatingMountProvider } from '../../../contexts/Plating/Mount/PlatingMountContext';
 import { StopMachineButton } from '../../../components/Plating/StopMachine/StopMachineButton';
+import { FinishStopMachineButton } from '../../../components/Plating/StopMachine/FinishStopMachineButton';
+
 import { SelectMachineModal } from '../../../components/Plating/SelectMachineModal';
 import { PlatingTable } from '../../../components/Plating/PlatingTable';
+import {
+  MachineStopContext,
+  MachineStopProvider,
+} from '../../../contexts/Machine/MachineStopContext';
 
 const Option = Select.Option;
 
@@ -32,9 +38,7 @@ export default function PlantingMount() {
   const [mounts, setMounts] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [sectorId, setSectorId] = useState(0);
-
-  // const [machineId, setMachineId] = useState('');
-
+  const { isStop } = useContext(MachineStopContext);
   const [alterMountRoute, setAlterMountRoute] = useState(false);
   const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
 
@@ -66,21 +70,6 @@ export default function PlantingMount() {
       setMounts(response.data);
     });
   }, [refreshKey]);
-
-  // const handleSelectMachine = async (e) => {
-  //   setRefreshKey((refreshKey) => refreshKey + 1);
-  //   setMachineId(e);
-  //   const response = await api.get(`machine/${e}`);
-  //   setSectorId(response.data.factory_sector_id);
-
-  //   const mounts = await api.get(
-  //     `plating/mount/sector/${response.data.factory_sector_id}`
-  //   );
-
-  //   setMounts(mounts.data);
-  //   console.log(e);
-  //   setShowMachine(false);
-  // };
 
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -247,7 +236,10 @@ export default function PlantingMount() {
         <BarcodeReader onScan={handleScan} onError={handleScan} />
         <Row style={{ marginBottom: 16 }}>
           <Col span={24} align="left">
-            <StopMachineButton />
+            <MachineStopProvider>
+              {isStop && <StopMachineButton />}
+              {!isStop && <FinishStopMachineButton />}
+            </MachineStopProvider>
           </Col>
         </Row>
         <PlatingTable />

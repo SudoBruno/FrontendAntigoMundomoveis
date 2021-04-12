@@ -1,8 +1,9 @@
 import { Col, Button, Modal, Form, Input, Row, Select } from 'antd';
 import React, { useState, useEffect, useContext } from 'react';
-import { PlatingMountContext } from '../../../contexts/Plating/Mount/PlatingMountContext';
+
 import api from '../../../services/api';
 import { Notification } from '../../Notification';
+import { MachineStopContext } from '../../../contexts/Machine/MachineStopContext';
 
 const Option = Select.Option;
 
@@ -10,13 +11,13 @@ const { TextArea } = Input;
 
 export function StopMachineModal() {
   const {
-    closeStopMachineModal,
+    closeCreateStopMachineModal,
+    setReasonStopMachineId,
+    reasonStopMachineId,
     createStopMachine,
     description,
     setDescription,
-    reasonStopMachineId,
-    setReasonStopMachineId,
-  } = useContext(PlatingMountContext);
+  } = useContext(MachineStopContext);
   const [reasonStop, setReasonStop] = useState([{}]);
 
   useEffect(() => {
@@ -28,10 +29,10 @@ export function StopMachineModal() {
     <Modal
       title="Parada de maquina"
       visible={true}
-      onCancel={closeStopMachineModal}
+      onCancel={closeCreateStopMachineModal}
       width={800}
       footer={[
-        <Button key="back" type="default" onClick={closeStopMachineModal}>
+        <Button key="back" type="default" onClick={closeCreateStopMachineModal}>
           Cancelar
         </Button>,
         <Button

@@ -1,20 +1,20 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { MachineStopContext } from '../../../contexts/Machine/MachineStopContext';
 
 import api from '../../../services/api';
 
-export function StopMachineButton() {
+export function FinishStopMachineButton() {
   const { openCreateStopMachineModal } = useContext(MachineStopContext);
 
   return (
     <Button
       icon={<ExclamationCircleOutlined size={'18'} />}
-      className="buttonRed"
+      className="buttonYellow"
       onClick={openCreateStopMachineModal}
     >
-      Acionar Parada de maquina
+      Finalizar Parada de maquina
     </Button>
   );
 }
