@@ -223,7 +223,14 @@ export default function CallList() {
     try {
       console.log(areaId);
       let response = await api.get(`/call/total-employees/${areaId}`);
-      console.log(response.data[0].total);
+      setTotalEmployees(response.data[0].total);
+
+      response = await api.get(`/call/total-presences/${areaId}`);
+      setTotalPresences(response.data[0].total);
+
+      response = await api.get(`/call/total-faults/${areaId}`);
+      setTotalFaults(response.data[0].total);
+
     } catch (error) {
       console.log(error);
     }
@@ -624,18 +631,18 @@ export default function CallList() {
       <Row gutter={8} style={{ marginTop: 10, marginBottom: 50, textAlign: 'center' }}>
         <Col span={4}>
           <Card title="TOTAL" bordered={true}>
-            30
-        </Card>
+            {totalEmployees}
+          </Card>
         </Col>
         <Col span={4} style={{ color: 'green' }}>
           <Card title="PRESENTES" bordered={true}>
-            20
-        </Card>
+            {totalPresences}
+          </Card>
         </Col>
         <Col span={4}>
           <Card title="AUSENTES" color="green" bordered={true}>
-            10
-        </Card>
+            {totalFaults}
+          </Card>
         </Col>
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
