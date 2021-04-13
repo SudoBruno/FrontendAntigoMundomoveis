@@ -1,72 +1,72 @@
 .profile-container {
-    width: 100%;
-    max-width: 1180px;
-    padding: 0 30px;
-    margin: 32px auto;
+  width: 100%;
+  max-width: 1180px;
+  padding: 0 30px;
+  margin: 32px auto;
 }
 
 .profile-container header {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .profile-container header span {
-    font-size: 20px;
-    margin-left: 24px;
+  font-size: 20px;
+  margin-left: 24px;
 }
 
 .profile-container header a {
-    width: 260px;
-    margin-left: auto;
-    margin-top: 0;
+  width: 260px;
+  margin-left: auto;
+  margin-top: 0;
 }
 
 .profile-container button {
-    height: 60px;
-    width: 60px;
-    border-radius: 4px;
-    border: 1px solid #dcdce6;
-    background: transparent;
-    margin-left: 16px;
-    transition: border-color 0.2s;
+  height: 60px;
+  width: 60px;
+  border-radius: 4px;
+  border: 1px solid #dcdce6;
+  background: transparent;
+  margin-left: 16px;
+  transition: border-color 0.2s;
 }
 
 .profile-container header button:hover {
-    border-color: #999;
+  border-color: #999;
 }
 
 .profile-container h1 {
-    margin-top: 80px;
-    margin-bottom: 24px;
+  margin-top: 80px;
+  margin-bottom: 24px;
 }
 
 .profile-container ul {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 24px;
-    list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+  list-style: none;
 }
 
 .profile-container li {
-    list-style: none;
-    background-color: #fff;
-    padding: 24px;
-    border-radius: 8px;
-    position: relative;
+  list-style: none;
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
 }
 
 .profile-container ul li:hover {
-    /* background: rgb(204, 204, 233); */
+  /* background: rgb(204, 204, 233); */
 }
 
 .profile-container ul li strong {
-    display: block;
-    margin-bottom: 16px;
-    color: #41414d;
+  display: block;
+  margin-bottom: 16px;
+  color: #41414d;
 }
 
 .profile-container ul li p+strong {
-    margin-top: 32px;
+  margin-top: 32px;
 }
 
 /* .profile-container ul li p {
@@ -76,10 +76,10 @@
 } */
 
 .LineName {
-    text-align: center;
-    color: black;
-    font-size: 24px;
-    font-weight: bold;
+  text-align: center;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 /* .gauge-chart1{
@@ -93,24 +93,24 @@
 } */
 
 .charts h2 {
-    text-align: center;
+  text-align: center;
 }
 
 .charts {
-    min-width: 400px;
-    max-height: 290px;
+  min-width: 400px;
+  max-height: 290px;
 }
 
 .totalProduction {
-    align-items: center;
-    text-align: center;
+  align-items: center;
+  text-align: center;
 }
 
 .totalProduction p {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .totalProduction h2 {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
 }

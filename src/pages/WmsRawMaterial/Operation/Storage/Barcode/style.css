@@ -1,65 +1,61 @@
-.pdf-page {
-    background-color: #FFF;
-    height:100%;
-    width:210mm;
-    display: block;
-    margin: 0 auto;
-    background-color: darkgray;
-}
-.col-50{
-    flex-basis: 40%;
-    margin-left: 5%;
+.wmsTagBody {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
 }
 
-#card{
-    height: 74,25mm;
-    display: block;
-    float: left;
-    background-color: #FFF;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-radius: 0.2rem;
+.wmsTagHeader {
+  height: 60px;
+  margin-top: 16px;
 }
 
-.logo{
-  align-items: center;
-  justify-content: center;
+.wmsTagBody {
+  padding-left: 6%;
 }
 
-.table-header{
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    text-decoration-color: black;
-    text-decoration-style: bold;
+.wmsTagBody b {
+  font-size: 1rem;
 }
 
-.ins{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.wmsTagBody p {
+  height: 30px;
+  margin: 0;
 }
 
-.operation-control{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+p {
+  margin: 0;
 }
 
-.content-table{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 30px;
+.operations {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 2%;
 }
 
-.barcode{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 6px;
+.wmsTagBarCode {
+  margin-left: 25%;
+}
+
+.wmsTags {
+  width: 100%;
+  position: relative;
+  /*para alinhar os span no centro*/
+}
+
+.wmsTags span {
+  position: relative;
+  min-width: 100%;
+  max-height: 100%;
+  border: 1px solid black;
+  /* para os spans pegarem o width */
+  display: inline-block;
+}
+
+.operations p {
+  margin: 6px;
+}
+
+@media screen and (min-width: 500px) {
+  .wmsTags span {
+    min-width: 33.33%;
+  }
 }
