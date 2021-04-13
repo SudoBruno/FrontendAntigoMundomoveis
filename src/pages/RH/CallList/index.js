@@ -193,6 +193,11 @@ export default function CallList() {
       employeeId: 0,
     },
   ]);
+  const [totalEmployees, setTotalEmployees] = useState(0);
+  const [totalPresences, setTotalPresences] = useState(0);
+  const [totalFaults, setTotalFaults] = useState(0);
+
+
 
   useEffect(() => {
     api.get('call-list', {}).then((response) => {
@@ -213,6 +218,16 @@ export default function CallList() {
     });
   }, []);
 
+
+  async function generateDataForPresences(areaId) {
+    try {
+      console.log(areaId);
+      let response = await api.get(`/call/total-employees/${areaId}`);
+      console.log(response.data[0].total);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
@@ -365,7 +380,6 @@ export default function CallList() {
       }
     }
 
-    console.log(data);
   }
 
   return (
@@ -439,6 +453,7 @@ export default function CallList() {
               size="large"
               value={areaName}
               onChange={(e) => {
+                generateDataForPresences(e[0]);
                 alterCallList(e[0]);
                 setArea(e[0]);
                 setAreaName(e[1]);
@@ -625,7 +640,7 @@ export default function CallList() {
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
         <Row gutter={5}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
               label="Funcionario"
@@ -635,6 +650,9 @@ export default function CallList() {
                 showSearch
                 placeholder="Selecione"
                 size="large"
+                onChange={(e) => {
+                  callList[refreshKey].name = e[1];
+                }}
                 value={callList[refreshKey].name}
               >
                 {callList.map((option) => {
@@ -714,7 +732,7 @@ export default function CallList() {
 
       </Modal>
       <SearchTable />
-    </Layout>
+    </Layout >
   );
   // return (
   //   <>
