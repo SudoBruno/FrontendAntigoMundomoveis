@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons';
 
 import Highlighter from 'react-highlight-words';
+import { PlatingMountProvider } from '../../../contexts/Plating/Mount/PlatingMountContext';
 
 const Option = Select.Option;
 
@@ -247,13 +248,14 @@ export default function Seccionadora() {
   ]);
   const [colorName, setColorName] = useState('');
   const [color, setColor] = useState('');
-  const [sectors, setSectors] = useState([]);
-  const [sectorName, setSectorName] = useState('');
+  const [machines, setMachines] = useState([]);
+
   const [sectorId, setSectorId] = useState(0);
+  const [machineId, setMachineId] = useState(1);
 
   const [showNextSector, setShowNextSector] = useState(false);
 
-  const [showSector, setShowSector] = useState(true);
+  const [showMachine, setShowMachine] = useState(true);
 
   const [previousPlatingMountId, setPreviousPlatingMountId] = useState(0);
 
@@ -279,8 +281,8 @@ export default function Seccionadora() {
   }, []);
 
   useEffect(() => {
-    api.get('sector', {}).then((response) => {
-      setSectors(response.data);
+    api.get('machine', {}).then((response) => {
+      setMachines(response.data);
     });
   }, []);
 
@@ -297,6 +299,7 @@ export default function Seccionadora() {
     factorySectorId: sectorId,
     productId: productId,
     color: color,
+    machineId,
   };
   const handleCreateMount = async () => {
     setLoading(true);
@@ -403,11 +406,19 @@ export default function Seccionadora() {
     ]);
   };
 
-  const handleSelectSector = (e) => {
+  const handleSelectMachine = async (e) => {
     setRefreshKey((refreshKey) => refreshKey + 1);
-    setSectorId(e[0]);
-    setSectorName(e[1]);
-    setShowSector(false);
+    setMachineId(e);
+    const response = await api.get(`machine/${e}`);
+    setSectorId(response.data.factory_sector_id);
+
+    const mounts = await api.get(
+      `plating/mount/seccionadora/${response.data.factory_sector_id}`
+    );
+
+    setMounts(mounts.data);
+
+    setShowMachine(false);
   };
 
   const finishMount = async (e, data) => {
@@ -501,12 +512,17 @@ export default function Seccionadora() {
     >
       {/* <BarcodeReader onScan={handleScan} onError={handleScan} /> */}
       <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="right">
+        <Col span={12} align="left">
+          <Tooltip title="Seccionadora" placement="right">
+            <PlatingMountProvider />
+          </Tooltip>
+        </Col>
+        <Col span={12} align="right">
           <Tooltip title="Seccionadora" placement="right">
             <Button
               className="buttonGreen"
               icon={<PlusOutlined />}
-              style={{ marginRight: 5, marginTop: 3, fontSize: '14px' }}
+              style={{ marginRight: 5, fontSize: '14px' }}
               onClick={handleShow}
             >
               Seccionadora
@@ -723,28 +739,36 @@ export default function Seccionadora() {
         })}
       </Modal>
 
-      <Modal title="Selecione o setor" visible={showSector} width={500}>
+      <Modal title="Selecione sua maquina" visible={showMachine} width={500}>
         <Row gutter={5}>
           <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
-              label="Selecione seu setor:"
+              label="Selecione sua maquina:"
               labelAlign={'left'}
             >
               <Select
                 showSearch
                 placeholder="Selecione"
                 size="large"
-                value={sectorName}
-                onChange={(e) => handleSelectSector(e)}
+                value={machineId}
+                onChange={(e) => handleSelectMachine(e)}
                 style={{ borderStyle: 'solid', borderColor: 'red' }}
-
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
                 // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
-                {sectors.map((option) => {
+                {machines.map((option) => {
                   return (
                     <>
-                      <Option key={option.id} value={[option.id, option.name]}>
+                      <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
                     </>
