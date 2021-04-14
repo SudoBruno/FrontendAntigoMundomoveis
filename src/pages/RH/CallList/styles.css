@@ -33,10 +33,14 @@ input[type='file'] {
     width: 30%;
     color: #fff;
     font-weight: bold;
-    padding: 14px;
+    padding: 23px;
     margin-left: 10px;
     border: none;
     border-radius: 5px;
+    text-align: center;
+    display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 .btn-iniciar-chamada{
@@ -44,10 +48,13 @@ input[type='file'] {
     width: 30%;
     color: #fff;
     font-weight: bold;
-    padding: 14px;
+    padding: 23px;
     margin-left: 10px;
     border: none;
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .input-file {
@@ -71,18 +78,7 @@ input[type='file'] {
     width: 100%;
 }
 
-.presenceButton:hover {
-    background-color: #499b49;
-    color: #fff;
-}
-
-.absenceButton:hover {
-    background-color: #cc3204;
-    color: #fff;
-}
 .absenceButton {
-    background-color: #f3410b;
-    color: #fff;
     font-weight: bold;
     margin-left: 10px;
     border: none;
@@ -90,22 +86,7 @@ input[type='file'] {
     width: 97.5%;
 }
 
-.notPassThePointButton{
-    background-color: #4070af;
-    color: #fff;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 3px;
-    width: 100%;
-}
 
-.notPassThePointButton:hover{
-    background-color: #527eb8;
-    color: #fff;
-    
-}
 
 @media screen and (max-width: 767px) {
   .departament {
