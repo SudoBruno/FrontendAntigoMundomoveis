@@ -21,7 +21,7 @@ import {
 } from 'antd';
 
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, UploadOutlined, RetweetOutlined } from '@ant-design/icons';
+import { SearchOutlined, UploadOutlined, RetweetOutlined, SendOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './styles.css';
 
@@ -174,6 +174,7 @@ export default function CallList() {
     }
   }
 
+  const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState([]);
   const [area, setArea] = useState(0);
   const [areaName, setAreaName] = useState('');
@@ -220,6 +221,7 @@ export default function CallList() {
 
 
   async function generateDataForPresences(areaId) {
+    setLoading(true);
     try {
       console.log(areaId);
       let response = await api.get(`/call/total-employees/${areaId}`);
@@ -230,9 +232,10 @@ export default function CallList() {
 
       response = await api.get(`/call/total-faults/${areaId}`);
       setTotalFaults(response.data[0].total);
-
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -248,7 +251,7 @@ export default function CallList() {
 
   const isPresent = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await api.put(
         `call-list/presence/${callList[refreshKey].id}`
@@ -262,15 +265,19 @@ export default function CallList() {
         );
         setRefreshKey(0);
         setShow(false);
+
       } else {
         setRefreshKey((refreshKey) => refreshKey + 1);
       }
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
+      setLoading(false);
     }
   };
 
   const fault = async (e) => {
+    setLoading(true);
     try {
       const response = await api.put(
         `call-list/absence/${callList[refreshKey].id}`
@@ -287,8 +294,10 @@ export default function CallList() {
       } else {
         setRefreshKey((refreshKey) => refreshKey + 1);
       }
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
+      setLoading(false);
     }
   };
 
@@ -307,20 +316,29 @@ export default function CallList() {
       /* Convert array to json*/
       const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
       setEmployee(dataParse);
+      setEmployee('');
     };
     reader.readAsBinaryString(f);
+
+    setEmployee('');
+    console.log();
+
   };
 
   const Send = async () => {
+    setLoading(true);
     try {
+      const response = await api.post('/call/employee/xlsx', employee);
       openNotificationWithIcon(
         'success',
         'Sucesso',
         'Arquivo enviado com sucesso'
       );
-      const response = await api.post('/call/employee/xlsx', employee);
+
+      setLoading(false);
     } catch (error) {
-      openNotificationWithIcon('error', 'ERRO', 'Erro ao enviar');
+      openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
+      setLoading(false);
     }
   };
 
@@ -344,12 +362,18 @@ export default function CallList() {
   const handleShowReplacement = () => setShowReplacement(true)
 
   const alterCallList = async (e) => {
-    const response = await api.get(`/call-list/${e}`);
+    try {
+      const response = await api.get(`/call-list/${e}`);
 
-    if (response.data.length > 0) {
-      setCallList(response.data);
-    } else {
+      if (response.data.length > 0) {
+        setCallList(response.data);
+      } else {
+        openNotificationWithIcon('error', 'ERRO', 'Funcionários nao encontrados');
+      }
+    } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Funcionários nao encontrados');
+      console.error(error);
+      setLoading(false)
     }
   };
 
@@ -373,6 +397,7 @@ export default function CallList() {
     }
 
     if (transferAreaId && employeeName) {
+      setLoading(true)
       try {
         const response = await api.put('/call/employee-transfer/', data);
         openNotificationWithIcon(
@@ -380,7 +405,7 @@ export default function CallList() {
           'Sucesso',
           'Transferência Concluida'
         );
-        handleClose();
+        setLoading(false);
       } catch (error) {
         openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
         console.log(error);
@@ -408,9 +433,14 @@ export default function CallList() {
           onChange={(e) => handleUpload(e)}
         />
 
-        <button className="btn-enviar" onClick={Send}>
+        <Button
+          loading={loading}
+          icon={<SendOutlined />}
+          className="btn-enviar"
+          type="primary"
+          onClick={Send}>
           Enviar
-        </button>
+        </Button>
       </div>
 
       <Row>
@@ -494,13 +524,14 @@ export default function CallList() {
         >
 
 
-          <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
+          <Button loading={loading} className="btn-iniciar-chamada" type="primary" onClick={(e) => startCallList(e)}>
             Iniciar Chamada
-          </button>
+        </Button>
 
           <Button
             type="primary"
             icon={<RetweetOutlined />}
+            loading={loading}
             size={30}
             style={{ marginLeft: 10 }}
             onClick={handleShowReplacement}
@@ -512,13 +543,14 @@ export default function CallList() {
             visible={showReplacement}
             width={700}
             title={'Troca de Colaborador'}
+
             onCancel={handleClose}
             footer={[
               <Button key="back" type="default" onClick={handleClose}>
                 {' '}
                 Cancelar
               </Button>,
-              <Button key="submit" type="primary" onClick={handleTranserEmployee}>
+              <Button loading={loading} key="submit" type="primary" onClick={handleTranserEmployee}>
                 {' '}
                 Salvar
               </Button>,
@@ -721,6 +753,8 @@ export default function CallList() {
               onClick={(e) => {
                 isPresent(e);
               }}
+              loading={loading}
+              style={{ backgroundColor: '#5cb85c', color: '#fff' }}
             >
               Presente
             </Button>
@@ -731,6 +765,8 @@ export default function CallList() {
               onClick={(e) => {
                 fault();
               }}
+              loading={loading}
+              style={{ backgroundColor: '#f10101', color: '#fff' }}
             >
               Faltou
             </Button>
