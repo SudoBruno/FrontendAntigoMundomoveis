@@ -316,11 +316,8 @@ export default function CallList() {
       /* Convert array to json*/
       const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
       setEmployee(dataParse);
-      setEmployee('');
     };
     reader.readAsBinaryString(f);
-
-    setEmployee('');
     console.log();
 
   };
