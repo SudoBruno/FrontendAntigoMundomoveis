@@ -324,19 +324,22 @@ export default function CallList() {
 
   const Send = async () => {
     setLoading(true);
-    try {
-      const response = await api.post('/call/employee/xlsx', employee);
-      openNotificationWithIcon(
-        'success',
-        'Sucesso',
-        'Arquivo enviado com sucesso'
-      );
 
-      setLoading(false);
-    } catch (error) {
+    if (employee === '') {
       openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
       setLoading(false);
     }
+
+    const response = await api.post('/call/employee/xlsx', employee);
+    openNotificationWithIcon(
+      'success',
+      'Sucesso',
+      'Arquivo enviado com sucesso'
+    );
+
+    setLoading(false);
+
+
   };
 
   const [refreshKey, setRefreshKey] = useState(0);
