@@ -324,8 +324,8 @@ export default function CallList() {
   const Send = async () => {
     setLoading(true);
 
-
     try {
+      console.log('QUANTIDA DE FUNC', employee.length);
       const response = await api.post('/call/employee/xlsx', employee);
       openNotificationWithIcon(
         'success',
