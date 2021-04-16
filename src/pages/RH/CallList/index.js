@@ -223,7 +223,7 @@ export default function CallList() {
   async function generateDataForPresences(areaId) {
     setLoading(true);
     try {
-      console.log(areaId);
+
       let response = await api.get(`/call/total-employees/${areaId}`);
       setTotalEmployees(response.data[0].total);
 
@@ -234,7 +234,7 @@ export default function CallList() {
       setTotalFaults(response.data[0].total);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
     }
   }
@@ -318,27 +318,26 @@ export default function CallList() {
       setEmployee(dataParse);
     };
     reader.readAsBinaryString(f);
-    console.log();
 
   };
 
   const Send = async () => {
     setLoading(true);
 
-    if (employee === '') {
+
+    try {
+      const response = await api.post('/call/employee/xlsx', employee);
+      openNotificationWithIcon(
+        'success',
+        'Sucesso',
+        'Arquivo enviado com sucesso'
+      );
+    } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
       setLoading(false);
     }
 
-    const response = await api.post('/call/employee/xlsx', employee);
-    openNotificationWithIcon(
-      'success',
-      'Sucesso',
-      'Arquivo enviado com sucesso'
-    );
-
     setLoading(false);
-
 
   };
 
