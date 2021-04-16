@@ -20,99 +20,59 @@ function Barcode() {
   let content = [];
   for (let i = 0; i < 5; i++) {
     content.push(
-      <tr>
-        <td>_______________ - </td>
-        <td>_______________ =</td>
-        <td>_____________</td>
-      </tr>
+      <>
+        <p>____________ - </p>
+        <p>____________ =</p>
+        <p>________</p>
+      </>
     );
   }
 
   return (
     <>
-      <div class="pdf-page">
-        <div class="row">
-          <div class="col-50">
-            {informations.map((item) => {
-              return (
-                <>
-                  <div id="card">
-                    <div className="logo">
-                      <Row>
-                        <Col span={12}>
-                          <img src={logo} style={{ height: '45px' }} />
-                        </Col>
+      <div className="wmsTags">
+        {informations.map((item) => {
+          return (
+            <span>
+              <img src={logo} style={{ height: '45px' }} />
 
-                        <Col span={12}>
-                          <h4>Entrada realizada em:</h4>
-                          <h3>{item.date_entry}</h3>
-                        </Col>
-                      </Row>
-                    </div>
+              <Divider />
+              <div className="wmsTagBody">
+                <div className="firstColum">
+                  <b>Almoxarifado</b>
+                  <p>{item.warehouse}</p>
+                  <b>Insumo</b>
+                  <p>{item.ins_name}</p>
+                </div>
+                <div className="secondColum">
+                  <b>Posição</b>
+                  <p>{item.street}</p>
+                  <b>quantidade</b>
+                  <p>{item.quantity}</p>
+                </div>
+              </div>
+              <Divider />
 
-                    <Divider style={{ marginTop: '30px' }} />
+              <div className="operations">
+                <p>QTDE ATUAL</p>
+                <p>QTDE SAÍDA</p>
+                <p>RESULTADO</p>
 
-                    <div className="table-header">
-                      <table width="90%" style={{ marginLeft: '5%' }}>
-                        <tr>
-                          <th>Almoxarifado</th>
-                          <th>Posição</th>
-                        </tr>
-                        <tr>
-                          <td>{item.warehouse}</td>
-                          <td>{item.street}</td>
-                        </tr>
-                      </table>
-                    </div>
+                {content}
+              </div>
+              <Divider />
 
-                    <div className="table-header">
-                      <table
-                        width="90%"
-                        style={{ marginLeft: '5%', marginTop: '10px' }}
-                      >
-                        <tr>
-                          <th>Insumo</th>
-                          <th>Quantidade</th>
-                        </tr>
-                        <tr>
-                          <td>{item.ins_name}</td>
-                          <td>{item.quantity}</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div className="ins">
-                      <h3 style={{ marginTop: '15px' }}>{item.ins}</h3>
-                    </div>
-
-                    <Divider style={{ marginTop: '5px' }} />
-
-                    <div className="content-table">
-                      <table width="90%" style={{ margin: '0' }}>
-                        <tr>
-                          <th>QTDE ATUAL</th>
-                          <th>QTDE SAÍDA</th>
-                          <th>RESULTADO</th>
-                        </tr>
-                        {content}
-                      </table>
-                    </div>
-
-                    <Divider style={{ marginTop: '8px' }} />
-
-                    <div className="barcode">
-                      <BarCode
-                        value={item.barcode}
-                        width={1.2}
-                        height={40}
-                        fontSize={20}
-                      />
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
+              <div className="wmsTagBarCode">
+                <BarCode
+                  value={item.barcode}
+                  width={1}
+                  height={30}
+                  fontSize={20}
+                />
+              </div>
+            </span>
+          );
+        })}
       </div>
     </>
   );

@@ -16,10 +16,12 @@ import {
   Dropdown,
   Tooltip,
   Checkbox,
+  Card,
+  Divider,
 } from 'antd';
 
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, UploadOutlined, RetweetOutlined } from '@ant-design/icons';
+import { SearchOutlined, UploadOutlined, RetweetOutlined, SendOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './styles.css';
 
@@ -172,6 +174,7 @@ export default function CallList() {
     }
   }
 
+  const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState([]);
   const [area, setArea] = useState(0);
   const [areaName, setAreaName] = useState('');
@@ -191,6 +194,11 @@ export default function CallList() {
       employeeId: 0,
     },
   ]);
+  const [totalEmployees, setTotalEmployees] = useState(0);
+  const [totalPresences, setTotalPresences] = useState(0);
+  const [totalFaults, setTotalFaults] = useState(0);
+
+
 
   useEffect(() => {
     api.get('call-list', {}).then((response) => {
@@ -212,6 +220,25 @@ export default function CallList() {
   }, []);
 
 
+  async function generateDataForPresences(areaId) {
+    setLoading(true);
+    try {
+
+      let response = await api.get(`/call/total-employees/${areaId}`);
+      setTotalEmployees(response.data[0].total);
+
+      response = await api.get(`/call/total-presences/${areaId}`);
+      setTotalPresences(response.data[0].total);
+
+      response = await api.get(`/call/total-faults/${areaId}`);
+      setTotalFaults(response.data[0].total);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  }
+
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
       message: message,
@@ -224,7 +251,7 @@ export default function CallList() {
 
   const isPresent = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await api.put(
         `call-list/presence/${callList[refreshKey].id}`
@@ -238,15 +265,19 @@ export default function CallList() {
         );
         setRefreshKey(0);
         setShow(false);
+
       } else {
         setRefreshKey((refreshKey) => refreshKey + 1);
       }
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
+      setLoading(false);
     }
   };
 
   const fault = async (e) => {
+    setLoading(true);
     try {
       const response = await api.put(
         `call-list/absence/${callList[refreshKey].id}`
@@ -263,8 +294,10 @@ export default function CallList() {
       } else {
         setRefreshKey((refreshKey) => refreshKey + 1);
       }
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Erro na chamada');
+      setLoading(false);
     }
   };
 
@@ -285,19 +318,28 @@ export default function CallList() {
       setEmployee(dataParse);
     };
     reader.readAsBinaryString(f);
+
   };
 
   const Send = async () => {
+    setLoading(true);
+
     try {
+      const response = await api.post('/call/employee/xlsx', employee);
       openNotificationWithIcon(
         'success',
         'Sucesso',
         'Arquivo enviado com sucesso'
       );
-      const response = await api.post('/call/employee/xlsx', employee);
+      console.log(employee);
     } catch (error) {
-      openNotificationWithIcon('error', 'ERRO', 'Erro ao enviar');
+      console.error(error)
+      openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
+      setLoading(false);
     }
+
+    setLoading(false);
+
   };
 
   const [refreshKey, setRefreshKey] = useState(0);
@@ -320,12 +362,18 @@ export default function CallList() {
   const handleShowReplacement = () => setShowReplacement(true)
 
   const alterCallList = async (e) => {
-    const response = await api.get(`/call-list/${e}`);
+    try {
+      const response = await api.get(`/call-list/${e}`);
 
-    if (response.data.length > 0) {
-      setCallList(response.data);
-    } else {
+      if (response.data.length > 0) {
+        setCallList(response.data);
+      } else {
+        openNotificationWithIcon('error', 'ERRO', 'Funcionários nao encontrados');
+      }
+    } catch (error) {
       openNotificationWithIcon('error', 'ERRO', 'Funcionários nao encontrados');
+      console.error(error);
+      setLoading(false)
     }
   };
 
@@ -349,6 +397,7 @@ export default function CallList() {
     }
 
     if (transferAreaId && employeeName) {
+      setLoading(true)
       try {
         const response = await api.put('/call/employee-transfer/', data);
         openNotificationWithIcon(
@@ -356,14 +405,13 @@ export default function CallList() {
           'Sucesso',
           'Transferência Concluida'
         );
-        handleClose();
+        setLoading(false);
       } catch (error) {
         openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
         console.log(error);
       }
     }
 
-    console.log(data);
   }
 
   return (
@@ -385,15 +433,22 @@ export default function CallList() {
           onChange={(e) => handleUpload(e)}
         />
 
-        <button className="btn-enviar" onClick={Send}>
+        {employee.length !== 0 && <Button
+          loading={loading}
+          icon={<SendOutlined />}
+          className="btn-enviar"
+          type="primary"
+          onClick={Send}>
           Enviar
-        </button>
+        </Button>}
       </div>
+
       <Row>
         <Col span={8}>
-          <Form.Item
+
+          {/* <Form.Item
             labelCol={{ span: 23 }}
-            label="Selecione o Departamento"
+            label="Selecione a Localidade"
             labelAlign={'left'}
             style={{ marginTop: 20 }}
             className="departament"
@@ -420,9 +475,43 @@ export default function CallList() {
               })}
             </Select>
 
+          </Form.Item> */}
+
+          <Form.Item
+            labelCol={{ span: 23 }}
+            label="Selecione o Departamento"
+            labelAlign={'left'}
+            style={{ marginTop: 120 }} //20
+            className="departament"
+          >
+            <Select
+              showSearch
+              placeholder="Selecione"
+              size="large"
+              value={areaName}
+              onChange={(e) => {
+                generateDataForPresences(e[0]);
+                alterCallList(e[0]);
+                setArea(e[0]);
+                setAreaName(e[1]);
+              }}
+            >
+              {areas.map((option) => {
+                return (
+                  <>
+                    <Option key={option.id} value={[option.id, option.name]}>
+                      {option.name}
+                    </Option>
+                  </>
+                );
+              })}
+            </Select>
+
           </Form.Item>
 
+
         </Col>
+
 
         <Col
           span={12}
@@ -430,18 +519,19 @@ export default function CallList() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'left',
-            marginTop: 20,
+            marginTop: 120,
           }}
         >
 
 
-          <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
+          <Button loading={loading} className="btn-iniciar-chamada" type="primary" onClick={(e) => startCallList(e)}>
             Iniciar Chamada
-          </button>
+        </Button>
 
           <Button
             type="primary"
             icon={<RetweetOutlined />}
+            loading={loading}
             size={30}
             style={{ marginLeft: 10 }}
             onClick={handleShowReplacement}
@@ -453,18 +543,21 @@ export default function CallList() {
             visible={showReplacement}
             width={700}
             title={'Troca de Colaborador'}
+
             onCancel={handleClose}
             footer={[
               <Button key="back" type="default" onClick={handleClose}>
                 {' '}
                 Cancelar
               </Button>,
-              <Button key="submit" type="primary" onClick={handleTranserEmployee}>
+              <Button loading={loading} key="submit" type="primary" onClick={handleTranserEmployee}>
                 {' '}
                 Salvar
               </Button>,
             ]}
           >
+
+
             <Row gutter={5}>
               <Col span={13}>
                 <Form.Item
@@ -496,6 +589,7 @@ export default function CallList() {
               </Col>
 
             </Row>
+
 
             <Row>
               <Col span={10}>
@@ -561,10 +655,31 @@ export default function CallList() {
           </Modal>
 
         </Col>
+
+      </Row>
+      <Divider>
+
+      </Divider>
+      <Row gutter={8} style={{ marginTop: 10, marginBottom: 50, textAlign: 'center' }}>
+        <Col span={4}>
+          <Card title="TOTAL" bordered={true}>
+            {totalEmployees}
+          </Card>
+        </Col>
+        <Col span={4} style={{ color: 'green' }}>
+          <Card title="PRESENTES" bordered={true}>
+            {totalPresences}
+          </Card>
+        </Col>
+        <Col span={4}>
+          <Card title="AUSENTES" color="green" bordered={true}>
+            {totalFaults}
+          </Card>
+        </Col>
       </Row>
       <Modal visible={show} width={800} title={'Chamada'}>
         <Row gutter={5}>
-          <Col span={8}>
+          <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
               label="Funcionario"
@@ -574,8 +689,10 @@ export default function CallList() {
                 showSearch
                 placeholder="Selecione"
                 size="large"
+                onChange={(e) => {
+                  callList[refreshKey].name = e[1];
+                }}
                 value={callList[refreshKey].name}
-                disabled
               >
                 {callList.map((option) => {
                   return (
@@ -636,6 +753,8 @@ export default function CallList() {
               onClick={(e) => {
                 isPresent(e);
               }}
+              loading={loading}
+              style={{ backgroundColor: '#5cb85c', color: '#fff' }}
             >
               Presente
             </Button>
@@ -646,6 +765,8 @@ export default function CallList() {
               onClick={(e) => {
                 fault();
               }}
+              loading={loading}
+              style={{ backgroundColor: '#f10101', color: '#fff' }}
             >
               Faltou
             </Button>
@@ -654,7 +775,7 @@ export default function CallList() {
 
       </Modal>
       <SearchTable />
-    </Layout>
+    </Layout >
   );
   // return (
   //   <>

@@ -111,8 +111,8 @@ export default function SubProduct() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -483,7 +483,7 @@ export default function SubProduct() {
           return (
             <>
               <Row gutter={5}>
-                <Col span={6}>
+                <Col span={12}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="Lote"
@@ -498,7 +498,7 @@ export default function SubProduct() {
                     />
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={20}>
                   <Form.Item
                     labelCol={{ span: 23 }}
                     label="ins"
@@ -520,10 +520,11 @@ export default function SubProduct() {
                               value={[
                                 option.id,
                                 option.ins,
-                                option.description,
+                                option.rawMaterialName,
                               ]}
                             >
-                              {option.ins} - {option.description}
+                              {option.ins} - {option.rawMaterialName} - (
+                              {option.unity})
                             </Option>
                           </>
                         );
@@ -531,6 +532,7 @@ export default function SubProduct() {
                     </Select>
                   </Form.Item>
                 </Col>
+                {console.log(ins)}
 
                 <Col span={12}>
                   <Form.Item
@@ -546,7 +548,7 @@ export default function SubProduct() {
                       onChange={(e) => handleEntryChange(e, index)}
                       disabled={itensStorage.locked}
                     >
-                      { }
+                      {}
                       {entry.map((option) => {
                         return (
                           <>

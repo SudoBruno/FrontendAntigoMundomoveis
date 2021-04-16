@@ -666,7 +666,7 @@ export default function Employee() {
             </Col>
           </Row>
           <Row gutter={5}>
-            <Col span={8}>
+            <Col span={7}>
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="Função"
@@ -697,7 +697,7 @@ export default function Employee() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={13}>
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="Empresa"
@@ -728,7 +728,7 @@ export default function Employee() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item
                 labelCol={{ span: 23 }}
                 label="Turno"

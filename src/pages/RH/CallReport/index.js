@@ -188,9 +188,10 @@ export default function CallReport() {
     const data = {
       intervalTime: intervalTime,
     };
-    const response = await api.post('/call/employee/presenceFilter', data);
+    const response = await api.get('/call/employee/presenceFilter');
 
     setInput(response.data);
+    setCsvData(response.data);
   }
 
   async function InputReport() {

@@ -4,6 +4,7 @@ import {
   Table,
   Button,
   Row,
+  Input,
   Col,
   Space,
   Select,
@@ -176,9 +177,8 @@ export default function CallReport() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    api.get('/call/employee/presenceFilter', {}).then((response) => {
+    api.get('/call/employee/presencePointFilter').then((response) => {
       setInput(response.data);
-      console.log(input);
     });
   }, [refreshKey]);
 
@@ -187,11 +187,11 @@ export default function CallReport() {
       intervalTime: intervalTime,
     };
     const response = await api.post('/call/employee/presencePointFilter', data);
-    console.log(response);
     setInput(response.data);
+    setCsvData(response.data);
   }
 
-  async function Input() {
+  async function InputReport() {
     setReady(false);
 
     const data = {
@@ -201,7 +201,8 @@ export default function CallReport() {
     let response = [];
     if (intervalTime.length == 0) {
       response = await api.get('/call/employee/presencePointFilter');
-    } else {
+    }
+    else {
       response = await api.post('/call/employee/presencePointFilter', data);
     }
 
@@ -237,7 +238,7 @@ export default function CallReport() {
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: 'relatórioProdutos.csv',
+    filename: 'relatórioDePonto.csv',
   };
   return (
     <Layout
@@ -266,7 +267,7 @@ export default function CallReport() {
         </Col>
         <Col span={12} align="end">
           {!ready && (
-            <Button type="submit" className="buttonGreen" onClick={Input}>
+            <Button type="submit" className="buttonGreen" onClick={InputReport}>
               <FileExcelOutlined style={{ marginRight: 8 }} />
               Relatório de Ponto
             </Button>
