@@ -214,7 +214,7 @@ export default function ProductionLine() {
   const [error, setError] = useState('');
   const [maximumProduction, setMaximumProduction] = useState('');
   const [lastSector, setLastSector] = useState(1);
-  const [selectShifts, setSelectShifts] = useState([{}]);
+  const [selectShifts, setSelectShifts] = useState([]);
   const [shift, setShift] = useState([]);
   const [shiftId, setShiftId] = useState(0);
   const [shiftName, setShiftName] = useState('');
@@ -261,7 +261,7 @@ export default function ProductionLine() {
     const data = {
       id,
       sectors: selectSectors,
-      shifts: selectShifts,
+      shiftId: selectShifts,
       name,
       maximum_production: maximumProduction,
       last_sector: lastSector,
@@ -369,7 +369,7 @@ export default function ProductionLine() {
   };
 
   const handleAddShiftClick = () => {
-    setSelectShifts([...selectShifts, { id }]);
+    setSelectShifts([...selectShifts, shiftId]);
   };
 
   const [id, setId] = useState(0);
