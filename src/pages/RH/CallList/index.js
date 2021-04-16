@@ -325,14 +325,15 @@ export default function CallList() {
     setLoading(true);
 
     try {
-      console.log('QUANTIDA DE FUNC', employee.length);
       const response = await api.post('/call/employee/xlsx', employee);
       openNotificationWithIcon(
         'success',
         'Sucesso',
         'Arquivo enviado com sucesso'
       );
+      console.log(employee);
     } catch (error) {
+      console.error(error)
       openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
       setLoading(false);
     }
@@ -432,14 +433,14 @@ export default function CallList() {
           onChange={(e) => handleUpload(e)}
         />
 
-        <Button
+        {employee.length !== 0 && <Button
           loading={loading}
           icon={<SendOutlined />}
           className="btn-enviar"
           type="primary"
           onClick={Send}>
           Enviar
-        </Button>
+        </Button>}
       </div>
 
       <Row>
