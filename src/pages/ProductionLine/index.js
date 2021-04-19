@@ -1,33 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Layout,
-  Table,
-  Button,
-  Row,
-  Col,
-  Input,
-  Space,
-  Modal,
-  Select,
-  Popconfirm,
-  notification,
-  Divider,
-  Form,
-} from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
+  MinusCircleOutlined, PlusOutlined, SearchOutlined
 } from '@ant-design/icons';
-
-import { Tooltip, colors } from '@material-ui/core/';
-
+import { Tooltip } from '@material-ui/core/';
+import {
+  Button,
+  Col,
+  Divider,
+  Form, Input, Layout,
+  Modal,
+  notification, Popconfirm, Row,
+  Select, Space, Table
+} from 'antd';
+import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
 import api from '../../services/api';
-
-// import './style.css'
 
 const Option = Select.Option;
 
@@ -214,10 +202,9 @@ export default function ProductionLine() {
   const [error, setError] = useState('');
   const [maximumProduction, setMaximumProduction] = useState('');
   const [lastSector, setLastSector] = useState(1);
-  const [selectShifts, setSelectShifts] = useState([]);
-  const [shift, setShift] = useState([]);
-  const [shiftId, setShiftId] = useState(0);
-  const [shiftName, setShiftName] = useState('');
+  const [selectShifts, setSelectShifts] = useState([{ productionLineId: '', shifId: '' }]);
+  const [shift, setShift] = useState([{}]);
+
 
   useEffect(() => {
     api.get('production-line', {}).then((response) => {
@@ -236,7 +223,7 @@ export default function ProductionLine() {
     setName(e.name);
     setMaximumProduction(e.maximum_production);
 
-    const response = await api.get(`production-line-sector/${e.id}`);
+    let response = await api.get(`production-line-sector/${e.id}`);
     setSelectSector(response.data);
 
     try {
@@ -244,6 +231,16 @@ export default function ProductionLine() {
     } catch (error) {
       setLastSector(0);
     }
+
+    response = await api.get(`production-line-shift/${e.id}`);
+    console.log(response.data);
+
+    try {
+      setSelectShifts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
 
     handleShow();
   }
@@ -261,7 +258,7 @@ export default function ProductionLine() {
     const data = {
       id,
       sectors: selectSectors,
-      shiftId: selectShifts,
+      shifts: selectShifts,
       name,
       maximum_production: maximumProduction,
       last_sector: lastSector,
@@ -347,7 +344,7 @@ export default function ProductionLine() {
     });
   }, [refreshKey]);
 
-  const [sectors, setSectors] = useState([{ sector: '', sequence: '' }]);
+  const [sectors, setSectors] = useState([{ id: '', sector: '', sequence: '' }]);
 
   // handle click event of the Remove button
   const handleRemoveClick = (index) => {
@@ -365,11 +362,12 @@ export default function ProductionLine() {
 
   // handle click event of the Add button
   const handleAddClick = () => {
-    setSelectSector([...selectSectors, { sector: '', sequence: '' }]);
+    setSelectSector([...selectSectors, { id: '', sector: '', sequence: '' }]);
   };
 
   const handleAddShiftClick = () => {
-    setSelectShifts([...selectShifts, shiftId]);
+    setSelectShifts([...selectShifts, { productionLineId: '', shiftId: '' }]);
+    console.log(selectShifts);
   };
 
   const [id, setId] = useState(0);
@@ -380,8 +378,8 @@ export default function ProductionLine() {
   const handleClose = () => {
     setName('');
     setId(0);
-    setSelectSector([{ sector: '', sequence: '' }]);
-    setSelectShifts([{ shifts: '' }])
+    setSelectSector([{ id: '', sector: '', sequence: '' }]);
+    setSelectShifts([{ productionLineId: '', shiftId: '' }])
     setMaximumProduction('');
     setLastSector(1);
     setShow(false);
@@ -398,9 +396,10 @@ export default function ProductionLine() {
   }
 
   function HandleShiftChange(value, index) {
+    console.log(value);
     var NewArray = [...selectShifts];
-    NewArray[index].id = value;
-    console.log(NewArray[index].id);
+    NewArray[index].shiftId = value;
+    console.log(NewArray[index].shiftId);
 
     setSelectShifts(NewArray);
 
@@ -515,9 +514,7 @@ export default function ProductionLine() {
             </Form.Item>
           </Col>
         </Row>
-
-        <Divider />
-
+        <Divider></Divider>
         {selectShifts.map((selectShift, index) => {
           return (
             <>
@@ -532,12 +529,13 @@ export default function ProductionLine() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={selectShift.name}
+                      value={selectShift.shiftId}
                       onChange={(e) => {
-                        setShiftId(e[0]);
                         HandleShiftChange(e, index)
                       }}
-
+                    // filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    // eslint-disable-next-line max-len
+                    // filterSort={(optionA, optionB) => optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())}
                     // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {shift.map((option) => {
@@ -586,6 +584,7 @@ export default function ProductionLine() {
           );
         })}
 
+        <Divider></Divider>
         {
           selectSectors.map((selectSector, index) => {
             return (
