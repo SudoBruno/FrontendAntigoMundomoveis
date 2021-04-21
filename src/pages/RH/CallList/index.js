@@ -441,14 +441,14 @@ export default function CallList() {
           onChange={(e) => handleUpload(e)}
         />
 
-        <Button
+        {employee.length !== 0 && <Button
           loading={loading}
           icon={<SendOutlined />}
           className="btn-enviar"
           type="primary"
           onClick={Send}>
           Enviar
-        </Button>
+        </Button>}
       </div>
 
       <Row>
