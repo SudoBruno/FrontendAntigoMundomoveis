@@ -28,6 +28,16 @@ import './styles.css';
 import api from '../../../services/api';
 
 const Option = Select.Option;
+const locality = {
+  matriz: {
+    id: 1,
+    name: 'MATRIZ',
+  },
+  chaparia: {
+    id: 2,
+    name: 'CHAPARIA',
+  },
+}
 export default function CallList() {
   class SearchTable extends React.Component {
     state = {
@@ -197,6 +207,7 @@ export default function CallList() {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [totalPresences, setTotalPresences] = useState(0);
   const [totalFaults, setTotalFaults] = useState(0);
+  const [localityId, setLocalityId] = useState();
 
 
 
@@ -363,7 +374,7 @@ export default function CallList() {
 
   const alterCallList = async (e) => {
     try {
-      const response = await api.get(`/call-list/${e}`);
+      const response = await api.get(`/call-list/${e}/${localityId}`);
 
       if (response.data.length > 0) {
         setCallList(response.data);
@@ -446,7 +457,7 @@ export default function CallList() {
       <Row>
         <Col span={8}>
 
-          {/* <Form.Item
+          <Form.Item
             labelCol={{ span: 23 }}
             label="Selecione a Localidade"
             labelAlign={'left'}
@@ -457,35 +468,29 @@ export default function CallList() {
               showSearch
               placeholder="Selecione"
               size="large"
-              value={areaName}
+              value={localityId}
               onChange={(e) => {
-                alterCallList(e[0]);
-                setArea(e[0]);
-                setAreaName(e[1]);
+                setLocalityId(e);
+                console.log(e);
               }}
             >
-              {areas.map((option) => {
-                return (
-                  <>
-                    <Option key={option.id} value={[option.id, option.name]}>
-                      {option.name}
-                    </Option>
-                  </>
-                );
-              })}
+
+              <Option value={locality.matriz.id}> MATRIZ </Option>
+              <Option value={locality.chaparia.id}> CHAPARIA </Option>
             </Select>
 
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
             labelCol={{ span: 23 }}
             label="Selecione o Departamento"
             labelAlign={'left'}
-            style={{ marginTop: 120 }} //20
+            style={{ marginTop: 20 }} //20
             className="departament"
           >
             <Select
               showSearch
+              disabled={localityId === ''}
               placeholder="Selecione"
               size="large"
               value={areaName}
