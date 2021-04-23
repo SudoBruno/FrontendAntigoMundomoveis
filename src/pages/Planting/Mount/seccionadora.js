@@ -516,7 +516,7 @@ export default function Seccionadora() {
       </Row>
       <SearchTable />
       <Modal
-        title="Alteração no caminho do monte"
+        title="Criação do Monte"
         visible={show}
         width={700}
         footer={[
