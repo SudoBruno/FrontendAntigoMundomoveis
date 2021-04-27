@@ -1,17 +1,25 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  MinusCircleOutlined, PlusOutlined, SearchOutlined
+  MinusCircleOutlined,
+  PlusOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import { Tooltip } from '@material-ui/core/';
 import {
   Button,
   Col,
   Divider,
-  Form, Input, Layout,
+  Form,
+  Input,
+  Layout,
   Modal,
-  notification, Popconfirm, Row,
-  Select, Space, Table
+  notification,
+  Popconfirm,
+  Row,
+  Select,
+  Space,
+  Table,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -202,9 +210,10 @@ export default function ProductionLine() {
   const [error, setError] = useState('');
   const [maximumProduction, setMaximumProduction] = useState('');
   const [lastSector, setLastSector] = useState(1);
-  const [selectShifts, setSelectShifts] = useState([{ productionLineId: '', shifId: '' }]);
+  const [selectShifts, setSelectShifts] = useState([
+    { productionLineId: '', shifId: '' },
+  ]);
   const [shift, setShift] = useState([{}]);
-
 
   useEffect(() => {
     api.get('production-line', {}).then((response) => {
@@ -233,14 +242,12 @@ export default function ProductionLine() {
     }
 
     response = await api.get(`production-line-shift/${e.id}`);
-    console.log(response.data);
 
     try {
       setSelectShifts(response.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-
 
     handleShow();
   }
@@ -263,7 +270,7 @@ export default function ProductionLine() {
       maximum_production: maximumProduction,
       last_sector: lastSector,
     };
-    console.log(data);
+
     if (name == '') {
       setError('Este campo deve ser preenchido');
       return;
@@ -344,7 +351,9 @@ export default function ProductionLine() {
     });
   }, [refreshKey]);
 
-  const [sectors, setSectors] = useState([{ id: '', sector: '', sequence: '' }]);
+  const [sectors, setSectors] = useState([
+    { id: '', sector: '', sequence: '' },
+  ]);
 
   // handle click event of the Remove button
   const handleRemoveClick = (index) => {
@@ -352,7 +361,6 @@ export default function ProductionLine() {
     list.splice(index, 1);
     setSelectSector(list);
   };
-
 
   const handleRemoveShiftOnClick = (index) => {
     const list = [...selectShifts];
@@ -367,7 +375,6 @@ export default function ProductionLine() {
 
   const handleAddShiftClick = () => {
     setSelectShifts([...selectShifts, { productionLineId: '', shiftId: '' }]);
-    console.log(selectShifts);
   };
 
   const [id, setId] = useState(0);
@@ -379,7 +386,7 @@ export default function ProductionLine() {
     setName('');
     setId(0);
     setSelectSector([{ id: '', sector: '', sequence: '' }]);
-    setSelectShifts([{ productionLineId: '', shiftId: '' }])
+    setSelectShifts([{ productionLineId: '', shiftId: '' }]);
     setMaximumProduction('');
     setLastSector(1);
     setShow(false);
@@ -396,10 +403,8 @@ export default function ProductionLine() {
   }
 
   function HandleShiftChange(value, index) {
-    console.log(value);
     var NewArray = [...selectShifts];
     NewArray[index].shiftId = value;
-    console.log(NewArray[index].shiftId);
 
     setSelectShifts(NewArray);
 
@@ -485,7 +490,6 @@ export default function ProductionLine() {
         </Row>
 
         <Row>
-
           <Col span={24}>
             <Form.Item
               labelCol={{ span: 23 }}
@@ -499,7 +503,7 @@ export default function ProductionLine() {
                 value={lastSector}
                 onChange={(e) => setLastSector(e)}
 
-              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {sectors.map((option) => {
                   return (
@@ -531,12 +535,12 @@ export default function ProductionLine() {
                       size="large"
                       value={selectShift.shiftId}
                       onChange={(e) => {
-                        HandleShiftChange(e, index)
+                        HandleShiftChange(e, index);
                       }}
-                    // filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    // eslint-disable-next-line max-len
-                    // filterSort={(optionA, optionB) => optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())}
-                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                      // filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      // eslint-disable-next-line max-len
+                      // filterSort={(optionA, optionB) => optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())}
+                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {shift.map((option) => {
                         return (
@@ -548,12 +552,8 @@ export default function ProductionLine() {
                         );
                       })}
                     </Select>
-
                   </Form.Item>
-
                 </Col>
-
-
 
                 <Col>
                   <Form.Item
@@ -585,79 +585,77 @@ export default function ProductionLine() {
         })}
 
         <Divider></Divider>
-        {
-          selectSectors.map((selectSector, index) => {
-            return (
-              <>
-                <Row></Row>
-                <Row gutter={5}>
-                  <Col span={16}>
-                    <Form.Item
-                      labelCol={{ span: 23 }}
-                      label="Nome do setor:"
-                      labelAlign={'left'}
-                    >
-                      <Select
-                        showSearch
-                        placeholder="Selecione"
-                        size="large"
-                        value={selectSector.sector}
-                        onChange={(e) => HandleSectorChange(e, index)}
+        {selectSectors.map((selectSector, index) => {
+          return (
+            <>
+              <Row></Row>
+              <Row gutter={5}>
+                <Col span={16}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Nome do setor:"
+                    labelAlign={'left'}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Selecione"
+                      size="large"
+                      value={selectSector.sector}
+                      onChange={(e) => HandleSectorChange(e, index)}
 
                       // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-                      >
-                        {sectors.map((option) => {
-                          return (
-                            <>
-                              <Option key={option.id} value={option.id}>
-                                {option.name}
-                              </Option>
-                            </>
-                          );
-                        })}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={8}>
-                    <Form.Item
-                      labelCol={{ span: 23 }}
-                      label="Ordem:"
-                      labelAlign={'left'}
                     >
-                      <Input
-                        name="sequence"
-                        placeholder="Ordem"
-                        value={selectSector.sequence}
-                        onChange={(e) => HandleChange(e.target.value, index)}
-                        style={{ width: '75%', marginRight: 8 }}
-                      />
-                      {selectSectors.length !== 1 && (
-                        <MinusCircleOutlined
-                          onClick={() => handleRemoveClick(index)}
-                        />
-                      )}
-                    </Form.Item>
-                  </Col>
-                </Row>
+                      {sectors.map((option) => {
+                        return (
+                          <>
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          </>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                </Col>
 
-                {selectSectors.length - 1 === index && (
-                  <Button
-                    key="primary"
-                    title="Nova Linha"
-                    style={{ width: '100%' }}
-                    onClick={handleAddClick}
+                <Col span={8}>
+                  <Form.Item
+                    labelCol={{ span: 23 }}
+                    label="Ordem:"
+                    labelAlign={'left'}
                   >
-                    <PlusOutlined />
-                  </Button>
-                )}
-              </>
-            );
-          })
-        }
-      </Modal >
+                    <Input
+                      name="sequence"
+                      placeholder="Ordem"
+                      value={selectSector.sequence}
+                      onChange={(e) => HandleChange(e.target.value, index)}
+                      style={{ width: '75%', marginRight: 8 }}
+                    />
+                    {selectSectors.length !== 1 && (
+                      <MinusCircleOutlined
+                        onClick={() => handleRemoveClick(index)}
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              {selectSectors.length - 1 === index && (
+                <Button
+                  key="primary"
+                  title="Nova Linha"
+                  style={{ width: '100%' }}
+                  onClick={handleAddClick}
+                >
+                  <PlusOutlined />
+                </Button>
+              )}
+            </>
+          );
+        })}
+      </Modal>
 
       <SearchTable />
-    </Layout >
+    </Layout>
   );
 }

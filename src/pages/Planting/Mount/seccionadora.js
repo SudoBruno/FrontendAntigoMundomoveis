@@ -355,7 +355,7 @@ export default function Seccionadora() {
     var NewArray = [...selectedSubProducts];
     var { name, value } = e.target;
     var totalAmount = +value;
-    console.log(value);
+
     if (value > 0 || value == '') {
       selectedSubProducts.map((item, subProductIndex) => {
         if (

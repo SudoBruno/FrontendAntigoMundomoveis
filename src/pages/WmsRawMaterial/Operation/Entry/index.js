@@ -107,8 +107,8 @@ export default function Entry() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -371,7 +371,6 @@ export default function Entry() {
     setFiscalNumber(e.fiscalNumber);
     setIdUser(e.user_id + ' - ' + e.user);
     setLockedEntry(e.closed_entry); //Close entry
-    console.log(e.locked_entry, 'set', e);
 
     const resp = await api.get(`/wmsrm/operation/entry-itens/${e.id}`);
 
@@ -543,7 +542,7 @@ export default function Entry() {
               labelAlign={'left'}
               required
             >
-              { }
+              {}
               <Input
                 disabled={locked_entry}
                 name="description"

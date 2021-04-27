@@ -226,7 +226,6 @@ export default function ProductionMount() {
   }, []);
 
   const handleDownload = async (e) => {
-    console.log(e);
     const response = await api.get(
       `plating/mount/search/production/pcp/${e.PCPId}`
     );

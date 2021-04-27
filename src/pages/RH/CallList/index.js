@@ -343,7 +343,6 @@ export default function CallList() {
         'Sucesso',
         'Arquivo enviado com sucesso'
       );
-      console.log(employee);
     } catch (error) {
       console.error(error);
       openNotificationWithIcon('error', 'ERRO', 'Insira um Arquivo');
@@ -431,7 +430,7 @@ export default function CallList() {
           'Erro na Transferência',
           'Nenhum campo deve ser Vazio'
         );
-        console.log(error);
+        console.error(error);
       }
     }
   }
@@ -484,7 +483,6 @@ export default function CallList() {
               value={localityId}
               onChange={(e) => {
                 setLocalityId(e);
-                console.log(e);
               }}
             >
               <Option value={locality.matriz.id}> MATRIZ </Option>

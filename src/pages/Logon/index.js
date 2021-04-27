@@ -29,13 +29,12 @@ export default function Logon() {
     setLoading('');
 
     try {
-      const test = await api.get('/hour');
-      console.log(test);
       const response = await api.post('sessions', { user_name, password });
       Cookies.set('token', String(response.data.token));
       localStorage.setItem('userId', response.data.user.id);
       localStorage.setItem('userName', response.data.user.name);
       localStorage.setItem('access_level', response.data.user.access_level);
+      console.log(response.data);
 
       api.defaults.headers.authorization = response.data.token;
       if (
