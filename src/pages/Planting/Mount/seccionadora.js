@@ -1,263 +1,51 @@
-import React, { useState, useEffect } from 'react';
-
-import api from '../../../services/api';
-
-import { Link } from 'react-router-dom';
-import {
-  Layout,
-  Table,
-  Button,
-  Row,
-  Col,
-  Input,
-  Space,
-  Modal,
-  Form,
-  Select,
-  notification,
-  Divider,
-} from 'antd';
-import { Tooltip } from '@material-ui/core';
 import {
   DoubleRightOutlined,
-  BarcodeOutlined,
-  SearchOutlined,
-  PlusOutlined,
   MinusCircleOutlined,
+  PlusOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
-
+import { Tooltip } from '@material-ui/core';
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Input,
+  Layout,
+  Modal,
+  notification,
+  Row,
+  Select,
+  Space,
+  Table,
+} from 'antd';
+import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { PlatingMountProvider } from '../../../contexts/Plating/Mount/PlatingMountContext';
+import { SeccionadoraTable } from '../../../components/Plating/Seccionadora/SeccionadoraTable';
+import { SelectMachineModal } from '../../../components/Plating/SelectMachineModal';
+import api from '../../../services/api';
 
 const Option = Select.Option;
 
 export default function Seccionadora() {
-  class SearchTable extends React.Component {
-    state = {
-      pagination: {
-        current: 1,
-        pageSize: 10,
-      },
-      loading: false,
-      searchText: '',
-      searchedColumn: '',
-    };
-
-    getColumnSearchProps = (dataIndex) => ({
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-      }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={(node) => {
-              this.searchInput = node;
-            }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() =>
-                this.handleSearch(selectedKeys, confirm, dataIndex)
-              }
-              icon={<SearchOutlined />}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Buscar
-            </Button>
-            <Button
-              onClick={() => this.handleReset(clearFilters)}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Limpar
-            </Button>
-          </Space>
-        </div>
-      ),
-      filterIcon: (filtered) => (
-        <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-      ),
-      onFilter: (value, record) =>
-        record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase()),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => this.searchInput.select());
-        }
-      },
-      render: (text) =>
-        this.state.searchedColumn === dataIndex ? (
-          <Highlighter
-            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-            searchWords={[this.state.searchText]}
-            autoEscape
-            textToHighlight={text.toString()}
-          />
-        ) : (
-          text
-        ),
-    });
-
-    compareByAlph = (a, b) => {
-      if (a > b) return -1;
-      if (a < b) return 1;
-      return 0;
-    };
-
-    handleSearch = (selectedKeys, confirm, dataIndex) => {
-      confirm();
-      this.setState({
-        searchText: selectedKeys[0],
-        searchedColumn: dataIndex,
-      });
-    };
-
-    handleReset = (clearFilters) => {
-      clearFilters();
-      this.setState({ searchText: '' });
-    };
-
-    handleTableChange = (pagination, filters, sorter) => {
-      this.fetch({
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        pagination,
-        ...filters,
-      });
-    };
-
-    render() {
-      const columns = [
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-
-          sorter: (a, b) => this.compareByAlph(a.id, b.id),
-          ...this.getColumnSearchProps('id'),
-        },
-        {
-          title: 'Produto',
-          dataIndex: 'productName',
-          key: 'productName',
-
-          sorter: (a, b) => this.compareByAlph(a.productName, b.productName),
-          ...this.getColumnSearchProps('productName'),
-        },
-        {
-          title: 'SubProduto',
-          dataIndex: 'subProductName',
-          key: 'subProductName',
-
-          sorter: (a, b) =>
-            this.compareByAlph(a.subProductName, b.subProductName),
-          ...this.getColumnSearchProps('subProductName'),
-        },
-        {
-          title: 'Quantidade',
-          dataIndex: 'amountInput',
-          key: 'amountInput',
-
-          sorter: (a, b) => this.compareByAlph(a.amountInput, b.amountInput),
-          ...this.getColumnSearchProps('amountInput'),
-        },
-        {
-          title: 'PCP',
-          dataIndex: 'pcpName',
-          key: 'pcpName',
-
-          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
-          ...this.getColumnSearchProps('pcpName'),
-        },
-        {
-          title: 'Começou',
-          dataIndex: 'start',
-          key: 'start',
-
-          sorter: (a, b) => this.compareByAlph(a.start, b.start),
-          ...this.getColumnSearchProps('start'),
-        },
-
-        {
-          title: 'Operação',
-          colSpan: 2,
-          dataIndex: 'operacao',
-          align: 'center',
-
-          render: (text, record) => {
-            return (
-              <React.Fragment>
-                {/* <Link
-                  to={`/mount/tag/${record.id}`}
-                  style={{ color: 'rgb(0,0,0,0.65' }}
-                  target="_blank"
-                >
-                  <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
-                </Link> */}
-                <DoubleRightOutlined
-                  style={{ marginLeft: 20, fontSize: 24 }}
-                  size={50}
-                  onClick={(e) => finishMount(e, record)}
-                />
-              </React.Fragment>
-            );
-          },
-        },
-      ];
-      return (
-        <Table
-          columns={columns}
-          dataSource={mounts}
-          rowClassName={(record, index) => record.color}
-        />
-      );
-    }
-  }
-
-  const [mounts, setMounts] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [show, setShow] = useState(false);
-  const [productionPlanControlId, setProductionPlanControlId] = useState(0);
+
   const [productionPlanControlName, setProductionPlanControlName] = useState(
     ''
   );
   const [productionsPlansControl, setProductionsPlansControl] = useState([]);
-  const [productId, setProductId] = useState(0);
+
   const [productName, setProductName] = useState('');
   const [products, setProducts] = useState([]);
-  const [selectedSubProducts, setSelectSubProducts] = useState([
-    { subProductId: '', subProductName: '', amount: 0 },
-  ]);
-  const [subProducts, setSubProducts] = useState([
-    { subProductId: '', subProductName: '', amount: 0 },
-  ]);
+
   const [colorName, setColorName] = useState('');
-  const [color, setColor] = useState('');
+
   const [machines, setMachines] = useState([]);
 
-  const [sectorId, setSectorId] = useState(0);
   const [machineId, setMachineId] = useState(1);
 
-  const [showNextSector, setShowNextSector] = useState(false);
-
   const [showMachine, setShowMachine] = useState(true);
-
-  const [previousPlatingMountId, setPreviousPlatingMountId] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
@@ -267,12 +55,6 @@ export default function Seccionadora() {
       description: description,
     });
   }
-
-  useEffect(() => {
-    api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
-      setMounts(response.data);
-    });
-  }, [refreshKey]);
 
   useEffect(() => {
     api.get('product-plan-control ', {}).then((response) => {
@@ -338,6 +120,7 @@ export default function Seccionadora() {
       const response = await api.get(
         `product-plan-control/sub-product?product=${e[0]}&sector=${sectorId}&pcp=${productionPlanControlId}`
       );
+      console.log(response.data);
 
       setSubProducts(response.data);
     } catch (error) {
@@ -421,32 +204,6 @@ export default function Seccionadora() {
     setShowMachine(false);
   };
 
-  const finishMount = async (e, data) => {
-    e.preventDefault();
-
-    setProductId(data.productId);
-    setProductName(data.productName);
-    setProductionPlanControlId(data.pcpId);
-    setProductionPlanControlName(data.pcpName);
-    setColor(data.color);
-    setSelectSubProducts([
-      {
-        subProductId: data.subProductId,
-        subProductName: data.subProductName,
-        amount: data.amountInput,
-      },
-    ]);
-    setSubProducts([
-      {
-        id: data.subProductId,
-        name: data.subProductName,
-        amount: data.amountInput,
-      },
-    ]);
-    setPreviousPlatingMountId(data.id);
-
-    setShowNextSector(true);
-  };
   const dataNextSector = {
     factorySectorId: sectorId,
     factoryEmployeeId: localStorage.getItem('userId'),
@@ -513,9 +270,9 @@ export default function Seccionadora() {
       {/* <BarcodeReader onScan={handleScan} onError={handleScan} /> */}
       <Row style={{ marginBottom: 16 }}>
         <Col span={12} align="left">
-          <Tooltip title="Seccionadora" placement="right">
-            <PlatingMountProvider />
-          </Tooltip>
+          {/* <Tooltip title="Seccionadora" placement="right">
+            <PlatingMountProvider />  
+          </Tooltip> */}
         </Col>
         <Col span={12} align="right">
           <Tooltip title="Seccionadora" placement="right">
@@ -530,7 +287,7 @@ export default function Seccionadora() {
           </Tooltip>
         </Col>
       </Row>
-      <SearchTable />
+      <SeccionadoraTable />
       <Modal
         title="Alteração no caminho do monte"
         visible={show}
@@ -739,46 +496,7 @@ export default function Seccionadora() {
         })}
       </Modal>
 
-      <Modal title="Selecione sua maquina" visible={showMachine} width={500}>
-        <Row gutter={5}>
-          <Col span={24}>
-            <Form.Item
-              labelCol={{ span: 23 }}
-              label="Selecione sua maquina:"
-              labelAlign={'left'}
-            >
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                value={machineId}
-                onChange={(e) => handleSelectMachine(e)}
-                style={{ borderStyle: 'solid', borderColor: 'red' }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
-              >
-                {machines.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Modal>
+      <SelectMachineModal />
 
       <Modal
         title="Passar para o proximo setor"

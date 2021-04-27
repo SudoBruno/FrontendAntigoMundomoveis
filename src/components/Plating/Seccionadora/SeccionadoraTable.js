@@ -1,13 +1,13 @@
-import { BarcodeOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Select, Space, Table } from 'antd';
+import { DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Space, Table } from 'antd';
 import React, { useContext } from 'react';
 import Highlighter from 'react-highlight-words';
-import { Link } from 'react-router-dom';
-import { PlatingMountContext } from '../../contexts/Plating/Mount/PlatingMountContext';
+import { SeccionadoraMountContext } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
 
-export function PlatingTable() {
-  const { mounts, sectorId } = useContext(PlatingMountContext);
-  class SearchTable extends React.Component {
+export function SeccionadoraTable() {
+  const { mounts, finishMount } = useContext(SeccionadoraMountContext);
+
+  class SeccionadoraTable extends React.Component {
     state = {
       pagination: {
         current: 1,
@@ -144,20 +144,12 @@ export function PlatingTable() {
           ...this.getColumnSearchProps('subProductName'),
         },
         {
-          title: 'Quantidade que chegou',
+          title: 'Quantidade',
           dataIndex: 'amountInput',
           key: 'amountInput',
 
           sorter: (a, b) => this.compareByAlph(a.amountInput, b.amountInput),
           ...this.getColumnSearchProps('amountInput'),
-        },
-        {
-          title: 'Quantidade processada',
-          dataIndex: 'amountOutput',
-          key: 'amountOutput',
-
-          sorter: (a, b) => this.compareByAlph(a.amountOutput, b.amountOutput),
-          ...this.getColumnSearchProps('amountOutput'),
         },
         {
           title: 'PCP',
@@ -179,24 +171,24 @@ export function PlatingTable() {
         {
           title: 'Operação',
           colSpan: 2,
-          dataIndex: 'operacao',
+          dataIndex: 'export { SeccionadoraTable };operacao',
           align: 'center',
 
           render: (text, record) => {
             return (
               <React.Fragment>
-                <Link
-                  to={`/mount/tag/${record.barCode}/sector/${sectorId}`}
+                {/* <Link
+                  to={`/mount/tag/${record.id}`}
                   style={{ color: 'rgb(0,0,0,0.65' }}
                   target="_blank"
                 >
                   <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
-                </Link>
-                {/* <DoubleRightOutlined
+                </Link> */}
+                <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
-                  // onClick={(e) => finishMount(e, record)}
-                /> */}
+                  onClick={(e) => finishMount(e, record)}
+                />
               </React.Fragment>
             );
           },
@@ -212,5 +204,5 @@ export function PlatingTable() {
     }
   }
 
-  return <SearchTable />;
+  return <SeccionadoraTable />;
 }

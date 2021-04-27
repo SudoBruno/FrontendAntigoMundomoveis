@@ -9,12 +9,12 @@ const Option = Select.Option;
 
 const { TextArea } = Input;
 
-export function StopMachineModal() {
+export function FinishStopMachineModal() {
   const {
-    closeCreateStopMachineModal,
-    setReasonStopMachineId,
+    closeFinishStopMachineModal,
+
     reasonStopMachineId,
-    createStopMachine,
+    finishStopMachine,
     description,
     setDescription,
   } = useContext(MachineStopContext);
@@ -29,10 +29,10 @@ export function StopMachineModal() {
     <Modal
       title="Parada de maquina"
       visible={true}
-      onCancel={closeCreateStopMachineModal}
+      onCancel={closeFinishStopMachineModal}
       width={800}
       footer={[
-        <Button key="back" type="default" onClick={closeCreateStopMachineModal}>
+        <Button key="back" type="default" onClick={closeFinishStopMachineModal}>
           Cancelar
         </Button>,
         <Button
@@ -50,7 +50,7 @@ export function StopMachineModal() {
                 'Nome não é valido'
               );
             } else {
-              createStopMachine();
+              finishStopMachine();
             }
           }}
         >
@@ -70,9 +70,7 @@ export function StopMachineModal() {
               placeholder="Selecione"
               size="large"
               value={reasonStopMachineId}
-              onChange={(e) => {
-                setReasonStopMachineId(e);
-              }}
+              disabled
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }

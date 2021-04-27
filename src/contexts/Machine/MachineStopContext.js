@@ -1,20 +1,34 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { FinishStopMachineButton } from '../../components/machine/FinishStop/FinishStopMachineButton';
+import { FinishStopMachineModal } from '../../components/machine/FinishStop/FinishStopMachineModal';
+import { StopMachineButton } from '../../components/machine/StopMachine/StopMachineButton';
+import { StopMachineModal } from '../../components/machine/StopMachine/StopMachineModal';
 import { Notification } from '../../components/Notification';
-import { StopMachineModal } from '../../components/Plating/StopMachine/StopMachineModal';
 import api from '../../services/api';
 import { PlatingMountContext } from '../Plating/Mount/PlatingMountContext';
 export const MachineStopContext = createContext({});
 
 export function MachineStopProvider({ children, ...rest }) {
-  const { machineId, isStopMachine, setMounts } = useContext(
-    PlatingMountContext
-  );
-  const [isCreateMachineModalOpen, setIsCreateMachineModalOpen] = useState(
-    false
-  );
+  const {
+    machineId,
+    isStopMachine,
+    setMounts,
+    setIsStopMachine,
+    handleSelectMachine,
+  } = useContext(PlatingMountContext);
+  const [
+    isCreateStopMachineModalOpen,
+    setIsCreateStopMachineModalOpen,
+  ] = useState(false);
+
+  const [
+    isFinishStopMachineModalOpen,
+    setIsFinishStopMachineModalOpen,
+  ] = useState(false);
   const [isStop, setIsStop] = useState(isStopMachine);
   const [reasonStopMachineId, setReasonStopMachineId] = useState(1);
   const [description, setDescription] = useState(1);
+
   async function createStopMachine() {
     try {
       const response = await api.post('machine-stop', {
@@ -29,8 +43,9 @@ export function MachineStopProvider({ children, ...rest }) {
         'Essa maquina esta parada para manutenção'
       );
       setMounts([{}]);
+      setIsStopMachine(true);
       setIsStop(true);
-      setIsCreateMachineModalOpen(false);
+      setIsCreateStopMachineModalOpen(false);
     } catch (error) {
       Notification(
         'error',
@@ -47,11 +62,42 @@ export function MachineStopProvider({ children, ...rest }) {
   }
 
   function openCreateStopMachineModal() {
-    setIsCreateMachineModalOpen(true);
+    setIsCreateStopMachineModalOpen(true);
   }
 
   function closeCreateStopMachineModal() {
-    setIsCreateMachineModalOpen(false);
+    setIsCreateStopMachineModalOpen(false);
+  }
+
+  async function openFinishStopMachineModal() {
+    setIsFinishStopMachineModalOpen(true);
+    const response = await api.get(`machine-stop/machine/${machineId}`);
+    setDescription(response.data.description);
+    setReasonStopMachineId(response.data.reason_stop_machine_id);
+  }
+
+  function closeFinishStopMachineModal() {
+    setIsFinishStopMachineModalOpen(false);
+  }
+
+  async function finishStopMachine() {
+    try {
+      const response = await api.put(`machine-stop/${machineId}`);
+      Notification(
+        'success',
+        'Parada de maquina finalizada',
+        'maquina funcionando normalmente'
+      );
+
+      setIsFinishStopMachineModalOpen(false);
+      handleSelectMachine(machineId);
+    } catch (error) {
+      Notification(
+        'error',
+        'Erro ao finalizar parada de maquina',
+        'Ocorreu um erro ao finalizar parada de maquina, tente novamente'
+      );
+    }
   }
 
   return (
@@ -59,7 +105,7 @@ export function MachineStopProvider({ children, ...rest }) {
       value={{
         openCreateStopMachineModal,
         closeCreateStopMachineModal,
-        isCreateMachineModalOpen,
+        isCreateStopMachineModalOpen,
         setReasonStopMachineId,
         reasonStopMachineId,
         createStopMachine,
@@ -67,10 +113,17 @@ export function MachineStopProvider({ children, ...rest }) {
         setDescription,
         handleStopMachine,
         isStop,
+        closeFinishStopMachineModal,
+        openFinishStopMachineModal,
+        finishStopMachine,
       }}
     >
       {children}
-      {isCreateMachineModalOpen && <StopMachineModal />}
+      {isCreateStopMachineModalOpen && <StopMachineModal />}
+      {isFinishStopMachineModalOpen && <FinishStopMachineModal />}
+
+      {!isStopMachine && <StopMachineButton />}
+      {isStopMachine && <FinishStopMachineButton />}
     </MachineStopContext.Provider>
   );
 }
