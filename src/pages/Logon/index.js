@@ -29,6 +29,8 @@ export default function Logon() {
     setLoading('');
 
     try {
+      const test = await api.get('/hour');
+      console.log(test);
       const response = await api.post('sessions', { user_name, password });
       Cookies.set('token', String(response.data.token));
       localStorage.setItem('userId', response.data.user.id);
@@ -44,7 +46,11 @@ export default function Logon() {
         history.push('/profile');
         setLoading('none');
       } else if (response.data.user.access_level === '2') {
-        history.push('/launch-product');
+        // history.push('/launch-product');
+        window.open(
+          'https://mundomoveis.vercel.app/production/launch',
+          '_blank'
+        );
         setLoading('none');
       } else if (response.data.user.access_level === '3') {
         history.push('/launch-expedition');

@@ -109,8 +109,8 @@ export default function LaunchProduction() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -272,7 +272,6 @@ export default function LaunchProduction() {
   }
 
   async function EditBarCode(e) {
-
     let data = {
       code: e,
       employee_id,
@@ -375,7 +374,7 @@ export default function LaunchProduction() {
                   setEmployeeName(e[1]);
                 }}
 
-              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {employee.map((option) => {
                   return (
