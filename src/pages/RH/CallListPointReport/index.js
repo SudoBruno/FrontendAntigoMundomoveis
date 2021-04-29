@@ -156,13 +156,6 @@ export default function CallReport() {
           sorter: (a, b) => this.compareByAlph(a.area, b.area),
           ...this.getColumnSearchProps('area'),
         },
-        {
-          title: 'Presente:',
-          dataIndex: 'presence',
-          key: 'presence',
-          sorter: (a, b) => this.compareByAlph(a.presence, b.presence),
-          ...this.getColumnSearchProps('presence'),
-        },
       ];
 
       return <Table columns={columns} dataSource={input} />;
@@ -201,8 +194,7 @@ export default function CallReport() {
     let response = [];
     if (intervalTime.length == 0) {
       response = await api.get('/call/employee/presencePointFilter');
-    }
-    else {
+    } else {
       response = await api.post('/call/employee/presencePointFilter', data);
     }
 
