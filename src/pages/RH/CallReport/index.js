@@ -203,7 +203,7 @@ export default function CallReport() {
       setCsvData(response.data);
     } catch (error) {
       console.log('erro');
-      openNotificationWithIcon('error', 'Erro', 'A Relatório não foi gerado');
+      openNotificationWithIcon('error', 'Erro', 'Dados não encontrados');
     }
   }
 
