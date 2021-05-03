@@ -185,43 +185,62 @@ export default function CallReport() {
   }, [refreshKey]);
 
   async function Filter() {
-    const data = {
-      intervalTime: intervalTime,
-    };
-    const response = await api.get('/call/employee/presenceFilter');
+    try {
+      console.log('Filter');
+      const data = {
+        intervalTime: intervalTime,
+      };
 
-    setInput(response.data);
-    setCsvData(response.data);
+      let response = [];
+
+      if (data.intervalTime.length == 0) {
+        response = await api.get('/call/employee/presenceFilter');
+      } else {
+        response = await api.post('/call/employee/presenceFilter', data);
+      }
+
+      setInput(response.data);
+      setCsvData(response.data);
+    } catch (error) {
+      console.log('erro');
+      openNotificationWithIcon('error', 'Erro', 'A Relatório não foi gerado');
+    }
   }
 
   async function InputReport() {
-    setReady(false);
+    try {
+      setReady(false);
 
-    const data = {
-      intervalTime: intervalTime,
-    };
+      console.log('AQQUUIii');
+      const data = {
+        intervalTime: intervalTime,
+      };
 
-    let response = [];
-    if (intervalTime.length == 0) {
-      response = await api.get('/call/employee/presenceFilter');
-    } else {
-      response = await api.post('/call/employee/presenceFilter', data);
+      let response = [];
+      if (intervalTime.length == 0) {
+        response = await api.get('/call/employee/presenceFilter');
+      } else {
+        response = await api.post('/call/employee/presenceFilter', data);
+      }
+
+      setCsvData(response.data);
+      setTimeout(
+        function () {
+          setReady(true);
+        }.bind(this),
+        500
+      );
+      setHeaders([
+        { label: 'ID DO CHAMADA', key: 'id' },
+        { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
+        { label: 'NOME', key: 'name' },
+        { label: 'DEPARTAMENTO', key: 'area' },
+        { label: 'PRESENÇA', key: 'presence' },
+      ]);
+    } catch (error) {
+      console.log('erro');
+      openNotificationWithIcon('error', 'Erro', 'A Relatório não foi gerado');
     }
-
-    setCsvData(response.data);
-    setTimeout(
-      function () {
-        setReady(true);
-      }.bind(this),
-      500
-    );
-    setHeaders([
-      { label: 'ID DO CHAMADA', key: 'id' },
-      { label: 'ID DO FUNCIONÁRIO', key: 'employeeId' },
-      { label: 'NOME', key: 'name' },
-      { label: 'DEPARTAMENTO', key: 'area' },
-      { label: 'PRESENÇA', key: 'presence' },
-    ]);
   }
   function openNotificationWithIcon(type, message, description) {
     notification[type]({
