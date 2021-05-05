@@ -26,7 +26,11 @@ import {
   DatePicker,
   Popconfirm,
 } from 'antd';
-import { PlusOutlined, MinusCircleOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  MinusCircleOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import confirm from 'antd/lib/modal/confirm';
 
@@ -118,7 +122,6 @@ export default function PCP() {
     };
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
-
       confirm();
       this.setState({
         searchText: selectedKeys[0],
@@ -177,7 +180,10 @@ export default function PCP() {
               <React.Fragment>
                 <EditOutlined
                   style={{ cursor: 'pointer' }}
-                  onClick={() => { handleEdit(record); setIsEdit(true) }}
+                  onClick={() => {
+                    handleEdit(record);
+                    setIsEdit(true);
+                  }}
                 />
                 <Link
                   to={`/pcp/${record.id}`}
@@ -258,7 +264,7 @@ export default function PCP() {
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
   const [selectProduct, setSelectProducts] = useState([
-    { id: '', amount: '', color: '' },
+    { id: '', amount: 0, color: '' },
   ]);
   const [productionLines, setProductionLine] = useState([]);
   const [id, setId] = useState(0);
@@ -302,12 +308,14 @@ export default function PCP() {
 
     setDateFinal('');
     setDateInitial('');
-    setSelectProducts([{ id: '', amount: '', color: '' }]);
+    setSelectProducts([{ id: '', amount: 0, color: '' }]);
     setProductionLineId(1);
     setProductionLineName('');
     setShow(false);
   };
-  const handleShow = () => { setShow(true) };
+  const handleShow = () => {
+    setShow(true);
+  };
 
   useEffect(() => {
     api.get('product-plan-control ', {}).then((response) => {
@@ -337,15 +345,15 @@ export default function PCP() {
     setId(e.id);
     setName(e.name);
 
-    const response = await api.get(`/production-plan-control/${e.id}`);
+    let response = await api.get(`/production-plan-control/${e.id}`);
     setDateInitial(response.data[0].initialDate);
     setDateFinal(response.data[0].finalDate);
-    setProductionLineId(response.data[0].productionLineId)
+    setProductionLineId(response.data[0].productionLineId);
     setProductionLineName(response.data[0].productionLineName);
 
+    response = await api.get(`/production-plan-control-product/${e.id}`);
     setSelectProducts(response.data);
-
-
+    console.log(selectProduct);
     setIsEdit(true);
 
     handleShow();
@@ -471,7 +479,7 @@ export default function PCP() {
 
   // handle click event of the Add button
   const handleAddClick = () => {
-    setSelectProducts([...selectProduct, { id: '', amount: '' }]);
+    setSelectProducts([...selectProduct, { id: '', amount: 0 }]);
   };
 
   function HandleChangeColor(e, index) {
@@ -511,7 +519,10 @@ export default function PCP() {
             <Button
               className="buttonGreen"
               style={{ marginRight: 5, marginTop: 3, fontSize: '13px' }}
-              onClick={() => { handleShow(); setIsEdit(false) }}
+              onClick={() => {
+                handleShow();
+                setIsEdit(false);
+              }}
             >
               <PlusOutlined />
               Novo PCP
@@ -598,7 +609,7 @@ export default function PCP() {
                   setProductionLineName(e[1]);
                 }}
 
-              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {productionLines.map((option) => {
                   return (
@@ -619,7 +630,7 @@ export default function PCP() {
         {selectProduct.map((product, index) => {
           return (
             <>
-              <Row gutter={5} hidden={isEdit == true ? true : false}>
+              <Row gutter={5}>
                 <Col span={16}>
                   <Form.Item
                     labelCol={{ span: 23 }}
@@ -633,7 +644,7 @@ export default function PCP() {
                       value={product.name}
                       onChange={(e) => HandleChange(e, index)}
 
-                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {products.map((option) => {
                         return (
@@ -686,6 +697,7 @@ export default function PCP() {
                   >
                     <Input
                       name="amount"
+                      number
                       placeholder="Digite a quantidade de produto"
                       value={product.amount}
                       onChange={(e) => HandleChange(e, index)}
