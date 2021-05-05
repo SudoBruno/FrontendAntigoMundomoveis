@@ -351,7 +351,6 @@ export default function PCP() {
     setProductionLineId(response.data[0].productionLineId);
     setProductionLineName(response.data[0].productionLineName);
 
-    response = await api.get(`/production-plan-control-product/${e.id}`);
     setSelectProducts(response.data);
     console.log(selectProduct);
     setIsEdit(true);
@@ -388,7 +387,6 @@ export default function PCP() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    setIsEdit(false);
     if (dateFinal < dateInitial) {
       openNotificationWithIcon(
         'error',
