@@ -345,17 +345,26 @@ export default function PCP() {
     setId(e.id);
     setName(e.name);
 
-    let response = await api.get(`/production-plan-control/${e.id}`);
-    setDateInitial(response.data[0].initialDate);
-    setDateFinal(response.data[0].finalDate);
-    setProductionLineId(response.data[0].productionLineId);
-    setProductionLineName(response.data[0].productionLineName);
+    try {
+      let response = await api.get(`/production-plan-control/${e.id}`);
+      setDateInitial(response.data[0].initialDate);
+      setDateFinal(response.data[0].finalDate);
+      setProductionLineId(response.data[0].productionLineId);
+      setProductionLineName(response.data[0].productionLineName);
 
-    setSelectProducts(response.data);
-    console.log(selectProduct);
-    setIsEdit(true);
+      setSelectProducts(response.data);
+      console.log(selectProduct);
+      setIsEdit(true);
 
-    handleShow();
+      handleShow();
+    } catch (error) {
+      console.log(error);
+      openNotificationWithIcon(
+        'error',
+        'Erro ao deletar',
+        'A PCP não foi Carregado'
+      );
+    }
   }
 
   function openNotificationWithIcon(type, message, description) {
