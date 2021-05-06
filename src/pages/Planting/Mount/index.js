@@ -30,12 +30,11 @@ export default function PlantingMount() {
       >
         <Row style={{ marginBottom: 16 }}>
           <Col span={24} align="left">
-            <MachineStopProvider></MachineStopProvider>
+            <MachineStopProvider />
           </Col>
         </Row>
         <PlatingTable />
-        {/* <SearchTable /> */}
-        {/* selecionar setor */}
+
         <SelectMachineModal />
       </Layout>
     </PlatingMountProvider>

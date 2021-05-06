@@ -1,12 +1,19 @@
 import { BarcodeOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Select, Space, Table } from 'antd';
-import React, { useContext } from 'react';
+import { Button, Input, Space, Table } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import { PlatingMountContext } from '../../contexts/Plating/Mount/PlatingMountContext';
+import api from '../../services/api';
 
 export function PlatingTable() {
-  const { mounts, sectorId } = useContext(PlatingMountContext);
+  const { sectorId } = useContext(PlatingMountContext);
+  const [mounts, setMount] = useState([{}]);
+  useEffect(() => {
+    api.get(`plating/mount/sector/${sectorId}`, {}).then((response) => {
+      setMount(response.data);
+    });
+  }, [sectorId]);
   class SearchTable extends React.Component {
     state = {
       pagination: {

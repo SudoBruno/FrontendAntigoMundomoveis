@@ -1,65 +1,45 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { SeccionadoraNextSectorMountModal } from '../../../components/Plating/Seccionadora/SeccionadoraNextSectorMountModal';
 import api from '../../../services/api';
+import { PlatingMountContext } from './PlatingMountContext';
 
 export const SeccionadoraMountContext = createContext({});
 
 export function SeccionadoraMountProvider({ children }) {
-  const [mounts, setMounts] = useState([{}]);
-  const [productionPlanControlId, setProductionPlanControlId] = useState(0);
-  const [productId, setProductId] = useState(0);
-  const [color, setColor] = useState('');
-  const [sectorId, setSectorId] = useState(0);
-
-  const [selectedSubProducts, setSelectSubProducts] = useState([
-    { subProductId: '', subProductName: '', amount: 0 },
-  ]);
-  const [subProducts, setSubProducts] = useState([
-    { subProductId: '', subProductName: '', amount: 0 },
-  ]);
-
-  const [previousPlatingMountId, setPreviousPlatingMountId] = useState(0);
+  const { sectorId } = useContext(PlatingMountContext);
   const [showNextSector, setShowNextSector] = useState(false);
+  const [mount, setMount] = useState({});
 
-  useEffect(() => {
-    api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
-      setMounts(response.data);
+  async function finishMount(data) {
+    setMount({
+      factoryEmployeeId: localStorage.getItem('userId'),
+      productionPlanControlId: data.pcpId,
+      subProducts: [
+        {
+          subProductId: data.subProductId,
+          subProductName: data.subProductName,
+          amount: data.amountInput,
+        },
+      ],
+      previousPlatingMountId: data.id,
+      productId: data.productId,
+      color: data.color,
     });
-  }, []);
-
-  const finishMount = async (e, data) => {
-    e.preventDefault();
-
-    setProductId(data.productId);
-
-    setProductionPlanControlId(data.pcpId);
-
-    setColor(data.color);
-    setSelectSubProducts([
-      {
-        subProductId: data.subProductId,
-        subProductName: data.subProductName,
-        amount: data.amountInput,
-      },
-    ]);
-    setSubProducts([
-      {
-        id: data.subProductId,
-        name: data.subProductName,
-        amount: data.amountInput,
-      },
-    ]);
-    setPreviousPlatingMountId(data.id);
 
     setShowNextSector(true);
-  };
+  }
+
   return (
     <SeccionadoraMountContext.Provider
       value={{
         finishMount,
-        mounts,
+        setMount,
+        mount,
+        sectorId,
       }}
     >
       {children}
+      {showNextSector && <SeccionadoraNextSectorMountModal />}
     </SeccionadoraMountContext.Provider>
   );
 }

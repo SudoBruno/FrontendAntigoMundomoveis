@@ -24,8 +24,6 @@ export function PlatingMountProvider({ children, ...rest }) {
     true
   );
 
-  const [mounts, setMounts] = useState([{}]);
-
   const [barCode, setBarCode] = useState('');
   const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
 
@@ -55,11 +53,7 @@ export function PlatingMountProvider({ children, ...rest }) {
     } else {
       const response = await api.get(`machine/${e}`);
       setSectorId(response.data.factory_sector_id);
-      console.log(response.data.factory_sector_id);
-      const responseMounts = await api.get(
-        `plating/mount/sector/${response.data.factory_sector_id}`
-      );
-      setMounts(responseMounts.data);
+
       setIsStopMachine(false);
     }
     setIsSelectMachineModalOpen(false);
@@ -158,10 +152,8 @@ export function PlatingMountProvider({ children, ...rest }) {
         handleSelectMachine,
         machineId,
         isSelectMachineModalOpen,
-        mounts,
         sectorId,
         isStopMachine,
-        setMounts,
         setIsStopMachine,
         handleScan,
         isStartMountModalOpen,

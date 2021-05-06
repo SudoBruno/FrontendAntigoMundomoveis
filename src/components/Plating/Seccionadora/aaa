@@ -1,0 +1,224 @@
+  <Modal
+          title="Alteração no caminho do monte"
+          visible={show}
+          width={700}
+          footer={[
+            <Button key="back" type="default" onClick={handleClose}>
+              Cancelar
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              loading={loading}
+              onClick={handleCreateMount}
+            >
+              Salvar
+            </Button>,
+          ]}
+        >
+          <Row gutter={5}>
+            <Col span={12}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="PCP:"
+                labelAlign={'left'}
+              >
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={productionPlanControlName}
+                  onChange={(e) => handleProductionPlanControl(e)}
+
+                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                >
+                  {productionsPlansControl.map((option) => {
+                    return (
+                      <>
+                        <Option
+                          key={option.id}
+                          value={[option.id, option.name]}
+                        >
+                          {option.name}
+                        </Option>
+                      </>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Cor:"
+                labelAlign={'left'}
+              >
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={colorName}
+                  onChange={(e) => {
+                    setColorName(e[1]);
+                    setColor(e[0]);
+                  }}
+                  style={{ color: `${color}` }}
+
+                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                >
+                  <>
+                    <Option
+                      key={1}
+                      value={['yellow', 'Amarelo']}
+                      style={{ color: 'yellow' }}
+                    >
+                      Amarelo
+                    </Option>
+                    <Option
+                      key={2}
+                      value={['blue', 'Azul']}
+                      style={{ color: 'blue' }}
+                    >
+                      Azul
+                    </Option>
+                    <Option
+                      key={3}
+                      value={['red', 'Vermelho']}
+                      style={{ color: 'red' }}
+                    >
+                      Vermelho
+                    </Option>
+                    <Option
+                      key={4}
+                      value={['pink', 'Rosa']}
+                      style={{ color: 'pink' }}
+                    >
+                      Rosa
+                    </Option>
+                    <Option
+                      key={5}
+                      value={['black', 'Preto']}
+                      style={{ color: 'black' }}
+                    >
+                      Preto
+                    </Option>
+                    <Option
+                      key={6}
+                      value={['green', 'Verde']}
+                      style={{ color: 'green' }}
+                    >
+                      Verde
+                    </Option>
+                  </>
+                </Select>
+              </Form.Item>
+            </Col>
+
+            <Col span={19}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Produto:"
+                labelAlign={'left'}
+              >
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={productName}
+                  onChange={(e) => handleProduct(e)}
+
+                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                >
+                  {products.map((option) => {
+                    return (
+                      <>
+                        <Option
+                          key={option.id}
+                          value={[option.id, option.name]}
+                        >
+                          {option.name}
+                        </Option>
+                      </>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Divider />
+          {selectedSubProducts.map((selectedSubProduct, index) => {
+            return (
+              <>
+                <Row gutter={5}>
+                  <Col span={16}>
+                    <Form.Item
+                      labelCol={{ span: 23 }}
+                      label="SubProduto:"
+                      labelAlign={'left'}
+                    >
+                      <Select
+                        showSearch
+                        placeholder="Selecione"
+                        size="large"
+                        value={selectedSubProduct.subProductName}
+                        onChange={(e) => handleSubProduct(e, index)}
+
+                        // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                      >
+                        {subProducts.map((option) => {
+                          return (
+                            <>
+                              <Option
+                                key={option.id}
+                                value={[option.id, option.name]}
+                              >
+                                {option.name}
+                              </Option>
+                            </>
+                          );
+                        })}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      labelCol={{ span: 23 }}
+                      label="Quantidade:"
+                      labelAlign={'left'}
+                      style={{ width: '90%', marginRight: 16 }}
+                    >
+                      <Input
+                        name="amount"
+                        placeholder="Quantidade"
+                        type={'number'}
+                        min={0}
+                        value={selectedSubProduct.amount}
+                        onChange={(e) => HandleChange(e, index)}
+                        style={{ width: '85%', marginRight: 8 }}
+                      />
+                      {selectedSubProducts.length !== 1 && (
+                        <MinusCircleOutlined
+                          onClick={() => handleRemoveClick(index)}
+                        />
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                {selectedSubProducts.length - 1 === index && (
+                  <Button
+                    key="primary"
+                    title="Nova Linha"
+                    style={{ width: '100%' }}
+                    onClick={handleAddClick}
+                  >
+                    <PlusOutlined />
+                    Subproduto
+                  </Button>
+                )}
+              </>
+            );
+          })}
+        </Modal>
+
+      
+   

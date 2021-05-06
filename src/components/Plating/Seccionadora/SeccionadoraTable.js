@@ -1,11 +1,22 @@
 import { DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table } from 'antd';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { PlatingMountContext } from '../../../contexts/Plating/Mount/PlatingMountContext';
 import { SeccionadoraMountContext } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
+import api from '../../../services/api';
 
 export function SeccionadoraTable() {
-  const { mounts, finishMount } = useContext(SeccionadoraMountContext);
+  const [mounts, setMount] = useState([{}]);
+
+  const { sectorId } = useContext(PlatingMountContext);
+  const { finishMount } = useContext(SeccionadoraMountContext);
+
+  useEffect(() => {
+    api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
+      setMount(response.data);
+    });
+  }, [sectorId]);
 
   class SeccionadoraTable extends React.Component {
     state = {
@@ -177,17 +188,13 @@ export function SeccionadoraTable() {
           render: (text, record) => {
             return (
               <React.Fragment>
-                {/* <Link
-                  to={`/mount/tag/${record.id}`}
-                  style={{ color: 'rgb(0,0,0,0.65' }}
-                  target="_blank"
-                >
-                  <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
-                </Link> */}
                 <DoubleRightOutlined
                   style={{ marginLeft: 20, fontSize: 24 }}
                   size={50}
-                  onClick={(e) => finishMount(e, record)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    finishMount(record);
+                  }}
                 />
               </React.Fragment>
             );
