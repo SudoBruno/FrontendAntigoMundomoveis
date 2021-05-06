@@ -353,12 +353,12 @@ export default function PCP() {
       setProductionLineName(response.data[0].productionLineName);
 
       setSelectProducts(response.data);
-      console.log(selectProduct);
+
       setIsEdit(true);
 
       handleShow();
     } catch (error) {
-      console.log(error);
+      console.errors(error);
       openNotificationWithIcon(
         'error',
         'Erro ao deletar',
