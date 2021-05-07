@@ -217,6 +217,7 @@ export default function SubProduct() {
   const [warehouse, setWarehouse] = useState([]);
   const [position, setPosition] = useState([]);
   const [remaining, setRemaining] = useState(0);
+  const [loading, setLoading] = useState(false);
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
@@ -264,7 +265,9 @@ export default function SubProduct() {
     try {
       if (id === 0) {
         try {
+          setLoading(true);
           const response = await api.post('wmsrm/operation/storage', data);
+          setLoading(false);
           handleClose();
           setRefreshKey((refreshKey) => refreshKey + 1);
           openNotificationWithIcon(
@@ -472,7 +475,12 @@ export default function SubProduct() {
             {' '}
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={handleRegister}>
+          <Button
+            key="submit"
+            loading={loading}
+            type="primary"
+            onClick={handleRegister}
+          >
             {' '}
             Salvar
           </Button>,

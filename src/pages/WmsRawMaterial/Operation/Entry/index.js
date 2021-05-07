@@ -239,7 +239,7 @@ export default function Entry() {
   const [dropRawMaterial, setDropRawMaterial] = useState([]);
 
   const [show, setShow] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   //#endregion
 
   //#region Effects
@@ -428,7 +428,9 @@ export default function Entry() {
       try {
         if (id === 0) {
           try {
+            setLoading(true);
             await api.post('/wmsrm/operation/entry', data);
+            setLoading(false);
             setRefreshKey((refreshKey) => refreshKey + 1);
             openNotificationWithIcon(
               'success',
@@ -528,7 +530,12 @@ export default function Entry() {
           <Button key="back" type="default" onClick={handleClose}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" onClick={handleRegister}>
+          <Button
+            key="submit"
+            loading={loading}
+            type="primary"
+            onClick={handleRegister}
+          >
             Salvar
           </Button>,
         ]}
