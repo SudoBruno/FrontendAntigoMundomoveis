@@ -579,7 +579,6 @@ export default function SubProduct() {
         title="Nova Saida"
         visible={show}
         width={800}
-        onCancel={handleClose}
         footer={[
           <Button key="back" type="default" onClick={handleClose}>
             {' '}

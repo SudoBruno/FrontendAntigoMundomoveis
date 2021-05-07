@@ -467,7 +467,6 @@ export default function SubProduct() {
         title="Armazenagem"
         visible={show}
         width={800}
-        onCancel={handleClose}
         footer={[
           <Button key="back" type="default" onClick={handleClose}>
             {' '}

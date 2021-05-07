@@ -524,7 +524,6 @@ export default function Entry() {
         title="Entrada de Insumos"
         visible={show}
         width={800}
-        onCancel={handleClose}
         footer={[
           <Button key="back" type="default" onClick={handleClose}>
             Cancelar
