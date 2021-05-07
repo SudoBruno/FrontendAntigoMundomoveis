@@ -29,7 +29,7 @@ export function SeccionadoraNextSectorMountModal() {
       win.focus();
       // setShowNextSector(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Notification(
         'error',
         'Erro ao gerar etiqueta',
@@ -45,12 +45,10 @@ export function SeccionadoraNextSectorMountModal() {
       .get(`production-plan-control/${mount.productionPlanControl}`, {})
       .then((response) => {
         setProductionsPlansControl(response.data);
-        console.log(response.data);
       });
     api.get(`product/${mount.productId}`, {}).then((response) => {
       setProducts([response.data]);
     });
-    console.log(sectorId, 'sec');
   }, []);
 
   const [amount, setAmount] = useState(mount.subProducts[0].amount);
@@ -205,7 +203,6 @@ export function SeccionadoraNextSectorMountModal() {
                       {mount.subProducts.map((option) => {
                         return (
                           <>
-                            {console.log(option)}
                             <Option
                               key={option.subProductId}
                               value={option.subProductId}

@@ -219,7 +219,6 @@ export default function PlantingWarehouse() {
     }
   }
   async function handleEdit(e) {
-    console.log(e);
     setName(e.name);
     setId(e.id);
     setShow(true);

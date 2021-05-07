@@ -63,13 +63,11 @@ export function PlatingMountProvider({ children, ...rest }) {
     const response = await api.get(`plating/mount/tag/${e}/sector/${sectorId}`);
 
     setBarCode(e);
-    console.log(response.data);
 
     if (response.data.finish == null) {
       if (response.data.showSector == 0) {
         Notification('error', 'setor errado', 'Setor errado!');
         setShowAlterMountRoute(true);
-        console.log(showAlterMountRoute);
       } else {
         if (response.data.start == null) {
           setIsStartMountModalOpen(true);

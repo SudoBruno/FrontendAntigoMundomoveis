@@ -103,8 +103,8 @@ export default function PlantingDayDefectMount() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -114,7 +114,6 @@ export default function PlantingDayDefectMount() {
     };
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
-
       confirm();
       this.setState({
         searchText: selectedKeys[0],
@@ -227,7 +226,6 @@ export default function PlantingDayDefectMount() {
 
   const handleDownload = async (e) => {
     const response = await api.get(`plating/mount/search/defect/${e}`);
-    console.log(response);
 
     setData(response.data);
   };

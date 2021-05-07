@@ -22,7 +22,6 @@ export function StopMachineModal() {
 
   useEffect(() => {
     api.get('reason-stop', {}).then((response) => {
-      console.log(response.data);
       setReasonStop(response.data);
     });
   }, []);

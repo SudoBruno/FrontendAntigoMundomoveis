@@ -178,7 +178,6 @@ export default function CallReport() {
   useEffect(() => {
     api.get('/call/employee/presenceFilter', {}).then((response) => {
       setInput(response.data);
-      console.log(input);
     });
   }, [refreshKey]);
 
@@ -187,7 +186,7 @@ export default function CallReport() {
       intervalTime: intervalTime,
     };
     const response = await api.post('/call/employee/presencePointFilter', data);
-    console.log(response);
+
     setInput(response.data);
   }
 

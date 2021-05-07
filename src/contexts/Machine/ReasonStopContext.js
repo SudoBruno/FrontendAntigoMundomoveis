@@ -69,7 +69,7 @@ export function ReasonStopProvider({ children, ...rest }) {
     const response = await api.get(`reason-stop/${id}`);
     setName(response.data.name);
     setDescription(response.data.description);
-    console.log(response.data);
+
     setIsEditReasonStopModalOpen(true);
 
     setID(id);

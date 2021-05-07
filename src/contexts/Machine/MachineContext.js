@@ -94,7 +94,6 @@ export function MachineProvider({ children, ...rest }) {
   }
 
   async function deleteMachine(id) {
-    console.log(id);
     try {
       const response = await api.delete(`machine/${id}`);
       closeCreateMachineModal();

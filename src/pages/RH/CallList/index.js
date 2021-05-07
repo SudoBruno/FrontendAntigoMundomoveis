@@ -21,7 +21,11 @@ import {
 } from 'antd';
 
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, UploadOutlined, RetweetOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  UploadOutlined,
+  RetweetOutlined,
+} from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './styles.css';
 
@@ -85,7 +89,9 @@ export default function CallList() {
         </div>
       ),
       filterIcon: (filtered) => (
-        <SearchOutlined style={{ callList: filtered ? '#1890ff' : undefined }} />
+        <SearchOutlined
+          style={{ callList: filtered ? '#1890ff' : undefined }}
+        />
       ),
       onFilter: (value, record) =>
         record[dataIndex]
@@ -197,8 +203,6 @@ export default function CallList() {
   const [totalPresences, setTotalPresences] = useState(0);
   const [totalFaults, setTotalFaults] = useState(0);
 
-
-
   useEffect(() => {
     api.get('call-list', {}).then((response) => {
       if (response.data.length > 0) {
@@ -218,10 +222,8 @@ export default function CallList() {
     });
   }, []);
 
-
   async function generateDataForPresences(areaId) {
     try {
-      console.log(areaId);
       let response = await api.get(`/call/total-employees/${areaId}`);
       setTotalEmployees(response.data[0].total);
 
@@ -230,9 +232,8 @@ export default function CallList() {
 
       response = await api.get(`/call/total-faults/${areaId}`);
       setTotalFaults(response.data[0].total);
-
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -341,7 +342,7 @@ export default function CallList() {
   };
 
   const handleShow = () => setShow(true);
-  const handleShowReplacement = () => setShowReplacement(true)
+  const handleShowReplacement = () => setShowReplacement(true);
 
   const alterCallList = async (e) => {
     const response = await api.get(`/call-list/${e}`);
@@ -365,11 +366,15 @@ export default function CallList() {
     const data = {
       callListId: callListId,
       area: area,
-      transferAreaId: transferAreaId
-    }
+      transferAreaId: transferAreaId,
+    };
 
     if (!transferAreaId || !callListId) {
-      openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
+      openNotificationWithIcon(
+        'error',
+        'Erro na Transferência',
+        'Nenhum campo deve ser Vazio'
+      );
     }
 
     if (transferAreaId && employeeName) {
@@ -382,11 +387,14 @@ export default function CallList() {
         );
         handleClose();
       } catch (error) {
-        openNotificationWithIcon('error', 'Erro na Transferência', 'Nenhum campo deve ser Vazio');
-        console.log(error);
+        openNotificationWithIcon(
+          'error',
+          'Erro na Transferência',
+          'Nenhum campo deve ser Vazio'
+        );
+        console.error(error);
       }
     }
-
   }
 
   return (
@@ -415,7 +423,6 @@ export default function CallList() {
 
       <Row>
         <Col span={8}>
-
           {/* <Form.Item
             labelCol={{ span: 23 }}
             label="Selecione a Localidade"
@@ -476,12 +483,8 @@ export default function CallList() {
                 );
               })}
             </Select>
-
           </Form.Item>
-
-
         </Col>
-
 
         <Col
           span={12}
@@ -492,9 +495,10 @@ export default function CallList() {
             marginTop: 120,
           }}
         >
-
-
-          <button className="btn-iniciar-chamada" onClick={(e) => startCallList(e)}>
+          <button
+            className="btn-iniciar-chamada"
+            onClick={(e) => startCallList(e)}
+          >
             Iniciar Chamada
           </button>
 
@@ -506,7 +510,7 @@ export default function CallList() {
             onClick={handleShowReplacement}
           >
             Troca de Colaborador
-        </Button>
+          </Button>
 
           <Modal
             visible={showReplacement}
@@ -518,14 +522,16 @@ export default function CallList() {
                 {' '}
                 Cancelar
               </Button>,
-              <Button key="submit" type="primary" onClick={handleTranserEmployee}>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={handleTranserEmployee}
+              >
                 {' '}
                 Salvar
               </Button>,
             ]}
           >
-
-
             <Row gutter={5}>
               <Col span={13}>
                 <Form.Item
@@ -546,7 +552,10 @@ export default function CallList() {
                     {callList.map((option) => {
                       return (
                         <>
-                          <Option key={option.id} value={[option.id, option.name]}>
+                          <Option
+                            key={option.id}
+                            value={[option.id, option.name]}
+                          >
                             {option.name}
                           </Option>
                         </>
@@ -555,9 +564,7 @@ export default function CallList() {
                   </Select>
                 </Form.Item>
               </Col>
-
             </Row>
-
 
             <Row>
               <Col span={10}>
@@ -573,13 +580,16 @@ export default function CallList() {
                     value={transferAreaName}
                     onChange={(e) => {
                       setTransferAreaId(e[0]);
-                      setTransferAreaName(e[1])
+                      setTransferAreaName(e[1]);
                     }}
                   >
                     {transferAreas.map((option) => {
                       return (
                         <>
-                          <Option key={option.id} value={[option.id, option.name]}>
+                          <Option
+                            key={option.id}
+                            value={[option.id, option.name]}
+                          >
                             {option.name}
                           </Option>
                         </>
@@ -599,7 +609,6 @@ export default function CallList() {
                   labelAlign={'left'}
                 >
                   <Select
-
                     showSearch
                     placeholder="Selecione"
                     size="large"
@@ -608,7 +617,10 @@ export default function CallList() {
                     {areas.map((option) => {
                       return (
                         <>
-                          <Option key={option.id} value={[option.id, option.name]}>
+                          <Option
+                            key={option.id}
+                            value={[option.id, option.name]}
+                          >
                             {option.name}
                           </Option>
                         </>
@@ -618,17 +630,14 @@ export default function CallList() {
                 </Form.Item>
               </Col>
             </Row>
-
-
           </Modal>
-
         </Col>
-
       </Row>
-      <Divider>
-
-      </Divider>
-      <Row gutter={8} style={{ marginTop: 10, marginBottom: 50, textAlign: 'center' }}>
+      <Divider></Divider>
+      <Row
+        gutter={8}
+        style={{ marginTop: 10, marginBottom: 50, textAlign: 'center' }}
+      >
         <Col span={4}>
           <Card title="TOTAL" bordered={true}>
             {totalEmployees}
@@ -736,10 +745,9 @@ export default function CallList() {
             </Button>
           </Col>
         </Row>
-
       </Modal>
       <SearchTable />
-    </Layout >
+    </Layout>
   );
   // return (
   //   <>

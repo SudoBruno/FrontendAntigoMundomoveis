@@ -532,7 +532,6 @@ export default function SubProduct() {
                     </Select>
                   </Form.Item>
                 </Col>
-                {console.log(ins)}
 
                 <Col span={12}>
                   <Form.Item

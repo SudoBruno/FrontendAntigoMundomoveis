@@ -1,14 +1,11 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Tooltip } from '@material-ui/core';
-import { Button, Col, Layout, Row, Select } from 'antd';
+import { Col, Layout, Row, Select } from 'antd';
 import React from 'react';
+import { CreateMountButton } from '../../../components/Plating/CreateMountButton';
 import { SeccionadoraTable } from '../../../components/Plating/Seccionadora/SeccionadoraTable';
 import { SelectMachineModal } from '../../../components/Plating/SelectMachineModal';
 import { MachineStopProvider } from '../../../contexts/Machine/MachineStopContext';
 import { PlatingMountProvider } from '../../../contexts/Plating/Mount/PlatingMountContext';
 import { SeccionadoraMountProvider } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
-
-const Option = Select.Option;
 
 export default function Seccionadora() {
   return (
@@ -28,15 +25,7 @@ export default function Seccionadora() {
               <MachineStopProvider />
             </Col>
             <Col span={12} align="right">
-              <Tooltip title="Seccionadora" placement="right">
-                <Button
-                  className="buttonGreen"
-                  icon={<PlusOutlined />}
-                  style={{ marginRight: 5, fontSize: '14px' }}
-                >
-                  Seccionadora
-                </Button>
-              </Tooltip>
+              <CreateMountButton sectorName={'Seccionadora'} />
             </Col>
           </Row>
           <SeccionadoraTable />

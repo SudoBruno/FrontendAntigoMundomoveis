@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { CreateMountModal } from '../../../components/Plating/CreateMountModal';
 import { SeccionadoraNextSectorMountModal } from '../../../components/Plating/Seccionadora/SeccionadoraNextSectorMountModal';
-import api from '../../../services/api';
 import { PlatingMountContext } from './PlatingMountContext';
 
 export const SeccionadoraMountContext = createContext({});
@@ -8,6 +8,7 @@ export const SeccionadoraMountContext = createContext({});
 export function SeccionadoraMountProvider({ children }) {
   const { sectorId } = useContext(PlatingMountContext);
   const [showNextSector, setShowNextSector] = useState(false);
+  const [isCreateMountModalOpen, setIsCreatMountModalOpen] = useState(false);
   const [mount, setMount] = useState({});
 
   async function finishMount(data) {
@@ -35,12 +36,15 @@ export function SeccionadoraMountProvider({ children }) {
         finishMount,
         setMount,
         setShowNextSector,
+        setIsCreatMountModalOpen,
         mount,
         sectorId,
       }}
     >
       {children}
       {showNextSector && <SeccionadoraNextSectorMountModal />}
+
+      {isCreateMountModalOpen && <CreateMountModal />}
     </SeccionadoraMountContext.Provider>
   );
 }

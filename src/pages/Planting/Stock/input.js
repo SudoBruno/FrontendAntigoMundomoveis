@@ -256,7 +256,6 @@ export default function PlantingInputMount() {
 
     const response = await api.get(`plating/street/warehouse/${e[0]}`);
     setStreets(response.data);
-    console.log(response.data);
   }
 
   useEffect(() => {
