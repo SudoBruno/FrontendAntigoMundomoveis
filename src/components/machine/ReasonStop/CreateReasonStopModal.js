@@ -19,7 +19,7 @@ export function CreateReasonStopModal() {
 
   return (
     <Modal
-      title="Cadastro de máquina"
+      title="Cadastro de parada máquina"
       visible={true}
       onCancel={closeCreateReasonStopModal}
       width={800}
