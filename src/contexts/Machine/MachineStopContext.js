@@ -12,7 +12,7 @@ export function MachineStopProvider({ children, ...rest }) {
   const {
     machineId,
     isStopMachine,
-    setMounts,
+
     setIsStopMachine,
     handleSelectMachine,
   } = useContext(PlatingMountContext);
@@ -42,15 +42,16 @@ export function MachineStopProvider({ children, ...rest }) {
         'Parada de maquina acionada com sucesso',
         'Essa maquina esta parada para manutenção'
       );
-      setMounts([{}]);
+
       setIsStopMachine(true);
       setIsStop(true);
       setIsCreateStopMachineModalOpen(false);
     } catch (error) {
+      console.error(error);
       Notification(
         'error',
         'Erro ao acionar parada de maquina',
-        error.response.data.message == undefined
+        error.response == undefined
           ? 'Ocorreu um erro ao acionar parada de maquina, tente novamente'
           : error.response.data.message
       );

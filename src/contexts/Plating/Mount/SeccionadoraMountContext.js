@@ -34,6 +34,7 @@ export function SeccionadoraMountProvider({ children }) {
       value={{
         finishMount,
         setMount,
+        setShowNextSector,
         mount,
         sectorId,
       }}

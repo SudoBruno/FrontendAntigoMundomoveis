@@ -1,19 +1,19 @@
+import { Button, Col, Divider, Form, Input, Modal, Row, Select } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Input, Modal, Row, Form, Divider, Select } from 'antd';
-import api from '../../../services/api';
 import { SeccionadoraMountContext } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
+import api from '../../../services/api';
 import { Notification } from '../../Notification';
-import { PlatingMountContext } from '../../../contexts/Plating/Mount/PlatingMountContext';
 const Option = Select.Option;
 export function SeccionadoraNextSectorMountModal() {
-  const { mount, sectorId } = useContext(SeccionadoraMountContext);
+  const { mount, sectorId, setShowNextSector } = useContext(
+    SeccionadoraMountContext
+  );
 
   const nextSector = async () => {
     // setLoading(true);
     try {
       mount.subProducts[0].amount = amount;
       mount.factorySectorId = sectorId;
-      console.log(mount, sectorId);
 
       const response = await api.post('plating/mount/tags', mount);
       Notification(
@@ -22,31 +22,12 @@ export function SeccionadoraNextSectorMountModal() {
         'As etiquetas foram geradas com sucesso'
       );
 
-      // setRefreshKey((refreshKey) => refreshKey + 1);
-      // setProductId(0);
-      // setProductName('');
-      // setProductionPlanControlId(0);
-      // setProductionPlanControlName('');
-      // setColor('');
-      // setSelectSubProducts([
-      //   {
-      //     subProductId: 0,
-      //     subProductName: '',
-      //     amount: 0,
-      //   },
-      // ]);
-      // setSubProducts([
-      //   {
-      //     id: 0,
-      //     name: '',
-      //     amount: 0,
-      //   },
-      // ]);
-      // setPreviousPlatingMountId(0);
+      var win = window.open(
+        `/mount/tag/${mount.previousPlatingMountId}`,
+        '_blank'
+      );
+      win.focus();
       // setShowNextSector(false);
-      // setLoading(false);
-      // var win = window.open(`/mount/tag/${previousPlatingMountId}`, '_blank');
-      // win.focus();
     } catch (error) {
       console.log(error);
       Notification(
