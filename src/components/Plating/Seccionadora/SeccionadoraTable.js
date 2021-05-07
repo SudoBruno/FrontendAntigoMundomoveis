@@ -10,13 +10,13 @@ export function SeccionadoraTable() {
   const [mounts, setMount] = useState([{}]);
 
   const { sectorId } = useContext(PlatingMountContext);
-  const { finishMount } = useContext(SeccionadoraMountContext);
+  const { finishMount, refreshKey } = useContext(SeccionadoraMountContext);
 
   useEffect(() => {
     api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
       setMount(response.data);
     });
-  }, [sectorId]);
+  }, [sectorId, refreshKey]);
 
   class SeccionadoraTable extends React.Component {
     state = {

@@ -12,9 +12,11 @@ export function SelectMachineModal() {
     machineId,
     handleSelectMachine,
     isSelectMachineModalOpen,
+    setMachineId,
   } = useContext(PlatingMountContext);
 
   const [machines, setMachines] = useState([{}]);
+
   useEffect(() => {
     api.get('machine', {}).then((response) => {
       setMachines(response.data);
@@ -26,6 +28,7 @@ export function SelectMachineModal() {
       title="Selecione a maquina"
       visible={isSelectMachineModalOpen}
       width={500}
+      onOk={(e) => handleSelectMachine(machineId)}
     >
       <Row gutter={5}>
         <Col span={24}>
@@ -39,7 +42,10 @@ export function SelectMachineModal() {
               placeholder="Selecione"
               size="large"
               value={machineId}
-              onChange={(e) => handleSelectMachine(e)}
+              onChange={(e) => {
+                handleSelectMachine(e);
+                setMachineId(e);
+              }}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }

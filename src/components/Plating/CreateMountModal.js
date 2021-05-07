@@ -6,11 +6,12 @@ import { SeccionadoraMountContext } from '../../contexts/Plating/Mount/Seccionad
 import api from '../../services/api';
 import { Notification } from '../Notification';
 
-const { TextArea } = Input;
-
 const Option = Select.Option;
+
 function CreateMountModal() {
-  const { setIsCreatMountModalOpen } = useContext(SeccionadoraMountContext);
+  const { setIsCreatMountModalOpen, createMounts, isLoading } = useContext(
+    SeccionadoraMountContext
+  );
   const { sectorId } = useContext(PlatingMountContext);
 
   const [productionPlanControlId, setProductionPlanControlId] = useState(1);
@@ -25,7 +26,18 @@ function CreateMountModal() {
   ]);
   const [products, setProducts] = useState([{}]);
   const [productId, setProductId] = useState(1);
-  const handleCreateMount = () => {};
+
+  const handleCreateMount = async () => {
+    const data = {
+      factoryEmployeeId: localStorage.getItem('userId'),
+      productionPlanControl: productionPlanControlId,
+      subProducts: selectedSubProducts,
+      factorySectorId: sectorId,
+      productId: productId,
+      color: color,
+    };
+    await createMounts(data);
+  };
 
   const [productionPlanControlPage, setProductionPlanControlPage] = useState(1);
   useEffect(() => {
@@ -46,7 +58,6 @@ function CreateMountModal() {
         }
       });
   }, [productionPlanControlPage]);
-  const [productPage, setProductPage] = useState(1);
 
   const handleProductionPlanControl = async (e) => {
     setProductionPlanControlId(e);
@@ -73,7 +84,7 @@ function CreateMountModal() {
   const handleSubProduct = (value, index) => {
     var NewArray = [...selectedSubProducts];
 
-    // NewArray[index].subProductId = value;
+    NewArray[index].subProductId = value;
 
     setSelectSubProducts(NewArray);
   };
@@ -122,6 +133,7 @@ function CreateMountModal() {
     list.splice(index, 1);
     setSelectSubProducts(list);
   };
+
   const handleAddClick = () => {
     setSelectSubProducts([
       ...selectedSubProducts,
@@ -145,7 +157,7 @@ function CreateMountModal() {
         <Button
           key="submit"
           type="primary"
-          // loading={loading}
+          loading={isLoading}
           onClick={handleCreateMount}
         >
           Salvar
@@ -204,8 +216,6 @@ function CreateMountModal() {
                 setColor(e[0]);
               }}
               style={{ color: `${color}` }}
-
-              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
             >
               <>
                 <Option
@@ -304,7 +314,7 @@ function CreateMountModal() {
                     showSearch
                     placeholder="Selecione"
                     size="large"
-                    value={selectedSubProduct.subProductName}
+                    value={selectedSubProduct.subProductId}
                     onChange={(e) => handleSubProduct(e, index)}
 
                     // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
@@ -312,10 +322,7 @@ function CreateMountModal() {
                     {subProducts.map((option) => {
                       return (
                         <>
-                          <Option
-                            key={option.id}
-                            value={[option.id, option.name]}
-                          >
+                          <Option key={option.id} value={option.id}>
                             {option.name}
                           </Option>
                         </>
