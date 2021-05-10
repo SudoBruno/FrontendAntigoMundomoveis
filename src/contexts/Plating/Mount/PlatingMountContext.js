@@ -6,6 +6,7 @@ import { StartMountModal } from '../../../components/Plating/StartMountModal';
 import { NextSectorMountModal } from '../../../components/Plating/NextSectorMountModal';
 import api from '../../../services/api';
 import { StartMountInOtherSectorModal } from '../../../components/Plating/StartMountInOtherSectorModal';
+import { AlterMountPathModal } from '../../../components/Plating/AlterMountPathModal';
 
 export const PlatingMountContext = createContext({});
 
@@ -26,7 +27,7 @@ export function PlatingMountProvider({ children, ...rest }) {
 
   const [barCode, setBarCode] = useState('');
   const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
-
+  const [isAlterPathModalOpen, setIsAlterPathModalOpen] = useState(false);
   const [color, setColor] = useState('');
   const [productName, setProductName] = useState('');
   const [productionPlanControlName, setProductionPlanControlName] = useState(
@@ -67,7 +68,7 @@ export function PlatingMountProvider({ children, ...rest }) {
     if (response.data.finish == null) {
       if (response.data.showSector == 0) {
         Notification('error', 'setor errado', 'Setor errado!');
-        setShowAlterMountRoute(true);
+        setIsAlterPathModalOpen(true);
       } else {
         if (response.data.start == null) {
           setIsStartMountModalOpen(true);
@@ -103,7 +104,7 @@ export function PlatingMountProvider({ children, ...rest }) {
           barCode,
           sectorId,
           employeeId: localStorage.getItem('userId'),
-          // machineId,
+          machineId,
         });
 
         Notification('success', 'Monte iniciado', 'Monte iniciado com sucesso');
@@ -129,7 +130,7 @@ export function PlatingMountProvider({ children, ...rest }) {
           barCode,
           sectorId,
           employeeId: localStorage.getItem('userId'),
-          // machineId,
+          machineId,
         });
         setIsStartMountModalOpen(false);
         Notification('success', 'Monte iniciado', 'Monte iniciado com sucesso');
@@ -173,6 +174,7 @@ export function PlatingMountProvider({ children, ...rest }) {
         setIsNextSectorMountModalOpen,
         startMountOtherSector,
         setShowAlterMountRoute,
+        setIsAlterPathModalOpen,
       }}
     >
       {children}
@@ -183,6 +185,7 @@ export function PlatingMountProvider({ children, ...rest }) {
       {isNextSectorMountModalOpen && <NextSectorMountModal />}
 
       {showAlterMountRoute && <StartMountInOtherSectorModal />}
+      {isAlterPathModalOpen && <AlterMountPathModal />}
     </PlatingMountContext.Provider>
   );
 }

@@ -63,9 +63,9 @@ export function SeccionadoraMountProvider({ children }) {
         setMount,
         setShowNextSector,
         setIsCreatMountModalOpen,
+        createMounts,
         mount,
         sectorId,
-        createMounts,
         isLoading,
         refreshKey,
       }}

@@ -1,4 +1,4 @@
-import { Col, Form, Input, Modal, Row, Select } from 'antd';
+import { Button, Col, Input, Modal, Row, Select } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { PlatingMountContext } from '../../contexts/Plating/Mount/PlatingMountContext';
 import api from '../../services/api';
@@ -7,12 +7,10 @@ const Option = Select.Option;
 
 const { TextArea } = Input;
 
-export function SelectMachineModal() {
-  const {
-    machineId,
-    handleSelectMachine,
-    isSelectMachineModalOpen,
-  } = useContext(PlatingMountContext);
+export function AlterMountPathModal() {
+  const { setIsAlterPathModalOpen, setShowAlterMountRoute } = useContext(
+    PlatingMountContext
+  );
 
   const [machines, setMachines] = useState([{}]);
   useEffect(() => {
@@ -30,11 +28,17 @@ export function SelectMachineModal() {
         <Button
           key="back"
           type="default"
-          onClick={() => setShowAlterMountRoute(false)}
+          onClick={() => setIsAlterPathModalOpen(false)}
         >
           Cancelar
         </Button>,
-        <Button type="primary" onClick={alterRoute}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setShowAlterMountRoute(true);
+            setIsAlterPathModalOpen(false);
+          }}
+        >
           Sim
         </Button>,
       ]}

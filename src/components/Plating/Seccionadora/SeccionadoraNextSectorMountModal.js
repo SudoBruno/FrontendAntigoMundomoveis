@@ -1,5 +1,6 @@
 import { Button, Col, Divider, Form, Input, Modal, Row, Select } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+import { PlatingMountContext } from '../../../contexts/Plating/Mount/PlatingMountContext';
 import { SeccionadoraMountContext } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
 import api from '../../../services/api';
 import { Notification } from '../../Notification';
@@ -9,11 +10,16 @@ export function SeccionadoraNextSectorMountModal() {
     SeccionadoraMountContext
   );
 
+  const { machineId } = useContext(PlatingMountContext);
+  const [loading, setLoading] = useState(false);
+
   const nextSector = async () => {
-    // setLoading(true);
+    setLoading(true);
+
     try {
       mount.subProducts[0].amount = amount;
       mount.factorySectorId = sectorId;
+      mount.machineId = machineId;
 
       const response = await api.post('plating/mount/tags', mount);
       Notification(
@@ -27,7 +33,7 @@ export function SeccionadoraNextSectorMountModal() {
         '_blank'
       );
       win.focus();
-      // setShowNextSector(false);
+      setShowNextSector(false);
     } catch (error) {
       console.error(error);
       Notification(
@@ -35,8 +41,8 @@ export function SeccionadoraNextSectorMountModal() {
         'Erro ao gerar etiqueta',
         'Erro ao passar para o proximo setor, tente novamente'
       );
-      // setLoading(false);
     }
+    setLoading(false);
   };
   const [productionsPlansControl, setProductionsPlansControl] = useState([{}]);
   const [products, setProducts] = useState([{}]);
@@ -70,7 +76,7 @@ export function SeccionadoraNextSectorMountModal() {
           <Button
             key="submit"
             type="primary"
-            // loading={loading}
+            loading={loading}
             onClick={nextSector}
           >
             Salvar
