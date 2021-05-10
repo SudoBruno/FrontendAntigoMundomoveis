@@ -9,14 +9,18 @@ import api from '../../../services/api';
 export function SeccionadoraTable() {
   const [mounts, setMount] = useState([{}]);
 
-  const { sectorId } = useContext(PlatingMountContext);
+  const { sectorId, isStopMachine } = useContext(PlatingMountContext);
   const { finishMount, refreshKey } = useContext(SeccionadoraMountContext);
 
   useEffect(() => {
-    api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
-      setMount(response.data);
-    });
-  }, [sectorId, refreshKey]);
+    if (isStopMachine) {
+      api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
+        setMount(response.data);
+      });
+    } else {
+      setMount([{}]);
+    }
+  }, [sectorId, refreshKey, isStopMachine]);
 
   class SeccionadoraTable extends React.Component {
     state = {

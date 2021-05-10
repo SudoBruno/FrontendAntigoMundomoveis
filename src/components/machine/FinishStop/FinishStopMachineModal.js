@@ -1,30 +1,45 @@
-import { Col, Button, Modal, Form, Input, Row, Select } from 'antd';
+import { Col, Button, Modal, Form, Input, Row, Select, DatePicker } from 'antd';
 import React, { useState, useEffect, useContext } from 'react';
 
 import api from '../../../services/api';
 import { Notification } from '../../Notification';
 import { MachineStopContext } from '../../../contexts/Machine/MachineStopContext';
+import { format } from 'date-fns';
+import moment from 'moment';
 
 const Option = Select.Option;
 
 const { TextArea } = Input;
+const { RangePicker } = DatePicker;
 
 export function FinishStopMachineModal() {
   const {
     closeFinishStopMachineModal,
-
     reasonStopMachineId,
     finishStopMachine,
     description,
     setDescription,
+    setStartDate,
+    setFinishDate,
+    startDate,
   } = useContext(MachineStopContext);
   const [reasonStop, setReasonStop] = useState([{}]);
+  const dateFormat = 'DD/MM/YYYY HH:mm';
 
   useEffect(() => {
     api.get('reason-stop', {}).then((response) => {
       setReasonStop(response.data);
     });
   }, []);
+
+  function alterFinishDate(value) {
+    console.log(value._d, 'finish');
+
+    setFinishDate(value._d);
+  }
+  function alterStartDate(value) {
+    setStartDate(value._d);
+  }
   return (
     <Modal
       title="Parada de maquina"
@@ -103,6 +118,50 @@ export function FinishStopMachineModal() {
               placeholder="Descreva o motivo da parada"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={5}>
+        <Col span={12}>
+          <Form.Item
+            labelCol={{ span: 23 }}
+            label="Selecione a hora de inicio da parada:"
+            labelAlign={'left'}
+          >
+            <DatePicker
+              showTime
+              onOk={alterStartDate}
+              format={'DD/MM/YYYY HH:mm'}
+              size={'small'}
+              defaultValue={moment(startDate, 'YYYY/MM/DD HH:mm')}
+            />
+
+            {/* <RangePicker
+              size="small"
+              showTime={{ format: 'HH:mm' }}
+              format={'DD/MM/YYYY HH:mm'}
+              // onChange={onChange}
+              defaultValue={[
+                moment('2021-06-06 14:56', 'YYYY/MM/DD HH:mm'),
+                moment('2021-06-07 09:00', 'YYYY/MM/DD HH:mm'),
+              ]}
+              onOk={alterDate}
+            /> */}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            labelCol={{ span: 23 }}
+            label="Selecione a hora de fim da parada:"
+            labelAlign={'left'}
+          >
+            <DatePicker
+              showTime
+              onOk={alterFinishDate}
+              size="small"
+              format={'DD/MM/YYYY HH:mm'}
+              size={'small'}
             />
           </Form.Item>
         </Col>

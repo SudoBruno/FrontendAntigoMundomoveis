@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { FinishStopMachineButton } from '../../components/machine/FinishStop/FinishStopMachineButton';
 import { FinishStopMachineModal } from '../../components/machine/FinishStop/FinishStopMachineModal';
@@ -12,7 +13,6 @@ export function MachineStopProvider({ children, ...rest }) {
   const {
     machineId,
     isStopMachine,
-
     setIsStopMachine,
     handleSelectMachine,
   } = useContext(PlatingMountContext);
@@ -28,6 +28,10 @@ export function MachineStopProvider({ children, ...rest }) {
   const [isStop, setIsStop] = useState(isStopMachine);
   const [reasonStopMachineId, setReasonStopMachineId] = useState(1);
   const [description, setDescription] = useState(1);
+  const [startDate, setStartDate] = useState(
+    format(new Date(), 'yyyy-MM-dd HH:mm')
+  );
+  const [finishDate, setFinishDate] = useState('');
 
   async function createStopMachine() {
     try {
@@ -71,10 +75,12 @@ export function MachineStopProvider({ children, ...rest }) {
   }
 
   async function openFinishStopMachineModal() {
-    setIsFinishStopMachineModalOpen(true);
     const response = await api.get(`machine-stop/machine/${machineId}`);
     setDescription(response.data.description);
     setReasonStopMachineId(response.data.reason_stop_machine_id);
+
+    setStartDate(format(parseISO(response.data.start), 'yyyy-MM-dd HH:mm'));
+    setIsFinishStopMachineModalOpen(true);
   }
 
   function closeFinishStopMachineModal() {
@@ -83,7 +89,11 @@ export function MachineStopProvider({ children, ...rest }) {
 
   async function finishStopMachine() {
     try {
-      const response = await api.put(`machine-stop/${machineId}`);
+      const response = await api.put(`machine-stop/${machineId}`, {
+        startDate,
+        finishDate,
+        description,
+      });
       Notification(
         'success',
         'Parada de maquina finalizada',
@@ -93,10 +103,13 @@ export function MachineStopProvider({ children, ...rest }) {
       setIsFinishStopMachineModalOpen(false);
       handleSelectMachine(machineId);
     } catch (error) {
+      console.log(error.response.data.message);
       Notification(
         'error',
         'Erro ao finalizar parada de maquina',
-        'Ocorreu um erro ao finalizar parada de maquina, tente novamente'
+        error.response.data.message === undefined
+          ? 'Ocorreu um erro ao finalizar parada de maquina, tente novamente'
+          : error.response.data.message
       );
     }
   }
@@ -106,17 +119,20 @@ export function MachineStopProvider({ children, ...rest }) {
       value={{
         openCreateStopMachineModal,
         closeCreateStopMachineModal,
-        isCreateStopMachineModalOpen,
         setReasonStopMachineId,
-        reasonStopMachineId,
         createStopMachine,
-        description,
         setDescription,
         handleStopMachine,
-        isStop,
         closeFinishStopMachineModal,
         openFinishStopMachineModal,
         finishStopMachine,
+        setStartDate,
+        setFinishDate,
+        reasonStopMachineId,
+        description,
+        isStop,
+        isCreateStopMachineModalOpen,
+        startDate,
       }}
     >
       {children}
