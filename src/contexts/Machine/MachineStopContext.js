@@ -103,7 +103,6 @@ export function MachineStopProvider({ children, ...rest }) {
       setIsFinishStopMachineModalOpen(false);
       handleSelectMachine(machineId);
     } catch (error) {
-      console.log(error.response.data.message);
       Notification(
         'error',
         'Erro ao finalizar parada de maquina',

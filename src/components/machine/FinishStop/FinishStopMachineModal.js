@@ -33,8 +33,6 @@ export function FinishStopMachineModal() {
   }, []);
 
   function alterFinishDate(value) {
-    console.log(value._d, 'finish');
-
     setFinishDate(value._d);
   }
   function alterStartDate(value) {
