@@ -69,7 +69,7 @@ export function SeccionadoraNextSectorMountModal() {
           <Button
             key="back"
             type="default"
-            // onClick={handleClose}
+            onClick={(e) => setShowNextSector(false)}
           >
             Cancelar
           </Button>,
