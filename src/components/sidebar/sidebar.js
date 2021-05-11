@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Route, Link, Redirect } from 'react-router-dom';
 
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import {
   RightSquareOutlined,
   DashboardOutlined,
@@ -15,7 +15,16 @@ import {
   SearchOutlined,
   SignalFilled,
   ToolOutlined,
+  AppstoreOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  PieChartOutlined,
+  DesktopOutlined,
+  ContainerOutlined,
+  MailOutlined,
+  LeftOutlined,
 } from '@ant-design/icons';
+
 import { FaCouch, FaWarehouse } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
 import { BsListCheck } from 'react-icons/bs';
@@ -112,6 +121,7 @@ import Machine from '../../pages/Machine';
 import { Tooltip } from '@material-ui/core';
 
 const userName = localStorage.getItem('userName');
+let panelName = 'Painel Administrativo';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -540,10 +550,12 @@ class App extends React.Component {
     collapsed: false,
   };
 
-  toggle = () => {
+  toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
+
+    panelName = 'Painel';
   };
 
   render() {
@@ -568,7 +580,6 @@ class App extends React.Component {
 
     return (
       <div>
-        <Layout style={{ height: '100%' }}></Layout>
         <Sider
           trigger={null}
           style={{
@@ -583,9 +594,13 @@ class App extends React.Component {
           {localStorage.getItem('access_level') === '1' && (
             <div
               className="logo"
-              style={{ textAlign: 'center', paddingTop: '0.48rem' }}
+              style={{
+                textAlign: 'center',
+                paddingTop: '0.48rem',
+                display: '',
+              }}
             >
-              Painel Administrativo
+              {panelName}
             </div>
           )}
           {localStorage.getItem('access_level') === '4' && (
@@ -593,7 +608,7 @@ class App extends React.Component {
               className="logo"
               style={{ textAlign: 'center', paddingTop: '0.48rem' }}
             >
-              Painel Almoxarifado
+              {panelName}
             </div>
           )}
 
@@ -1114,6 +1129,21 @@ class App extends React.Component {
             ))}
           </Content>
         </Layout>
+        <Button
+          type="primary"
+          onClick={this.toggleCollapsed}
+          style={{
+            marginBottom: 16,
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            marginLeft: 20,
+          }}
+        >
+          {React.createElement(
+            this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
+          )}
+        </Button>
       </div>
     );
   }
