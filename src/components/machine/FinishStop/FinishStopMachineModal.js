@@ -19,9 +19,10 @@ export function FinishStopMachineModal() {
     setStartDate,
     setFinishDate,
     startDate,
+    finishDate,
+    setReasonStopMachineId,
   } = useContext(MachineStopContext);
   const [reasonStop, setReasonStop] = useState([{}]);
-  const dateFormat = 'DD/MM/YYYY HH:mm';
 
   useEffect(() => {
     api.get('reason-stop', {}).then((response) => {
@@ -80,7 +81,7 @@ export function FinishStopMachineModal() {
               placeholder="Selecione"
               size="large"
               value={reasonStopMachineId}
-              disabled
+              onChange={(e) => setReasonStopMachineId(e)}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
@@ -146,6 +147,7 @@ export function FinishStopMachineModal() {
               size="small"
               format={'DD/MM/YYYY HH:mm'}
               size={'small'}
+              defaultValue={moment(finishDate, 'YYYY/MM/DD HH:mm')}
             />
           </Form.Item>
         </Col>
