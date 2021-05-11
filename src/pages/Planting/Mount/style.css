@@ -1,34 +1,31 @@
 .blue {
-    background-color: #70b3e9;
-    color: rgb(19, 19, 19);
-    font-weight: bold;
-    border-radius: 30px;
+  background-color: #70b3e9;
+  color: rgb(19, 19, 19);
+  font-weight: bold;
+  border-radius: 30px;
 }
 
 .red {
-    background-color: #e97070;
-    color: rgb(19, 19, 19);
-    font-weight: bold;
+  background-color: #e97070;
+  color: rgb(19, 19, 19);
+  font-weight: bold;
 }
 
 .yellow {
-    background-color: #dcca3e;
-    color: rgb(19, 19, 19);
-    font-weight: bold;
+  background-color: #dcca3e;
+  color: rgb(19, 19, 19);
+  font-weight: bold;
 }
 
-/* #97CC04 #dcca3e */
-
-/* thead[class*="ant-table-thead"] th {
-    background-color: #161b22;
-    color: rgb(248, 248, 248);
+.pink {
+  background: #e97070;
 }
 
-section {
-    background: #161b22 !important;
+.black {
+  background: #000;
+  color: #fff
 }
 
-header {
-    background: #12161b !important;
-    color: rgb(248, 248, 248) !important;
-} */
+.green {
+  background: #97cc04;
+}
