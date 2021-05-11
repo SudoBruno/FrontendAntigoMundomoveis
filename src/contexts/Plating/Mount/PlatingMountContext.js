@@ -61,36 +61,46 @@ export function PlatingMountProvider({ children, ...rest }) {
   };
 
   const handleScan = async (e) => {
-    const response = await api.get(`plating/mount/tag/${e}/sector/${sectorId}`);
-
-    setBarCode(e);
-
-    if (response.data.finish == null) {
-      if (response.data.showSector == 0) {
-        Notification('error', 'setor errado', 'Setor errado!');
-        setIsAlterPathModalOpen(true);
-      } else {
-        if (response.data.start == null) {
-          setIsStartMountModalOpen(true);
-        } else {
-          setIsNextSectorMountModalOpen(true);
-        }
-      }
-    } else {
+    if (isStopMachine) {
       Notification(
         'error',
-        'Monte ja finalizado',
-        'Esse monte ja foi finalizado'
+        'Maquina parada',
+        'Essa maquina se encontra parada, finalize a manutenção para continuar utilizando'
       );
-    }
+    } else {
+      const response = await api.get(
+        `plating/mount/tag/${e}/sector/${sectorId}`
+      );
 
-    setColor(response.data.color);
-    setProductName(response.data.productName);
-    setProductionPlanControlName(response.data.pcp);
-    setSubProductName(response.data.subProductName);
-    setAmount(response.data.amount);
-    setNewAmount(response.data.amount);
-    setMountId(response.data.id);
+      setBarCode(e);
+
+      if (response.data.finish == null) {
+        if (response.data.showSector == 0) {
+          Notification('error', 'setor errado', 'Setor errado!');
+          setIsAlterPathModalOpen(true);
+        } else {
+          if (response.data.start == null) {
+            setIsStartMountModalOpen(true);
+          } else {
+            setIsNextSectorMountModalOpen(true);
+          }
+        }
+      } else {
+        Notification(
+          'error',
+          'Monte ja finalizado',
+          'Esse monte ja foi finalizado'
+        );
+      }
+
+      setColor(response.data.color);
+      setProductName(response.data.productName);
+      setProductionPlanControlName(response.data.pcp);
+      setSubProductName(response.data.subProductName);
+      setAmount(response.data.amount);
+      setNewAmount(response.data.amount);
+      setMountId(response.data.id);
+    }
   };
 
   const startMountOtherSector = async () => {
