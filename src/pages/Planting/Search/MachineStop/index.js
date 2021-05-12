@@ -28,7 +28,7 @@ import {
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
-export default function PlantingDayProductionMount() {
+export default function MachineStop() {
   class SearchTable extends React.Component {
     state = {
       loading: false,
@@ -130,8 +130,8 @@ export default function PlantingDayProductionMount() {
       const columns = [
         {
           title: 'id',
-          dataIndex: 'machineId',
-          key: 'machineId',
+          dataIndex: 'id',
+          key: 'id',
 
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
           ...this.getColumnSearchProps('machineName'),
@@ -146,16 +146,16 @@ export default function PlantingDayProductionMount() {
         },
         {
           title: 'Início da Parada',
-          dataIndex: 'initiated',
-          key: 'initiated',
+          dataIndex: 'start',
+          key: 'start',
 
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
           ...this.getColumnSearchProps('initiated'),
         },
         {
           title: 'Fim da Parada',
-          dataIndex: 'initiated',
-          key: 'initiated',
+          dataIndex: 'finish',
+          key: 'finish',
 
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
           ...this.getColumnSearchProps('initiated'),
@@ -171,30 +171,21 @@ export default function PlantingDayProductionMount() {
       ];
 
       return (
-        <Table
-          columns={columns}
-          dataSource={mountDayProduction}
-          rowKey="filter"
-        />
+        <Table columns={columns} dataSource={stopedMachines} rowKey="filter" />
       );
     }
   }
 
-  const [mountDayProduction, setMountDayProduction] = useState([{}]);
+  const [stopedMachines, setStopedMachines] = useState([{}]);
   const [intervalTime, setIntervalTime] = useState([]);
 
-  useEffect(() => {
-    api.get('plating/mount/search/day/production', {}).then((response) => {
-      setMountDayProduction(response.data);
-    });
-  }, []);
-
   const handleDownload = async (e) => {
-    const response = await api.post('plating/mount/search/production/day', {
+    const response = await api.post('machine-stop/report', {
       intervalTime,
     });
 
-    setMountDayProduction(response.data);
+    console.log(response.data);
+    setStopedMachines(response.data);
   };
 
   const [data, setData] = useState([{}]);
@@ -202,13 +193,13 @@ export default function PlantingDayProductionMount() {
   const [load, setLoad] = useState(false);
   const [headers, setHeaders] = useState([
     { label: 'Nome da Maquina', key: 'machineName' },
-    { label: 'Início da Parada', key: 'initiated' },
-    { label: 'Fim da Parada ', key: 'stopped' },
-    { label: 'Tempo Parado', key: 'finished' },
+    { label: 'Início da Parada', key: 'start' },
+    { label: 'Fim da Parada ', key: 'finish' },
+    { label: 'Tempo Parado', key: 'stopedTime' },
   ]);
 
   const csvReport = {
-    data: mountDayProduction,
+    data: stopedMachines,
     headers: headers,
     filename: 'relatorioDeParadaDeMaquina.csv',
   };
