@@ -129,45 +129,12 @@ export default function PlantingDayProductionMount() {
     render() {
       const columns = [
         {
-          title: 'PCP',
-          dataIndex: 'pcpName',
-          key: 'pcpName',
+          title: 'id',
+          dataIndex: 'machineId',
+          key: 'machineId',
 
-          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
-          ...this.getColumnSearchProps('pcpName'),
-        },
-        {
-          title: 'Nome do produto',
-          dataIndex: 'productName',
-          key: 'productName',
-
-          sorter: (a, b) => this.compareByAlph(a.productName, b.productName),
-          ...this.getColumnSearchProps('productName'),
-        },
-        {
-          title: 'Nome do SubProduto',
-          dataIndex: 'subProductName',
-          key: 'subProductName',
-
-          sorter: (a, b) =>
-            this.compareByAlph(a.subProductName, b.subProductName),
-          ...this.getColumnSearchProps('subProductName'),
-        },
-        {
-          title: 'Setor',
-          dataIndex: 'sectorName',
-          key: 'sectorName',
-
-          sorter: (a, b) => this.compareByAlph(a.sectorName, b.sectorName),
-          ...this.getColumnSearchProps('sectorName'),
-        },
-        {
-          title: 'Quantidade finalizada',
-          dataIndex: 'amountOutput',
-          key: 'amountOutput',
-
-          sorter: (a, b) => this.compareByAlph(a.amountOutput, b.amountOutput),
-          ...this.getColumnSearchProps('amountOutput'),
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('machineName'),
         },
         {
           title: 'Maquina',
@@ -176,6 +143,30 @@ export default function PlantingDayProductionMount() {
 
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
           ...this.getColumnSearchProps('machineName'),
+        },
+        {
+          title: 'Início da Parada',
+          dataIndex: 'initiated',
+          key: 'initiated',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('initiated'),
+        },
+        {
+          title: 'Fim da Parada',
+          dataIndex: 'initiated',
+          key: 'initiated',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('initiated'),
+        },
+        {
+          title: 'Tempo de Parada',
+          dataIndex: 'initiated',
+          key: 'initiated',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('initiated'),
         },
       ];
 
@@ -210,22 +201,16 @@ export default function PlantingDayProductionMount() {
   const [ready, setReady] = useState(false);
   const [load, setLoad] = useState(false);
   const [headers, setHeaders] = useState([
-    { label: 'Código de barras', key: 'barCode' },
-    { label: 'PCP', key: 'pcpName' },
-    { label: 'Produto', key: 'productName' },
-    { label: 'SubProduto', key: 'subProductName' },
-    { label: 'Setor', key: 'sectorName' },
-    { label: 'Hora Iniciado', key: 'start' },
-    { label: 'Quantidade Iniciado', key: 'amountInput' },
-    { label: 'Hora Finalizado', key: 'finish' },
-    { label: 'Quantidade Finalizado', key: 'amountOutput' },
-    { label: 'Maquina', key: 'machineName' },
+    { label: 'Nome da Maquina', key: 'machineName' },
+    { label: 'Início da Parada', key: 'initiated' },
+    { label: 'Fim da Parada ', key: 'stopped' },
+    { label: 'Tempo Parado', key: 'finished' },
   ]);
 
   const csvReport = {
     data: mountDayProduction,
     headers: headers,
-    filename: 'relatorioProduzidoPorHoraChaparia.csv',
+    filename: 'relatorioDeParadaDeMaquina.csv',
   };
 
   return (
@@ -265,7 +250,7 @@ export default function PlantingDayProductionMount() {
                 }}
               >
                 <FileExcelOutlined style={{ marginRight: 8 }} />
-                Relatório de produção
+                Relatório de Parada
               </div>
             )}
 

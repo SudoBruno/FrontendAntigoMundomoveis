@@ -118,6 +118,7 @@ import CallListTransferEmployee from '../../pages/RH/CallListTransferEmployee/';
 import DefectReport from '../../pages/Quality/DefectReport';
 import ReasonStopMachine from '../../pages/Machine/ReasonStopMachine';
 import Machine from '../../pages/Machine';
+import MachineStop from '../../pages/Planting/Search/MachineStop';
 import { Tooltip } from '@material-ui/core';
 
 const userName = localStorage.getItem('userName');
@@ -542,6 +543,12 @@ const routes = [
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
     main: () => <ReasonStopMachine />,
+  },
+  {
+    path: '/machine-stop',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <MachineStop />,
   },
 ];
 
@@ -1095,6 +1102,15 @@ class App extends React.Component {
                     <Link to="/reason-stop">Motivos de parada</Link>
                   </Tooltip>
                 </Menu.Item>
+                <SubMenu
+                  key="machineSearches"
+                  title="Consultas"
+                  icon={<SearchOutlined />}
+                >
+                  <Menu.Item key="machineKey" icon={<RightSquareOutlined />}>
+                    <Link to="/machine-stop">Parada de Maquina</Link>
+                  </Menu.Item>
+                </SubMenu>
               </SubMenu>
             )}
             <Menu.Item key="40" icon={<ExportOutlined />}>
