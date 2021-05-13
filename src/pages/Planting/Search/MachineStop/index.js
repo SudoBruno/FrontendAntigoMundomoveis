@@ -209,6 +209,9 @@ export default function MachineStop() {
     { label: 'Início da Parada', key: 'start' },
     { label: 'Fim da Parada ', key: 'finish' },
     { label: 'Tempo Parado', key: 'stopedTime' },
+    { label: 'Motivo', key: 'reasonStopMachine' },
+    { label: 'Descrição do Motivo', key: 'reasonStop' },
+    { label: 'Descrição da Parada', key: 'description' },
     { label: 'Criação', key: 'createdAt' },
   ]);
 
