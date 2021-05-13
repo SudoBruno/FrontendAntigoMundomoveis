@@ -162,16 +162,29 @@ export default function MachineStop() {
         },
         {
           title: 'Tempo de Parada',
-          dataIndex: 'initiated',
-          key: 'initiated',
+          dataIndex: 'stopedTime',
+          key: 'stopedTime',
 
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
-          ...this.getColumnSearchProps('initiated'),
+          ...this.getColumnSearchProps('stopedTime'),
+        },
+        {
+          title: 'Criação',
+          dataIndex: 'createdAt',
+          key: 'createdAt',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('createdAt'),
         },
       ];
 
       return (
-        <Table columns={columns} dataSource={stopedMachines} rowKey="filter" />
+        <Table
+          align="right"
+          columns={columns}
+          dataSource={stopedMachines}
+          rowKey="filter"
+        />
       );
     }
   }
@@ -196,6 +209,7 @@ export default function MachineStop() {
     { label: 'Início da Parada', key: 'start' },
     { label: 'Fim da Parada ', key: 'finish' },
     { label: 'Tempo Parado', key: 'stopedTime' },
+    { label: 'Criação', key: 'createdAt' },
   ]);
 
   const csvReport = {
