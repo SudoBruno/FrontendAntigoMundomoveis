@@ -11,16 +11,17 @@ export function SeccionadoraTable() {
 
   const { sectorId, isStopMachine } = useContext(PlatingMountContext);
   const { finishMount, refreshKey } = useContext(SeccionadoraMountContext);
-
+  console.log(sectorId);
   useEffect(() => {
-    if (isStopMachine) {
+    if (!isStopMachine) {
       api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
+        console.log(response.data);
         setMount(response.data);
       });
     } else {
       setMount([{}]);
     }
-  }, [sectorId, refreshKey, isStopMachine]);
+  }, [sectorId, refreshKey]);
 
   class SeccionadoraTable extends React.Component {
     state = {

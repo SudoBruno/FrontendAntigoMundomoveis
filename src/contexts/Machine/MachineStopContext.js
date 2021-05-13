@@ -31,13 +31,13 @@ export function MachineStopProvider({ children, ...rest }) {
   const [startDate, setStartDate] = useState(
     format(new Date(), 'yyyy-MM-dd HH:mm')
   );
-  const [finishDate, setFinishDate] = useState('');
+  const [finishDate, setFinishDate] = useState(
+    format(new Date(), 'yyyy-MM-dd HH:mm')
+  );
 
   async function createStopMachine() {
     try {
       const response = await api.post('machine-stop', {
-        reasonStopMachineId,
-        description,
         machineId,
       });
 
@@ -90,6 +90,7 @@ export function MachineStopProvider({ children, ...rest }) {
   async function finishStopMachine() {
     try {
       const response = await api.put(`machine-stop/${machineId}`, {
+        reasonStopMachineId,
         startDate,
         finishDate,
         description,
@@ -132,6 +133,7 @@ export function MachineStopProvider({ children, ...rest }) {
         isStop,
         isCreateStopMachineModalOpen,
         startDate,
+        finishDate,
       }}
     >
       {children}

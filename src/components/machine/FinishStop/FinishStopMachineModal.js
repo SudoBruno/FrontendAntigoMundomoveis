@@ -1,16 +1,13 @@
-import { Col, Button, Modal, Form, Input, Row, Select, DatePicker } from 'antd';
-import React, { useState, useEffect, useContext } from 'react';
-
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select } from 'antd';
+import moment from 'moment';
+import React, { useContext, useEffect, useState } from 'react';
+import { MachineStopContext } from '../../../contexts/Machine/MachineStopContext';
 import api from '../../../services/api';
 import { Notification } from '../../Notification';
-import { MachineStopContext } from '../../../contexts/Machine/MachineStopContext';
-import { format } from 'date-fns';
-import moment from 'moment';
 
 const Option = Select.Option;
 
 const { TextArea } = Input;
-const { RangePicker } = DatePicker;
 
 export function FinishStopMachineModal() {
   const {
@@ -22,9 +19,10 @@ export function FinishStopMachineModal() {
     setStartDate,
     setFinishDate,
     startDate,
+    finishDate,
+    setReasonStopMachineId,
   } = useContext(MachineStopContext);
   const [reasonStop, setReasonStop] = useState([{}]);
-  const dateFormat = 'DD/MM/YYYY HH:mm';
 
   useEffect(() => {
     api.get('reason-stop', {}).then((response) => {
@@ -83,7 +81,7 @@ export function FinishStopMachineModal() {
               placeholder="Selecione"
               size="large"
               value={reasonStopMachineId}
-              disabled
+              onChange={(e) => setReasonStopMachineId(e)}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
@@ -134,18 +132,7 @@ export function FinishStopMachineModal() {
               size={'small'}
               defaultValue={moment(startDate, 'YYYY/MM/DD HH:mm')}
             />
-
-            {/* <RangePicker
-              size="small"
-              showTime={{ format: 'HH:mm' }}
-              format={'DD/MM/YYYY HH:mm'}
-              // onChange={onChange}
-              defaultValue={[
-                moment('2021-06-06 14:56', 'YYYY/MM/DD HH:mm'),
-                moment('2021-06-07 09:00', 'YYYY/MM/DD HH:mm'),
-              ]}
-              onOk={alterDate}
-            /> */}
+            {console.log(moment(startDate, 'YYYY/MM/DD HH:mm'))}
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -160,6 +147,7 @@ export function FinishStopMachineModal() {
               size="small"
               format={'DD/MM/YYYY HH:mm'}
               size={'small'}
+              defaultValue={moment(finishDate, 'YYYY/MM/DD HH:mm')}
             />
           </Form.Item>
         </Col>
