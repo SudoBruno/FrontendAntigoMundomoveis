@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import BarcodeReader from 'react-barcode-reader';
 import { Notification } from '../../../components/Notification';
 import { DifferentAmountModal } from '../../../components/Plating/DifferentAmountModal';
@@ -13,32 +13,37 @@ export const PlatingMountContext = createContext({});
 export function PlatingMountProvider({ children, ...rest }) {
   const [isStartMountModalOpen, setIsStartMountModalOpen] = useState(false);
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
-  const [isNextSectorMountModalOpen, setIsNextSectorMountModalOpen] = useState(
-    false
-  );
+  const [isNextSectorMountModalOpen, setIsNextSectorMountModalOpen] =
+    useState(false);
 
   const [isStopMachine, setIsStopMachine] = useState(false);
   const [machineId, setMachineId] = useState(1);
   const [sectorId, setSectorId] = useState(1);
 
-  const [isSelectMachineModalOpen, setIsSelectMachineModalOpen] = useState(
-    true
-  );
+  const [isSelectMachineModalOpen, setIsSelectMachineModalOpen] =
+    useState(true);
 
   const [barCode, setBarCode] = useState('');
   const [showAlterMountRoute, setShowAlterMountRoute] = useState(false);
   const [isAlterPathModalOpen, setIsAlterPathModalOpen] = useState(false);
   const [color, setColor] = useState('');
   const [productName, setProductName] = useState('');
-  const [productionPlanControlName, setProductionPlanControlName] = useState(
-    ''
-  );
+  const [productionPlanControlName, setProductionPlanControlName] =
+    useState('');
   const [subProductName, setSubProductName] = useState('');
   const [amount, setAmount] = useState(0);
   const [newAmount, setNewAmount] = useState(0);
 
   const [movement, setMovement] = useState('');
   const [mountId, setMountId] = useState(0);
+
+  const [machine, setMachine] = useState({});
+
+  useEffect(() => {
+    api.get(`machine/${machineId}`).then((response) => {
+      setMachine(response.data);
+    });
+  }, [machineId]);
 
   const handleSelectMachine = async (e) => {
     setMachineId(e);
@@ -159,34 +164,36 @@ export function PlatingMountProvider({ children, ...rest }) {
       value={{
         setMachineId,
         handleSelectMachine,
+        setIsStopMachine,
+        handleScan,
+        setIsStartMountModalOpen,
+        startMount,
+        setNewAmount,
+        setAmount,
+        setIsReasonModalOpen,
+        setMovement,
+        setIsNextSectorMountModalOpen,
+        startMountOtherSector,
+        setShowAlterMountRoute,
+        setIsAlterPathModalOpen,
         machineId,
         isSelectMachineModalOpen,
         sectorId,
         isStopMachine,
-        setIsStopMachine,
-        handleScan,
         isStartMountModalOpen,
-        setIsStartMountModalOpen,
-        startMount,
         productName,
         productionPlanControlName,
         color,
         subProductName,
         newAmount,
-        setNewAmount,
         amount,
-        setAmount,
-        setIsReasonModalOpen,
         mountId,
         movement,
-        setMovement,
         barCode,
-        setIsNextSectorMountModalOpen,
-        startMountOtherSector,
-        setShowAlterMountRoute,
-        setIsAlterPathModalOpen,
+        machine,
       }}
     >
+      <h1>{machine.name}</h1>
       {children}
       <BarcodeReader onScan={handleScan} onError={handleScan} />
       {isStartMountModalOpen && <StartMountModal />}
