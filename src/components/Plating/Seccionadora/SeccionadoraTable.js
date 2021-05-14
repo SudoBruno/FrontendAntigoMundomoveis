@@ -15,7 +15,6 @@ export function SeccionadoraTable() {
   useEffect(() => {
     if (!isStopMachine) {
       api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
-        console.log(response.data);
         setMount(response.data);
       });
     } else {
