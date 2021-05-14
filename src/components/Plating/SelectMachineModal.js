@@ -43,7 +43,6 @@ export function SelectMachineModal() {
               size="large"
               value={machineId}
               onChange={(e) => {
-                handleSelectMachine(e);
                 setMachineId(e);
               }}
               filterOption={(input, option) =>
