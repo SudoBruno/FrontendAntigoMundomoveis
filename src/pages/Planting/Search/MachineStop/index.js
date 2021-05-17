@@ -28,7 +28,7 @@ import {
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
-export default function PlantingDayProductionMount() {
+export default function MachineStop() {
   class SearchTable extends React.Component {
     state = {
       loading: false,
@@ -129,45 +129,12 @@ export default function PlantingDayProductionMount() {
     render() {
       const columns = [
         {
-          title: 'PCP',
-          dataIndex: 'pcpName',
-          key: 'pcpName',
+          title: 'id',
+          dataIndex: 'id',
+          key: 'id',
 
-          sorter: (a, b) => this.compareByAlph(a.pcpName, b.pcpName),
-          ...this.getColumnSearchProps('pcpName'),
-        },
-        {
-          title: 'Nome do produto',
-          dataIndex: 'productName',
-          key: 'productName',
-
-          sorter: (a, b) => this.compareByAlph(a.productName, b.productName),
-          ...this.getColumnSearchProps('productName'),
-        },
-        {
-          title: 'Nome do SubProduto',
-          dataIndex: 'subProductName',
-          key: 'subProductName',
-
-          sorter: (a, b) =>
-            this.compareByAlph(a.subProductName, b.subProductName),
-          ...this.getColumnSearchProps('subProductName'),
-        },
-        {
-          title: 'Setor',
-          dataIndex: 'sectorName',
-          key: 'sectorName',
-
-          sorter: (a, b) => this.compareByAlph(a.sectorName, b.sectorName),
-          ...this.getColumnSearchProps('sectorName'),
-        },
-        {
-          title: 'Quantidade finalizada',
-          dataIndex: 'amountOutput',
-          key: 'amountOutput',
-
-          sorter: (a, b) => this.compareByAlph(a.amountOutput, b.amountOutput),
-          ...this.getColumnSearchProps('amountOutput'),
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('machineName'),
         },
         {
           title: 'Maquina',
@@ -177,55 +144,81 @@ export default function PlantingDayProductionMount() {
           sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
           ...this.getColumnSearchProps('machineName'),
         },
+        {
+          title: 'Início da Parada',
+          dataIndex: 'start',
+          key: 'start',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('initiated'),
+        },
+        {
+          title: 'Fim da Parada',
+          dataIndex: 'finish',
+          key: 'finish',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('initiated'),
+        },
+        {
+          title: 'Tempo de Parada',
+          dataIndex: 'stopedTime',
+          key: 'stopedTime',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('stopedTime'),
+        },
+        {
+          title: 'Criação',
+          dataIndex: 'createdAt',
+          key: 'createdAt',
+
+          sorter: (a, b) => this.compareByAlph(a.machineName, b.machineName),
+          ...this.getColumnSearchProps('createdAt'),
+        },
       ];
 
       return (
         <Table
+          align="right"
           columns={columns}
-          dataSource={mountDayProduction}
+          dataSource={stopedMachines}
           rowKey="filter"
         />
       );
     }
   }
 
-  const [mountDayProduction, setMountDayProduction] = useState([{}]);
+  const [stopedMachines, setStopedMachines] = useState([{}]);
   const [intervalTime, setIntervalTime] = useState([]);
 
-  useEffect(() => {
-    api.get('plating/mount/search/day/production', {}).then((response) => {
-      setMountDayProduction(response.data);
-    });
-  }, []);
-
   const handleDownload = async (e) => {
-    const response = await api.post('plating/mount/search/production/day', {
+    const response = await api.post('machine-stop/report', {
       intervalTime,
     });
 
-    setMountDayProduction(response.data);
+    console.log(response.data);
+    setStopedMachines(response.data);
   };
 
   const [data, setData] = useState([{}]);
   const [ready, setReady] = useState(false);
   const [load, setLoad] = useState(false);
   const [headers, setHeaders] = useState([
-    { label: 'Código de barras', key: 'barCode' },
-    { label: 'PCP', key: 'pcpName' },
-    { label: 'Produto', key: 'productName' },
-    { label: 'SubProduto', key: 'subProductName' },
-    { label: 'Setor', key: 'sectorName' },
-    { label: 'Hora Iniciado', key: 'start' },
-    { label: 'Quantidade Iniciado', key: 'amountInput' },
-    { label: 'Hora Finalizado', key: 'finish' },
-    { label: 'Quantidade Finalizado', key: 'amountOutput' },
-    { label: 'Maquina', key: 'machineName' },
+    { label: 'Nome da Maquina', key: 'machineName' },
+    { label: 'Início da Parada', key: 'start' },
+    { label: 'Fim da Parada ', key: 'finish' },
+    { label: 'Tempo Parado', key: 'stopedTime' },
+    { label: 'Motivo', key: 'reasonStopMachine' },
+    { label: 'Descrição do Motivo', key: 'reasonStop' },
+    { label: 'Descrição da Parada', key: 'description' },
+    { label: 'Criação', key: 'createdAt' },
   ]);
 
   const csvReport = {
-    data: mountDayProduction,
+    data: stopedMachines,
     headers: headers,
-    filename: 'relatorioProduzidoPorHoraChaparia.csv',
+    filename: 'relatorioDeParadaDeMaquina.csv',
   };
 
   return (
@@ -265,7 +258,7 @@ export default function PlantingDayProductionMount() {
                 }}
               >
                 <FileExcelOutlined style={{ marginRight: 8 }} />
-                Relatório de produção
+                Relatório de Parada
               </div>
             )}
 

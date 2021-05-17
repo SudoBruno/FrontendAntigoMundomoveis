@@ -53,7 +53,7 @@ export function PlatingMountProvider({ children, ...rest }) {
       Notification(
         'error',
         'Maquina parada',
-        'essa maquina esta parada, mas continuar finalize a manutenção'
+        'essa maquina esta parada, para continuar finalize a manutenção'
       );
       setIsStopMachine(true);
     } else {
