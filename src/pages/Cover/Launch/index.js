@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Offline, Online } from 'react-detect-offline';
+
 import {
   CheckOutlined,
   DownloadOutlined,
@@ -126,6 +128,13 @@ export default function CoverLaunch() {
     }
   }
 
+  const handleDetect = () => {
+    openNotificationWithIcon(
+      'error',
+      'Erro ao lançar código',
+      'Não existe conexão com a internet'
+    );
+  };
   const warehouseChange = async (e) => {
     setCoverWarehouseId(e[0]);
     setCoverWarehouseName(e[1]);
@@ -135,6 +144,9 @@ export default function CoverLaunch() {
 
   return (
     <>
+      <div>
+        <Offline onChange={handleDetect}></Offline>
+      </div>
       <div className="container-cover">
         <div className="cover-launch-buttons">
           <button type="submit" className="cover-input" onClick={handleInput}>

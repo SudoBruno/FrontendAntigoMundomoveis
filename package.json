@@ -30,6 +30,7 @@
     "react-bootstrap": "^1.0.1",
     "react-burger-menu": "^2.6.17",
     "react-csv": "^2.0.3",
+    "react-detect-offline": "^2.4.4",
     "react-dom": "^16.13.1",
     "react-gauge-chart": "^0.2.5",
     "react-google-charts": "^3.0.15",
