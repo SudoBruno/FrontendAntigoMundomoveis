@@ -207,7 +207,7 @@ export default function ExpeditionWarehouse() {
     setName(e.name);
 
     try {
-      const response = await api.get(`/expedition/street/${e.id}`);
+      const response = await api.get(`/expedition/street/filter/${e.id}`);
       setExpeditionWarehouseId(response.data[0].expedition_warehouse_id);
     } catch (error) {
       openNotificationWithIcon(
