@@ -186,7 +186,7 @@ export default function ExpeditionWarehouse() {
         },
       ];
 
-      return <Table columns={columns} dataSource={street} />;
+      return <Table loading={loading} columns={columns} dataSource={street} />;
     }
   }
 
@@ -195,14 +195,29 @@ export default function ExpeditionWarehouse() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    setLoading(true);
     api.get('expedition/street', {}).then((response) => {
       setStreet(response.data);
+      setLoading(false);
     });
   }, [refreshKey]);
 
   async function handleEdit(e) {
     setId(e.id);
     setName(e.name);
+
+    console.log(e);
+
+    try {
+      const response = await api.get(`/expedition/street/${e.id}`);
+      setExpeditionWarehouseId(response.data[0].expedition_warehouse_id);
+    } catch (error) {
+      openNotificationWithIcon(
+        'error',
+        'Erro ao adicionar',
+        'A rua não foi adicionado'
+      );
+    }
 
     handleShow();
   }
@@ -298,6 +313,7 @@ export default function ExpeditionWarehouse() {
   const [locked, setLocked] = useState(0);
   const [expeditionWarehouseId, setExpeditionWarehouseId] = useState(1);
   const [warehouse, setWarehouse] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     api.get('expedition/warehouse', {}).then((response) => {
@@ -310,6 +326,7 @@ export default function ExpeditionWarehouse() {
     setName('');
     setId(0);
     setShow(false);
+    setLoading(false);
   };
   const handleShow = () => setShow(true);
 
@@ -406,7 +423,10 @@ export default function ExpeditionWarehouse() {
                 placeholder="Selecione"
                 size="large"
                 value={expeditionWarehouseId}
-                onChange={(e) => setExpeditionWarehouseId(e)}
+                onChange={(e) => {
+                  setExpeditionWarehouseId(e);
+                  console.log(e);
+                }}
               >
                 {warehouse.map((option) => {
                   return (

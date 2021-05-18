@@ -322,7 +322,7 @@ export default function PlantingStreet() {
             style={{ marginRight: 5, marginTop: 3, fontSize: '14px' }}
             onClick={openModal}
           >
-            Nova rua
+            Nova ruax\zxxc
           </Button>
         </Col>
       </Row>
