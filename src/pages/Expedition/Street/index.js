@@ -206,8 +206,6 @@ export default function ExpeditionWarehouse() {
     setId(e.id);
     setName(e.name);
 
-    console.log(e);
-
     try {
       const response = await api.get(`/expedition/street/${e.id}`);
       setExpeditionWarehouseId(response.data[0].expedition_warehouse_id);
@@ -425,7 +423,6 @@ export default function ExpeditionWarehouse() {
                 value={expeditionWarehouseId}
                 onChange={(e) => {
                   setExpeditionWarehouseId(e);
-                  console.log(e);
                 }}
               >
                 {warehouse.map((option) => {
