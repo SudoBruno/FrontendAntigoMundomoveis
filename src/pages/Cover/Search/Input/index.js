@@ -190,7 +190,6 @@ export default function CoverInput() {
       intervalTime: intervalTime,
     };
     const response = await api.post('cover/inputReport', data);
-    console.log(response.data);
     setInput(response.data);
     setCsvData(response.data);
   }
