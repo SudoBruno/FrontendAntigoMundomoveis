@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  DownloadOutlined,
+  FileExcelOutlined,
+} from '@ant-design/icons';
 import api from '../../../../services/api';
-import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
+import {
+  Layout,
+  Table,
+  Button,
+  Row,
+  Input,
+  Space,
+  Select,
+  Col,
+  DatePicker,
+} from 'antd';
 
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default function CoverInput() {
   class SearchTable extends React.Component {
@@ -168,6 +183,17 @@ export default function CoverInput() {
       return <Table columns={columns} dataSource={input} />;
     }
   }
+  const [csvData, setCsvData] = useState([]);
+
+  async function Filter() {
+    const data = {
+      intervalTime: intervalTime,
+    };
+    const response = await api.post('cover/inputReport', data);
+    console.log(response.data);
+    setInput(response.data);
+    setCsvData(response.data);
+  }
 
   const [input, setInput] = useState([]);
 
@@ -192,6 +218,7 @@ export default function CoverInput() {
     filename: 'relatorio_entrada_no_estoque_de_capas.csv',
   };
   const [status, setStatus] = useState(false);
+  const [intervalTime, setIntervalTime] = useState([]);
 
   return (
     <Layout
@@ -203,6 +230,21 @@ export default function CoverInput() {
       }}
     >
       <Row style={{ marginBottom: 16 }}>
+        <Col span={12}>
+          <RangePicker
+            size="small"
+            placeholder={['data inicial', 'data final']}
+            onChange={setIntervalTime}
+          />
+          <SearchOutlined
+            style={{
+              fontSize: 18,
+              color: '#3b4357',
+              marginLeft: 8,
+            }}
+            onClick={Filter}
+          />
+        </Col>
         <Col span={24} align="end">
           <Button className="buttonGreen">
             <DownloadOutlined />
