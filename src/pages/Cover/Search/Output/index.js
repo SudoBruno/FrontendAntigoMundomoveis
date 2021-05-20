@@ -172,7 +172,7 @@ export default function CoverOutput() {
           title: 'Removido',
           dataIndex: 'createdAt',
           key: 'createdAt',
-          ...this.getColumnSearchProps('created'),
+          ...this.getColumnSearchProps('createdAt'),
         },
         {
           title: 'PCP',
@@ -195,7 +195,7 @@ export default function CoverOutput() {
     { label: 'Almoxarifado', key: 'warehouseName' },
     { label: 'Rua', key: 'streetName' },
     { label: 'Funcionário', key: 'employeeName' },
-    { label: 'Removido', key: 'created' },
+    { label: 'Removido', key: 'createdAt' },
     { label: 'PCP', key: 'pcp' },
   ]);
 

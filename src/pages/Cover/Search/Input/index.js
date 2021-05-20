@@ -203,7 +203,7 @@ export default function CoverInput() {
     { label: 'Almoxarifado', key: 'warehouseName' },
     { label: 'Rua', key: 'streetName' },
     { label: 'Funcionário', key: 'employeeName' },
-    { label: 'Armazenado', key: 'created' },
+    { label: 'Armazenado', key: 'createdAt' },
   ]);
 
   useEffect(() => {
