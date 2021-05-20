@@ -3,9 +3,20 @@ import { CSVLink } from 'react-csv';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import api from '../../../../services/api';
-import { Layout, Table, Button, Row, Input, Space, Select, Col } from 'antd';
+import {
+  Layout,
+  Table,
+  Button,
+  Row,
+  Input,
+  Space,
+  Select,
+  Col,
+  DatePicker,
+} from 'antd';
 
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default function CoverOutput() {
   class SearchTable extends React.Component {
@@ -193,6 +204,25 @@ export default function CoverOutput() {
       setOutput(response.data);
     });
   }, []);
+
+  const [csvData, setCsvData] = useState([]);
+  const [intervalTime, setIntervalTime] = useState([]);
+
+  async function Filter() {
+    const data = {
+      intervalTime: intervalTime,
+    };
+    console.log(intervalTime);
+    try {
+      const response = await api.post('/cover/outputReport', data);
+      console.log(response.data);
+      setOutput(response.data);
+      setCsvData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const csvReport = {
     data: outputs,
     headers: headers,
@@ -210,7 +240,22 @@ export default function CoverOutput() {
       }}
     >
       <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="end">
+        <Col span={12}>
+          <RangePicker
+            size="small"
+            placeholder={['data inicial', 'data final']}
+            onChange={setIntervalTime}
+          />
+          <SearchOutlined
+            style={{
+              fontSize: 18,
+              color: '#3b4357',
+              marginLeft: 8,
+            }}
+            onClick={Filter}
+          />
+        </Col>
+        <Col span={12} align="end">
           <Button className="buttonGreen">
             <DownloadOutlined />
             <CSVLink

@@ -244,7 +244,7 @@ export default function CoverInput() {
             onClick={Filter}
           />
         </Col>
-        <Col span={24} align="end">
+        <Col span={12} align="end">
           <Button className="buttonGreen">
             <DownloadOutlined />
             <CSVLink
