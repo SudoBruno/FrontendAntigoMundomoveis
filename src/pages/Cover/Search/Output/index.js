@@ -170,8 +170,8 @@ export default function CoverOutput() {
         },
         {
           title: 'Removido',
-          dataIndex: 'created',
-          key: 'created',
+          dataIndex: 'createdAt',
+          key: 'createdAt',
           ...this.getColumnSearchProps('created'),
         },
         {

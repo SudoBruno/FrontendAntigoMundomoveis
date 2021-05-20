@@ -174,9 +174,9 @@ export default function CoverInput() {
         },
         {
           title: 'Armazenado',
-          dataIndex: 'created',
-          key: 'created',
-          ...this.getColumnSearchProps('created'),
+          dataIndex: 'createdAt',
+          key: 'createdAt',
+          ...this.getColumnSearchProps('createdAt'),
         },
       ];
 
