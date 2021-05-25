@@ -194,6 +194,7 @@ export default function ExpeditionStock() {
       { label: 'Almoxarifado', key: 'warehouseName' },
       { label: 'Data armazenado', key: 'stock' },
       { label: 'Código de barras', key: 'barCode' },
+      { label: 'SKU', key: 'SKU' },
       { label: 'volume', key: 'volume' },
     ]);
   }

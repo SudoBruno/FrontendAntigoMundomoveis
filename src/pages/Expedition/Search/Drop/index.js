@@ -89,8 +89,8 @@ export default function ExpeditionDrop() {
             textToHighlight={text.toString()}
           />
         ) : (
-            text
-          ),
+          text
+        ),
     });
 
     compareByAlph = (a, b) => {
@@ -188,6 +188,7 @@ export default function ExpeditionDrop() {
     { label: 'Drop ID', key: 'agenda_drop_id' },
     { label: 'Produto', key: 'name' },
     { label: 'Cod. Interno', key: 'reference' },
+    { label: 'SKU', key: 'SKU' },
     { label: 'Agendado', key: 'need' },
     { label: 'Saiu', key: 'output' },
   ]);

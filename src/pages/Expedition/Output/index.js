@@ -160,6 +160,13 @@ export default function ExpeditionOutput() {
 
           ...this.getColumnSearchProps('barCode'),
         },
+        {
+          title: 'SKU',
+          dataIndex: 'client_code',
+          key: 'client_code',
+
+          ...this.getColumnSearchProps('client_code'),
+        },
       ];
 
       return <Table columns={columns} dataSource={output} />;
@@ -214,6 +221,7 @@ export default function ExpeditionOutput() {
       { label: 'Almoxarifado', key: 'warehouseName' },
       { label: 'Data armazenado', key: 'warehouseName' },
       { label: 'Código de barras', key: 'warehouseName' },
+      { label: 'SKU', key: 'client_code' },
     ]);
   }
   return (
