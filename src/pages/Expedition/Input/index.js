@@ -153,6 +153,12 @@ export default function ExpeditionInput() {
           key: 'streetName',
           ...this.getColumnSearchProps('streetName'),
         },
+        {
+          title: 'Armazém',
+          dataIndex: 'warehouseName',
+          key: 'warehouseName',
+          ...this.getColumnSearchProps('warehouseName'),
+        },
 
         {
           title: 'Data Armazenado',
