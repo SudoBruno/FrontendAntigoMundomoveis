@@ -60,6 +60,9 @@ export default function Logon() {
       } else if (response.data.user.access_level === '6') {
         history.push('/callList');
         setLoading('none');
+      } else if (response.data.user.access_level === '8') {
+        history.push('/expedition/launch');
+        setLoading('none');
       }
       setLoading('none');
     } catch (error) {

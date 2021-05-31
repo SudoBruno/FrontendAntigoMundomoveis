@@ -570,6 +570,7 @@ class App extends React.Component {
       (localStorage.getItem('userId') !== null &&
         Cookies.get('token') !== undefined &&
         localStorage.getItem('access_level') === '1') ||
+      localStorage.getItem('access_level') === '8' ||
       localStorage.getItem('access_level') === '4' ||
       localStorage.getItem('access_level') === '5' ||
       localStorage.getItem('access_level') === '7';
@@ -767,7 +768,8 @@ class App extends React.Component {
               </SubMenu>
             )}
 
-            {localStorage.getItem('access_level') === '1' && (
+            {(localStorage.getItem('access_level') === '1' ||
+              localStorage.getItem('access_level') === '8') && (
               <SubMenu
                 key="expedition"
                 title="Expedição"
@@ -777,64 +779,75 @@ class App extends React.Component {
                   </span>
                 }
               >
-                <SubMenu
-                  key="expeditionCadastro"
-                  title="Cadastros"
-                  icon={<PlusOutlined />}
-                >
-                  <Menu.Item key="22" icon={<RightSquareOutlined />}>
-                    <Link to="/expedition/warehouse">Almoxarifado</Link>
+                {localStorage.getItem('access_level') === '1' && (
+                  <SubMenu
+                    key="expeditionCadastro"
+                    title="Cadastros"
+                    icon={<PlusOutlined />}
+                  >
+                    <Menu.Item key="22" icon={<RightSquareOutlined />}>
+                      <Link to="/expedition/warehouse">Almoxarifado</Link>
+                    </Menu.Item>
+                    <Menu.Item key="23" icon={<RightSquareOutlined />}>
+                      <Link to="/expedition/street">Rua</Link>
+                    </Menu.Item>
+                    <Menu.Item key="31" icon={<RightSquareOutlined />}>
+                      <Link to="/drop">Agenda do Drop</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '8') && (
+                  <Menu.Item key="24" icon={<BarcodeOutlined />}>
+                    <Link to="/expedition/launch">Lançamento</Link>
                   </Menu.Item>
-                  <Menu.Item key="23" icon={<RightSquareOutlined />}>
-                    <Link to="/expedition/street">Rua</Link>
-                  </Menu.Item>
-                  <Menu.Item key="31" icon={<RightSquareOutlined />}>
-                    <Link to="/drop">Agenda do Drop</Link>
-                  </Menu.Item>
-                </SubMenu>
-                <Menu.Item key="24" icon={<BarcodeOutlined />}>
-                  <Link to="/expedition/launch">Lançamento</Link>
-                </Menu.Item>
-                <SubMenu
-                  key="ExpeditionSearches"
-                  title="Consultas"
-                  icon={<SearchOutlined />}
-                >
-                  <Menu.Item key="25" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/stock">Estoque</Link>
-                  </Menu.Item>
+                )}
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '8') && (
+                  <SubMenu
+                    key="ExpeditionSearches"
+                    title="Consultas"
+                    icon={<SearchOutlined />}
+                  >
+                    <Menu.Item key="25" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/stock">Estoque</Link>
+                    </Menu.Item>
 
-                  <Menu.Item key="36" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/input">Entradas</Link>
-                  </Menu.Item>
+                    <Menu.Item key="36" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/input">Entradas</Link>
+                    </Menu.Item>
 
-                  <Menu.Item key="34" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/output">Saídas</Link>
-                  </Menu.Item>
-                  <Menu.Item key="35" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/change">Troca de estoque</Link>
-                  </Menu.Item>
-                  <Menu.Item key="41" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/drop">Drop</Link>
-                  </Menu.Item>
-                </SubMenu>
-                <SubMenu
-                  key="ExpeditionDefectSearches"
-                  title="PD"
-                  icon={<SearchOutlined />}
-                >
-                  <Menu.Item key="stockDefect" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/stock/defect">Estoque</Link>
-                  </Menu.Item>
+                    <Menu.Item key="34" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/output">Saídas</Link>
+                    </Menu.Item>
+                    <Menu.Item key="35" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/change">Troca de estoque</Link>
+                    </Menu.Item>
+                    <Menu.Item key="41" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/drop">Drop</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
+                {(localStorage.getItem('access_level') === '1' ||
+                  localStorage.getItem('access_level') === '8') && (
+                  <SubMenu
+                    key="ExpeditionDefectSearches"
+                    title="PD"
+                    icon={<SearchOutlined />}
+                  >
+                    <Menu.Item key="stockDefect" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/stock/defect">Estoque</Link>
+                    </Menu.Item>
 
-                  <Menu.Item key="inputDefect" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/input/defect">Entradas</Link>
-                  </Menu.Item>
+                    <Menu.Item key="inputDefect" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/input/defect">Entradas</Link>
+                    </Menu.Item>
 
-                  <Menu.Item key="outputDefect" icon={<FileExcelOutlined />}>
-                    <Link to="/expedition/output/defect">Saídas</Link>
-                  </Menu.Item>
-                </SubMenu>
+                    <Menu.Item key="outputDefect" icon={<FileExcelOutlined />}>
+                      <Link to="/expedition/output/defect">Saídas</Link>
+                    </Menu.Item>
+                  </SubMenu>
+                )}
               </SubMenu>
             )}
 
