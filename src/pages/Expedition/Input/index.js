@@ -193,6 +193,7 @@ export default function ExpeditionInput() {
     { label: 'Cod. Barras', key: 'barCode' },
     { label: 'Volume', key: 'volume' },
     { label: 'Quantidade de volumes', key: 'volumeQuantity' },
+    { label: 'Preço de Custo', key: 'laborCost' },
     { label: 'SKU', key: 'SKU' },
     { label: 'Cod. cliente', key: 'clientId' },
   ]);
