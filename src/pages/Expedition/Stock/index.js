@@ -195,6 +195,7 @@ export default function ExpeditionStock() {
       { label: 'Data armazenado', key: 'stock' },
       { label: 'Código de barras', key: 'barCode' },
       { label: 'SKU', key: 'SKU' },
+      { label: 'PCP', key: 'pcp' },
       { label: 'volume', key: 'volume' },
     ]);
   }
