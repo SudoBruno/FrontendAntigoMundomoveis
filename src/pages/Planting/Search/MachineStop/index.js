@@ -205,6 +205,7 @@ export default function MachineStop() {
   const [ready, setReady] = useState(false);
   const [load, setLoad] = useState(false);
   const [headers, setHeaders] = useState([
+    { label: 'ID da Maquina', key: 'machineID' },
     { label: 'Nome da Maquina', key: 'machineName' },
     { label: 'Início da Parada', key: 'start' },
     { label: 'Fim da Parada ', key: 'finish' },

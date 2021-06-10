@@ -195,9 +195,10 @@ export default function ExpeditionInput() {
     { label: 'Quantidade de volumes', key: 'volumeQuantity' },
     { label: 'SKU', key: 'SKU' },
     { label: 'Cod. cliente', key: 'clientId' },
+    { label: 'PCP', key: 'pcpName' },
     localStorage.getItem('access_level') === '1'
-      ? { label: 'MO/Vol', key: 'laborCost' }
-      : { label: '', key: '' },
+      && { label: 'MO/Vol', key: 'laborCost' }
+      
   ]);
   // const [ready, setReady] = useState(false);
   const [intervalTime, setIntervalTime] = useState([]);

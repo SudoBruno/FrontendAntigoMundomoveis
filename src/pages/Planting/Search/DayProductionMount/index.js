@@ -213,6 +213,7 @@ export default function PlantingDayProductionMount() {
     { label: 'Código de barras', key: 'barCode' },
     { label: 'PCP', key: 'pcpName' },
     { label: 'Produto', key: 'productName' },
+    { label: 'ID do SubProduto', key: 'subProductId' },
     { label: 'SubProduto', key: 'subProductName' },
     { label: 'Setor', key: 'sectorName' },
     { label: 'Hora Iniciado', key: 'start' },
@@ -220,6 +221,7 @@ export default function PlantingDayProductionMount() {
     { label: 'Hora Finalizado', key: 'finish' },
     { label: 'Quantidade Finalizado', key: 'amountOutput' },
     { label: 'Maquina', key: 'machineName' },
+    { label: 'ID da Maquina', key: 'machineID' },
   ]);
 
   const csvReport = {
