@@ -4,8 +4,9 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons';
 import api from '../../services/api';
 import { Table, Button, Input, Space, Popconfirm } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, BarcodeOutlined } from '@ant-design/icons';
 import { MachineContext } from '../../contexts/Machine/MachineContext';
+import { Link } from 'react-router-dom';
 
 export function MachineTable() {
   const { refreshKey, deleteMachine, getMachine } = useContext(MachineContext);
@@ -147,6 +148,13 @@ export function MachineTable() {
                     getMachine(record.id);
                   }}
                 />
+                <Link
+                  to={`/machine/${record.id}`}
+                  style={{ color: 'rgb(0,0,0,0.65', marginRight: 20 }}
+                  target="_blank"
+                >
+                  <BarcodeOutlined style={{ marginLeft: 20 }} />
+                </Link>
 
                 <Popconfirm
                   onConfirm={() => deleteMachine(record.id)}
