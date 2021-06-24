@@ -174,6 +174,7 @@ export default function LaunchProduction() {
     hidden: true,
     span: 12,
   });
+  const [barCodes, setBarCodes] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -236,22 +237,20 @@ export default function LaunchProduction() {
   }
   function ButtonClick(e) {
     e.preventDefault();
-    let data = {
+
+    const data = {
       code,
       employee_id,
+      bar_codes: barCodes,
     };
+
     LaunchCode(data);
   }
   async function LaunchCode(data) {
     try {
-      let response;
-      if (modalConfigure.title == '') {
-        response = await api.post('bar-code', data);
-        setAmount((amount) => amount + 1);
-      } else {
-        response = await api.post(`bar-code/${modalConfigure.url}`, data);
-        setAmount((amount) => amount + 1);
-      }
+      const response = await api.post(`bar-code/${modalConfigure.url}`, data);
+      setAmount((amount) => amount + 1);
+
       if (modalConfigure.title == 'Lançamento Agrupado') {
         setEmployeeId('');
         setEmployeeName('');
@@ -261,7 +260,10 @@ export default function LaunchProduction() {
         'Lançado com sucesso',
         'Código lançado com sucesso'
       );
-      setLaunched([...launched, response.data]);
+      setLaunched([...launched, response.data.launch]);
+      setBarCodes(response.data.bar_codes);
+
+      console.log(barCodes);
     } catch (error) {
       openNotificationWithIcon(
         'error',
@@ -272,9 +274,10 @@ export default function LaunchProduction() {
   }
 
   async function EditBarCode(e) {
-    let data = {
+    const data = {
       code: e,
       employee_id,
+      bar_codes: barCodes,
     };
 
     if (modalConfigure.url === '') {
