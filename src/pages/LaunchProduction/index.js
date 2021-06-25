@@ -261,7 +261,9 @@ export default function LaunchProduction() {
         'Código lançado com sucesso'
       );
       setLaunched([...launched, response.data.launch]);
-      setBarCodes(response.data.bar_codes);
+      const barCodesResponse =
+        response.data.bar_codes === undefined ? [] : response.data.bar_codes;
+      setBarCodes(barCodesResponse);
 
       console.log(barCodes);
     } catch (error) {
@@ -270,6 +272,7 @@ export default function LaunchProduction() {
         'Erro ao lançar código',
         error.response.data.message
       );
+      console.log(barCodes);
     }
   }
 
