@@ -28,7 +28,7 @@ function MachineTag() {
 
   return (
     <>
-      <div className="tag">
+      <div className="machineTag">
         <h1 className="machineName">{machine.name}</h1>
         <svg ref={inputRef} className="machineCode" />
       </div>
