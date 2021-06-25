@@ -45,11 +45,8 @@ export default function Logon() {
         history.push('/profile');
         setLoading('none');
       } else if (response.data.user.access_level === '2') {
-        // history.push('/launch-product');
-        window.open(
-          'https://mundomoveis.vercel.app/production/launch',
-          '_blank'
-        );
+        history.push('/launch-product');
+
         setLoading('none');
       } else if (response.data.user.access_level === '3') {
         history.push('/launch-expedition');
