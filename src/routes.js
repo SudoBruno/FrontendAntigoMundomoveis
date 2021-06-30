@@ -15,6 +15,7 @@ import CallList from './pages/RH/CallList';
 import ExpeditionLaunch from './pages/Expedition/Launch';
 import StockBarcode from './pages/WmsRawMaterial/Search/SearchStorage/Barcode';
 import CoverLaunch from './pages/Cover/Launch';
+import { MachineTag } from './components/MachineTag';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -62,6 +63,7 @@ export default function Routes() {
         <Route path="/" exact component={Logon} />
         <Route path="/coefficient" exact component={Coefficient} />
         <PrivateRoute path="/pcp/:id" component={TagLayout} />
+        <PrivateRoute path="/machine/:id" component={MachineTag} />
         <PrivateRoute path="/wmsrm/barcode/:id" component={Barcode} />
         <PrivateRoute path="/stock/barcode/:id" component={StockBarcode} />
         <PrivateRoute path="/launch-product" component={LaunchProduction} />

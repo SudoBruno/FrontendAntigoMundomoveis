@@ -1,6 +1,8 @@
 node_modules
 .env
 yarn.lock
+yarn-error.log
+
 
 access level:
 1 - ADM

@@ -1,0 +1,14 @@
+.machineTag {
+  position: relative;
+  width: 50%;
+  border: black dashed;
+}
+
+.machineName {
+  color: black;
+}
+
+.machineCode {
+  margin-left: 40%;
+  color: #fff;
+}

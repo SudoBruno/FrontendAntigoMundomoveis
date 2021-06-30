@@ -1,5 +1,6 @@
-import { Col, Form, Input, Modal, Row, Select } from 'antd';
+import { Col, Form, Input, Modal, Row, Select, Button } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+import BarcodeReader from 'react-barcode-reader';
 import { PlatingMountContext } from '../../contexts/Plating/Mount/PlatingMountContext';
 import api from '../../services/api';
 
@@ -23,12 +24,36 @@ export function SelectMachineModal() {
     });
   }, []);
 
+  const handleChangeMachine = async (e) => {
+    setLoading(true);
+    setMachineId(e);
+    const filterMachine = machines.find(
+      (machine) => machine.id === parseInt(e)
+    );
+    setMachineName(filterMachine.name);
+    setLoading(false);
+  };
+
+  const [machineName, setMachineName] = useState();
+
+  const [loading, setLoading] = useState(false);
+
   return (
     <Modal
       title="Selecione a maquina"
       visible={isSelectMachineModalOpen}
       width={500}
-      onOk={(e) => handleSelectMachine(machineId)}
+      footer={[
+        <Button key="back">Cancelar</Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={(e) => handleSelectMachine(machineId)}
+        >
+          Ok
+        </Button>,
+      ]}
     >
       <Row gutter={5}>
         <Col span={24}>
@@ -41,9 +66,9 @@ export function SelectMachineModal() {
               showSearch
               placeholder="Selecione"
               size="large"
-              value={machineId}
+              value={machineName}
               onChange={(e) => {
-                setMachineId(e);
+                handleChangeMachine(e);
               }}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -67,6 +92,10 @@ export function SelectMachineModal() {
           </Form.Item>
         </Col>
       </Row>
+      <BarcodeReader
+        onScan={handleChangeMachine}
+        onError={handleChangeMachine}
+      />
     </Modal>
   );
 }

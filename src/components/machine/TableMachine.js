@@ -148,6 +148,13 @@ export function MachineTable() {
                     getMachine(record.id);
                   }}
                 />
+                <Link
+                  to={`/machine/${record.id}`}
+                  style={{ color: 'rgb(0,0,0,0.65', marginRight: 20 }}
+                  target="_blank"
+                >
+                  <BarcodeOutlined style={{ marginLeft: 20 }} />
+                </Link>
 
                 <Popconfirm
                   onConfirm={() => deleteMachine(record.id)}
