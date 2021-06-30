@@ -4,8 +4,9 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons';
 import api from '../../services/api';
 import { Table, Button, Input, Space, Popconfirm } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, BarcodeOutlined } from '@ant-design/icons';
 import { MachineContext } from '../../contexts/Machine/MachineContext';
+import { Link } from 'react-router-dom';
 
 export function MachineTable() {
   const { refreshKey, deleteMachine, getMachine } = useContext(MachineContext);
@@ -157,6 +158,14 @@ export function MachineTable() {
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
                 </Popconfirm>
+
+                <Link
+                  to={`/mount/tag/""/sector/""`}
+                  style={{ color: 'rgb(0,0,0,0.65' }}
+                  target="_blank"
+                >
+                  <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
+                </Link>
               </React.Fragment>
             );
           },

@@ -573,6 +573,7 @@ class App extends React.Component {
       localStorage.getItem('access_level') === '8' ||
       localStorage.getItem('access_level') === '4' ||
       localStorage.getItem('access_level') === '5' ||
+      localStorage.getItem('access_level') === '9' ||
       localStorage.getItem('access_level') === '7';
 
     if (!isAuthenticated) {
@@ -884,7 +885,7 @@ class App extends React.Component {
                 </SubMenu>
               </SubMenu>
             )}
-            {localStorage.getItem('access_level') === '1' && (
+            {localStorage.getItem('access_level') === '9' && (
               <SubMenu key="rh" title="RH" icon={<UserOutlined />}>
                 <SubMenu
                   key="RhCadastros"

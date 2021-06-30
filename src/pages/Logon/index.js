@@ -63,6 +63,9 @@ export default function Logon() {
       } else if (response.data.user.access_level === '8') {
         history.push('/expedition/launch');
         setLoading('none');
+      } else if (response.data.user.access_level === '9') {
+        history.push('/Employee');
+        setLoading('none');
       }
       setLoading('none');
     } catch (error) {
