@@ -34,7 +34,6 @@ export default function Logon() {
       localStorage.setItem('userId', response.data.user.id);
       localStorage.setItem('userName', response.data.user.name);
       localStorage.setItem('access_level', response.data.user.access_level);
-      console.log(response.data);
 
       api.defaults.headers.authorization = response.data.token;
       if (

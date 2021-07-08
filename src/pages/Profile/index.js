@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
+import BarcodeReader from 'react-barcode-reader';
+import DefectChart from '../../components/DefectChart';
 // import { useHistory } from 'react-router-dom';
 import GaugeChart from '../../components/index';
-
+import ProductionDayChart from '../../components/ProductionDayChart';
 import api from '../../services/api';
 import './style.css';
-import Chart from 'react-apexcharts';
-import { Row, Col } from 'antd';
 
-import DefectChart from '../../components/DefectChart';
-import ProductionDayChart from '../../components/ProductionDayChart';
+
 
 const chartStyle = {
   height: 250,

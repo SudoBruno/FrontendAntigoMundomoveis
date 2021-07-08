@@ -132,7 +132,7 @@ export function FinishStopMachineModal() {
               size={'small'}
               defaultValue={moment(startDate, 'YYYY/MM/DD HH:mm')}
             />
-            {console.log(moment(startDate, 'YYYY/MM/DD HH:mm'))}
+
           </Form.Item>
         </Col>
         <Col span={12}>

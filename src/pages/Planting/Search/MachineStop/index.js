@@ -197,7 +197,6 @@ export default function MachineStop() {
       intervalTime,
     });
 
-    console.log(response.data);
     setStopedMachines(response.data);
   };
 

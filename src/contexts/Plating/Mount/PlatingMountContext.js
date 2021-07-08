@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import BarcodeReader from 'react-barcode-reader';
+
 import { Notification } from '../../../components/Notification';
 import { DifferentAmountModal } from '../../../components/Plating/DifferentAmountModal';
 import { StartMountModal } from '../../../components/Plating/StartMountModal';
@@ -66,48 +66,48 @@ export function PlatingMountProvider({ children, ...rest }) {
   };
 
   const handleScan = async (e) => {
-    if (e.length > 3) {
-      if (isStopMachine) {
+
+    if (isStopMachine) {
+      Notification(
+        'error',
+        'Maquina parada',
+        'Essa maquina se encontra parada, finalize a manutenção para continuar utilizando'
+      );
+    } else {
+      const response = await api.get(
+        `plating/mount/tag/${e}/sector/${sectorId}`
+      );
+
+      setBarCode(e);
+
+      if (response.data.finish == null) {
+        if (response.data.showSector == 0) {
+          Notification('error', 'setor errado', 'Setor errado!');
+          setIsAlterPathModalOpen(true);
+        } else {
+          if (response.data.start == null) {
+            setIsStartMountModalOpen(true);
+          } else {
+            setIsNextSectorMountModalOpen(true);
+          }
+        }
+      } else {
         Notification(
           'error',
-          'Maquina parada',
-          'Essa maquina se encontra parada, finalize a manutenção para continuar utilizando'
+          'Monte ja finalizado',
+          'Esse monte ja foi finalizado'
         );
-      } else {
-        const response = await api.get(
-          `plating/mount/tag/${e}/sector/${sectorId}`
-        );
-
-        setBarCode(e);
-
-        if (response.data.finish == null) {
-          if (response.data.showSector == 0) {
-            Notification('error', 'setor errado', 'Setor errado!');
-            setIsAlterPathModalOpen(true);
-          } else {
-            if (response.data.start == null) {
-              setIsStartMountModalOpen(true);
-            } else {
-              setIsNextSectorMountModalOpen(true);
-            }
-          }
-        } else {
-          Notification(
-            'error',
-            'Monte ja finalizado',
-            'Esse monte ja foi finalizado'
-          );
-        }
-
-        setColor(response.data.color);
-        setProductName(response.data.productName);
-        setProductionPlanControlName(response.data.pcp);
-        setSubProductName(response.data.subProductName);
-        setAmount(response.data.amount);
-        setNewAmount(response.data.amount);
-        setMountId(response.data.id);
       }
+
+      setColor(response.data.color);
+      setProductName(response.data.productName);
+      setProductionPlanControlName(response.data.pcp);
+      setSubProductName(response.data.subProductName);
+      setAmount(response.data.amount);
+      setNewAmount(response.data.amount);
+      setMountId(response.data.id);
     }
+
   };
 
   const startMountOtherSector = async () => {
@@ -197,7 +197,7 @@ export function PlatingMountProvider({ children, ...rest }) {
     >
       <h1>{machine.name}</h1>
       {children}
-      <BarcodeReader onScan={handleScan} minLength={4} onError={handleScan} />
+
       {isStartMountModalOpen && <StartMountModal />}
       {isReasonModalOpen && <DifferentAmountModal />}
 

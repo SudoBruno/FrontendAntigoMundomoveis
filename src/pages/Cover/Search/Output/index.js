@@ -212,14 +212,14 @@ export default function CoverOutput() {
     const data = {
       intervalTime: intervalTime,
     };
-    console.log(intervalTime);
+
     try {
       const response = await api.post('/cover/outputReport', data);
-      console.log(response.data);
+
       setOutput(response.data);
       setCsvData(response.data);
     } catch (error) {
-      console.log(error);
+
     }
   }
 

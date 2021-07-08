@@ -186,7 +186,7 @@ export default function CallReport() {
 
   async function Filter() {
     try {
-      console.log('Filter');
+
       const data = {
         intervalTime: intervalTime,
       };
@@ -202,7 +202,7 @@ export default function CallReport() {
       setInput(response.data);
       setCsvData(response.data);
     } catch (error) {
-      console.log('erro');
+
       openNotificationWithIcon('error', 'Erro', 'Dados não encontrados');
     }
   }
@@ -211,7 +211,7 @@ export default function CallReport() {
     try {
       setReady(false);
 
-      console.log('AQQUUIii');
+
       const data = {
         intervalTime: intervalTime,
       };
@@ -238,7 +238,7 @@ export default function CallReport() {
         { label: 'PRESENÇA', key: 'presence' },
       ]);
     } catch (error) {
-      console.log('erro');
+
       openNotificationWithIcon('error', 'Erro', 'A Relatório não foi gerado');
     }
   }

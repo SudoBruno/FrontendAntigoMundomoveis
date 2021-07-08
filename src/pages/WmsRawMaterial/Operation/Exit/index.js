@@ -438,7 +438,7 @@ export default function SubProduct() {
     list[index].ins = e[2];
     setLote([]);
     const response = await api.get(`wmsrm/stock/lote/${e[2]}`);
-    console.log(`wmsrm/stock/lote/${e[2]}`, response.data);
+
     setLote(response.data);
     setWarehouse([]);
     setPosition([]);
@@ -449,7 +449,7 @@ export default function SubProduct() {
   const handleLoteChange = async (e, index) => {
     const list = [...itensExit];
     list[index].lote = e;
-    console.log(e);
+
 
     list[index].warehouse = '';
     list[index].position = '';
@@ -485,7 +485,7 @@ export default function SubProduct() {
         `wmsrm/stock/quantity?ins=${list[index].ins}&lote=${list[index].lote}&warehouse=${list[index].warehouse}&position=${e}`
       );
 
-      console.log(response.data);
+
       list[index].remaining = response.data.quantity;
 
       list.map((item) => {

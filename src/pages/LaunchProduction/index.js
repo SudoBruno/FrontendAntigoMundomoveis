@@ -265,14 +265,12 @@ export default function LaunchProduction() {
         response.data.bar_codes === undefined ? [] : response.data.bar_codes;
       setBarCodes(barCodesResponse);
 
-      console.log(barCodes);
     } catch (error) {
       openNotificationWithIcon(
         'error',
         'Erro ao lançar código',
         error.response.data.message
       );
-      console.log(barCodes);
     }
   }
 
@@ -380,7 +378,7 @@ export default function LaunchProduction() {
                   setEmployeeName(e[1]);
                 }}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {employee.map((option) => {
                   return (

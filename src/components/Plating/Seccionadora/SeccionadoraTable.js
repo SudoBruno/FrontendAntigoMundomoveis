@@ -1,26 +1,100 @@
 import { DoubleRightOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import { Button, Col, Divider, Form, Input, Modal, Row, Select, Table, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { PlatingMountContext } from '../../../contexts/Plating/Mount/PlatingMountContext';
-import { SeccionadoraMountContext } from '../../../contexts/Plating/Mount/SeccionadoraMountContext';
 import api from '../../../services/api';
+import { Notification } from '../../Notification';
 
-export function SeccionadoraTable() {
-  const [mounts, setMount] = useState([{}]);
+const Option = Select.Option;
 
-  const { sectorId, isStopMachine } = useContext(PlatingMountContext);
-  const { finishMount, refreshKey } = useContext(SeccionadoraMountContext);
-  console.log(sectorId);
+export function SeccionadoraTable({ sectorId, isStopMachine = false, machineId }) {
+  const [mounts, setMounts] = useState([{}]);
+  const [mount, setMount] = useState({
+    factoryEmployeeId: localStorage.getItem('userId'),
+    productionPlanControlId: '',
+    productionPlanControlName: '',
+    subProducts: [
+      {
+        subProductId: '',
+        subProductName: '',
+        amount: '',
+      },
+    ],
+    previousPlatingMountId: '',
+    productId: '',
+    productName: '',
+    color: '',
+  });
+  const [showNextSector, setShowNextSector] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [newAmount, setNewAmount] = useState(0);
+
   useEffect(() => {
     if (!isStopMachine) {
       api.get(`plating/mount/seccionadora/${sectorId}`, {}).then((response) => {
-        setMount(response.data);
+        setMounts(response.data);
       });
     } else {
-      setMount([{}]);
+      setMounts([{}]);
     }
-  }, [sectorId, refreshKey]);
+  }, [sectorId]);
+
+  async function finishMount(data) {
+
+    setNewAmount(data.amountInput)
+    setMount({
+      factoryEmployeeId: localStorage.getItem('userId'),
+      productionPlanControlId: data.pcpId,
+      productionPlanControlName: data.pcpName,
+      subProducts: [
+        {
+          subProductId: data.subProductId,
+          subProductName: data.subProductName,
+          amount: data.amountInput,
+        },
+      ],
+      previousPlatingMountId: data.id,
+      productId: data.productId,
+      productName: data.productName,
+      color: data.color,
+    });
+
+    setShowNextSector(true);
+  }
+
+  const nextSector = async () => {
+    setLoading(true);
+
+    try {
+      mount.subProducts[0].amount = newAmount;
+      mount.factorySectorId = sectorId;
+      mount.machineId = machineId;
+
+
+      const response = await api.post('plating/mount/tags', mount);
+      Notification(
+        'success',
+        'Sucesso ao gerar etiquetas',
+        'As etiquetas foram geradas com sucesso'
+      );
+
+      var win = window.open(
+        `/mount/tag/${mount.previousPlatingMountId}`,
+        '_blank'
+      );
+      win.focus();
+      setShowNextSector(false);
+    } catch (error) {
+      console.error(error);
+      Notification(
+        'error',
+        'Erro ao gerar etiqueta',
+        'Erro ao passar para o proximo setor, tente novamente'
+      );
+    }
+    setLoading(false);
+  };
 
   class SeccionadoraTable extends React.Component {
     state = {
@@ -215,5 +289,78 @@ export function SeccionadoraTable() {
     }
   }
 
-  return <SeccionadoraTable />;
+  return (
+    <>
+      <SeccionadoraTable />
+      <Modal
+        title="Passar para o proximo setor"
+        visible={showNextSector}
+        width={700}
+        footer={[
+          <Button
+            key="back"
+            type="default"
+            onClick={(e) => {
+              setShowNextSector(false);
+            }}
+          >
+            Cancelar
+          </Button>,
+          <Button type="primary" onClick={nextSector}>
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={8}>
+
+            <Form.Item labelCol={{ span: 23 }} label="PCP:" labelAlign={'left'}>
+              <Input name="pcp" value={mount.productionPlanControlName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Produto:"
+              labelAlign={'left'}
+            >
+              <Input name="product" value={mount.productName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item labelCol={{ span: 23 }} label="Cor:" labelAlign={'left'}>
+              <Input name="color" value={mount.color} disabled />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Divider />
+        <Row gutter={5}>
+          <Col span={16}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="SubProduto:"
+              labelAlign={'left'}
+            >
+              <Input name="subProduct" value={mount.subProducts[0].subProductName} disabled />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Quantidade:"
+              labelAlign={'left'}
+            >
+              <Input
+                name="amount"
+                value={newAmount}
+                onChange={(e) => setNewAmount(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Modal>
+
+
+    </>
+  );
 }

@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { PlatingMountContext } from '../../contexts/Plating/Mount/PlatingMountContext';
 import api from '../../services/api';
 
-export function PlatingTable() {
-  const { sectorId } = useContext(PlatingMountContext);
+export function PlatingTable({ sectorId }) {
+
   const [mounts, setMount] = useState([{}]);
   useEffect(() => {
     api.get(`plating/mount/sector/${sectorId}`, {}).then((response) => {
