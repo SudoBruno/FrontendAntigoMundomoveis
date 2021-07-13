@@ -160,19 +160,13 @@ export function MachineTable() {
                   onConfirm={() => deleteMachine(record.id)}
                   title="Confirmar remoção?"
                 >
-                  <a href="#" style={{ marginLeft: 20 }}>
+                  <a href="#" style={{ marginLeft: 0 }}>
                     {' '}
                     <DeleteOutlined style={{ color: '#ff0000' }} />
                   </a>
                 </Popconfirm>
 
-                <Link
-                  to={`/mount/tag/""/sector/""`}
-                  style={{ color: 'rgb(0,0,0,0.65' }}
-                  target="_blank"
-                >
-                  <BarcodeOutlined style={{ marginLeft: 20, fontSize: 24 }} />
-                </Link>
+
               </React.Fragment>
             );
           },
