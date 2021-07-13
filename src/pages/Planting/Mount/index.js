@@ -1,4 +1,4 @@
-import { Button, Col, Form, Layout, Row, Select, Input, Divider } from 'antd';
+import { Button, Col, Form, Layout, Row, Select, Input, Divider, DatePicker } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react';
 import BarcodeReader from 'react-barcode-reader';
@@ -6,6 +6,9 @@ import { PlatingTable } from '../../../components/Plating/PlatingTable';
 import api from '../../../services/api';
 import { Notification } from '../../../components/Notification';
 import './style.css';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { format, parseISO } from 'date-fns';
+import moment from 'moment';
 
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -48,6 +51,24 @@ export default function PlantingMount() {
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
   const [movement, setMovement] = useState('');
   const [reason, setReason] = useState('');
+
+  const [
+    isCreateStopMachineModalOpen,
+    setIsCreateStopMachineModalOpen,
+  ] = useState(false);
+  const [reasonStopMachineId, setReasonStopMachineId] = useState(1);
+  const [description, setDescription] = useState(1);
+  const [startDate, setStartDate] = useState(
+    format(new Date(), 'yyyy-MM-dd HH:mm')
+  );
+  const [
+    isFinishStopMachineModalOpen,
+    setIsFinishStopMachineModalOpen,
+  ] = useState(false);
+  const [finishDate, setFinishDate] = useState(
+    format(new Date(), 'yyyy-MM-dd HH:mm')
+  );
+  const [reasonStop, setReasonStop] = useState([{}]);
 
 
   useEffect(() => {
@@ -225,6 +246,90 @@ export default function PlantingMount() {
     }
   };
 
+  async function openFinishStopMachineModal() {
+
+    const reasonsStop = await api.get('reason-stop', {})
+    setReasonStop(reasonsStop.data)
+    const response = await api.get(`machine-stop/machine/${machineId}`);
+    setDescription(response.data.description);
+    setReasonStopMachineId(response.data.reason_stop_machine_id);
+
+    setStartDate(format(parseISO(response.data.start), 'yyyy-MM-dd HH:mm'));
+    setIsFinishStopMachineModalOpen(true);
+  }
+
+  function closeCreateStopMachineModal() {
+    setIsCreateStopMachineModalOpen(false);
+  }
+
+  async function createStopMachine() {
+    try {
+      const response = await api.post('machine-stop', {
+        machineId,
+      });
+
+      Notification(
+        'success',
+        'Parada de maquina acionada com sucesso',
+        'Essa maquina esta parada para manutenção'
+      );
+
+      handleSelectMachine(machineId)
+      setIsStopMachine(true);
+
+      setIsCreateStopMachineModalOpen(false);
+    } catch (error) {
+      console.error(error);
+      Notification(
+        'error',
+        'Erro ao acionar parada de maquina',
+        error.response == undefined
+          ? 'Ocorreu um erro ao acionar parada de maquina, tente novamente'
+          : error.response.data.message
+      );
+    }
+  }
+
+
+  function closeFinishStopMachineModal() {
+    setIsFinishStopMachineModalOpen(false);
+  }
+
+  async function finishStopMachine() {
+    try {
+      const response = await api.put(`machine-stop/${machineId}`, {
+        reasonStopMachineId,
+        startDate,
+        finishDate,
+        description,
+      });
+      Notification(
+        'success',
+        'Parada de maquina finalizada',
+        'maquina funcionando normalmente'
+      );
+
+      setIsFinishStopMachineModalOpen(false);
+      handleSelectMachine(machineId);
+    } catch (error) {
+      Notification(
+        'error',
+        'Erro ao finalizar parada de maquina',
+        error.response.data.message === undefined
+          ? 'Ocorreu um erro ao finalizar parada de maquina, tente novamente'
+          : error.response.data.message
+      );
+    }
+  }
+
+  function alterStartDate(value) {
+    setStartDate(value._d);
+  }
+
+  function alterFinishDate(value) {
+    setFinishDate(value._d);
+  }
+
   return (
 
     <Layout
@@ -236,7 +341,25 @@ export default function PlantingMount() {
       }}
     >
       <Row style={{ marginBottom: 16 }}>
-        <Col span={24} align="left">
+        <Col span={12} align="left">
+          {isStopMachine ? (
+            <Button
+              icon={<ExclamationCircleOutlined size={'18'} />}
+              className="buttonYellow"
+              onClick={e => openFinishStopMachineModal()}
+            >
+              Finalizar Parada de maquina
+            </Button>
+          ) : (
+
+            <Button
+              icon={<ExclamationCircleOutlined size={'18'} />}
+              className="buttonRed"
+              onClick={e => setIsCreateStopMachineModalOpen(true)}
+            >
+              Acionar Parada de maquina
+            </Button>
+          )}
 
         </Col>
       </Row>
@@ -546,6 +669,148 @@ export default function PlantingMount() {
         <Row gutter={5}>
           <Col span={24}>
             <TextArea rows={4} onChange={(e) => setReason(e.target.value)} />
+          </Col>
+        </Row>
+      </Modal>
+
+      <Modal
+        title="Parada de maquina"
+        visible={isCreateStopMachineModalOpen}
+        onCancel={closeCreateStopMachineModal}
+        width={800}
+        footer={[
+          <Button key="back" type="default" onClick={closeCreateStopMachineModal}>
+            Cancelar
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={(e) => {
+              createStopMachine();
+            }}
+          >
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <h1>Você realmente deseja para esta maquina?</h1>
+        </Row>
+      </Modal>
+
+      <Modal
+        title="Parada de maquina"
+        visible={isFinishStopMachineModalOpen}
+        onCancel={closeFinishStopMachineModal}
+        width={800}
+        footer={[
+          <Button key="back" type="default" onClick={closeFinishStopMachineModal}>
+            Cancelar
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={(e) => {
+              if (
+                reasonStopMachineId === '' ||
+                reasonStopMachineId === null ||
+                reasonStopMachineId === undefined
+              ) {
+                Notification(
+                  'error',
+                  'Erro ao cadastrar parada de maquina',
+                  'Nome não é valido'
+                );
+              } else {
+                finishStopMachine();
+              }
+            }}
+          >
+            Salvar
+          </Button>,
+        ]}
+      >
+        <Row gutter={5}>
+          <Col span={12}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Motivo da parada"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={reasonStopMachineId}
+                onChange={(e) => setReasonStopMachineId(e)}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+              >
+                {reasonStop.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={option.id}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Descreva o motivo:"
+              labelAlign={'left'}
+            >
+              <TextArea
+                name="description"
+                placeholder="Descreva o motivo da parada"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={5}>
+          <Col span={12}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Selecione a hora de inicio da parada:"
+              labelAlign={'left'}
+            >
+              <DatePicker
+                showTime
+                onOk={alterStartDate}
+                format={'DD/MM/YYYY HH:mm'}
+                size={'small'}
+                defaultValue={moment(startDate, 'YYYY/MM/DD HH:mm')}
+              />
+
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Selecione a hora de fim da parada:"
+              labelAlign={'left'}
+            >
+              <DatePicker
+                showTime
+                onOk={alterFinishDate}
+                size="small"
+                format={'DD/MM/YYYY HH:mm'}
+                size={'small'}
+                defaultValue={moment(finishDate, 'YYYY/MM/DD HH:mm')}
+              />
+            </Form.Item>
           </Col>
         </Row>
       </Modal>
