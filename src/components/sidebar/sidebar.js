@@ -120,6 +120,7 @@ import ReasonStopMachine from '../../pages/Machine/ReasonStopMachine';
 import Machine from '../../pages/Machine';
 import MachineStop from '../../pages/Planting/Search/MachineStop';
 import { Tooltip } from '@material-ui/core';
+import PlatingSearchTag from '../../pages/Planting/Search/Tag';
 
 const userName = localStorage.getItem('userName');
 let panelName = 'Painel Administrativo';
@@ -509,6 +510,12 @@ const routes = [
     main: () => <ProductionMount />,
   },
   {
+    path: '/plating/search/tag',
+    exact: true,
+    sidebar: () => <div>Cadastro/Conteudo</div>,
+    main: () => <PlatingSearchTag />,
+  },
+  {
     path: '/seccionadora/mount',
     exact: true,
     sidebar: () => <div>Cadastro/Conteudo</div>,
@@ -688,169 +695,169 @@ class App extends React.Component {
             )}
             {(localStorage.getItem('access_level') === '4' ||
               localStorage.getItem('access_level') === '1') && (
-              <SubMenu
-                key="WnsInsumos"
-                title="Almoxarifado"
-                icon={
-                  <span className="anticon anticon-bank">
-                    <FiPackage size={16} color="#fff" />
-                  </span>
-                }
-              >
-                {localStorage.getItem('access_level') === '1' && (
-                  <SubMenu
-                    key="WnsInsumosCadastros"
-                    title="Cadastros"
-                    icon={<PlusOutlined />}
-                  >
-                    <Menu.Item key="11" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawWarehouse">Almoxarifados</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="12" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawSupplier">Fornecedores</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="15" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="13" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawMaterial">Insumos</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="14" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawPosition">Posições</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-
-                {(localStorage.getItem('access_level') === '4' ||
-                  localStorage.getItem('access_level') === '1') && (
-                  <SubMenu
-                    key="WnsInsumosOperacao"
-                    title="Operações"
-                    icon={<ShoppingCartOutlined />}
-                  >
-                    <Menu.Item key="16" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawEntry">Entradas</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="17" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawStorage">Armazenagens</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="18" icon={<RightSquareOutlined />}>
-                      <Link to="/wmsRawExit">Saídas</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-
                 <SubMenu
-                  key="WnsInsumosSearches"
-                  title="Consultas"
-                  icon={<SearchOutlined />}
+                  key="WnsInsumos"
+                  title="Almoxarifado"
+                  icon={
+                    <span className="anticon anticon-bank">
+                      <FiPackage size={16} color="#fff" />
+                    </span>
+                  }
                 >
-                  <Menu.Item key="19" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawStorage/Search">Estoque</Link>
-                  </Menu.Item>
+                  {localStorage.getItem('access_level') === '1' && (
+                    <SubMenu
+                      key="WnsInsumosCadastros"
+                      title="Cadastros"
+                      icon={<PlusOutlined />}
+                    >
+                      <Menu.Item key="11" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawWarehouse">Almoxarifados</Link>
+                      </Menu.Item>
 
-                  <Menu.Item key="21" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
-                  </Menu.Item>
-                  <Menu.Item key="32" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
-                  </Menu.Item>
+                      <Menu.Item key="12" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawSupplier">Fornecedores</Link>
+                      </Menu.Item>
 
-                  <Menu.Item key="33" icon={<FileExcelOutlined />}>
-                    <Link to="/wmsRawMaterial/pcp">PCP's</Link>
-                  </Menu.Item>
-                </SubMenu>
-              </SubMenu>
-            )}
+                      <Menu.Item key="15" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawUnMeasure">Un. Medidas</Link>
+                      </Menu.Item>
 
-            {(localStorage.getItem('access_level') === '1' ||
-              localStorage.getItem('access_level') === '8') && (
-              <SubMenu
-                key="expedition"
-                title="Expedição"
-                icon={
-                  <span className="anticon anticon-bank">
-                    <FaWarehouse size={16} color="#fff" />
-                  </span>
-                }
-              >
-                {localStorage.getItem('access_level') === '1' && (
+                      <Menu.Item key="13" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawMaterial">Insumos</Link>
+                      </Menu.Item>
+
+                      <Menu.Item key="14" icon={<RightSquareOutlined />}>
+                        <Link to="/wmsRawPosition">Posições</Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  )}
+
+                  {(localStorage.getItem('access_level') === '4' ||
+                    localStorage.getItem('access_level') === '1') && (
+                      <SubMenu
+                        key="WnsInsumosOperacao"
+                        title="Operações"
+                        icon={<ShoppingCartOutlined />}
+                      >
+                        <Menu.Item key="16" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawEntry">Entradas</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="17" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawStorage">Armazenagens</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="18" icon={<RightSquareOutlined />}>
+                          <Link to="/wmsRawExit">Saídas</Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    )}
+
                   <SubMenu
-                    key="expeditionCadastro"
-                    title="Cadastros"
-                    icon={<PlusOutlined />}
-                  >
-                    <Menu.Item key="22" icon={<RightSquareOutlined />}>
-                      <Link to="/expedition/warehouse">Almoxarifado</Link>
-                    </Menu.Item>
-                    <Menu.Item key="23" icon={<RightSquareOutlined />}>
-                      <Link to="/expedition/street">Rua</Link>
-                    </Menu.Item>
-                    <Menu.Item key="31" icon={<RightSquareOutlined />}>
-                      <Link to="/drop">Agenda do Drop</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-                {(localStorage.getItem('access_level') === '1' ||
-                  localStorage.getItem('access_level') === '8') && (
-                  <Menu.Item key="24" icon={<BarcodeOutlined />}>
-                    <Link to="/expedition/launch">Lançamento</Link>
-                  </Menu.Item>
-                )}
-                {(localStorage.getItem('access_level') === '1' ||
-                  localStorage.getItem('access_level') === '8') && (
-                  <SubMenu
-                    key="ExpeditionSearches"
+                    key="WnsInsumosSearches"
                     title="Consultas"
                     icon={<SearchOutlined />}
                   >
-                    <Menu.Item key="25" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/stock">Estoque</Link>
+                    <Menu.Item key="19" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawStorage/Search">Estoque</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="36" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/input">Entradas</Link>
+                    <Menu.Item key="21" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawExit/Resume">Rel. Saídas</Link>
+                    </Menu.Item>
+                    <Menu.Item key="32" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawMaterial/Search/entry">Rel. entrada</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="34" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/output">Saídas</Link>
-                    </Menu.Item>
-                    <Menu.Item key="35" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/change">Troca de estoque</Link>
-                    </Menu.Item>
-                    <Menu.Item key="41" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/drop">Drop</Link>
+                    <Menu.Item key="33" icon={<FileExcelOutlined />}>
+                      <Link to="/wmsRawMaterial/pcp">PCP's</Link>
                     </Menu.Item>
                   </SubMenu>
-                )}
-                {(localStorage.getItem('access_level') === '1' ||
-                  localStorage.getItem('access_level') === '8') && (
-                  <SubMenu
-                    key="ExpeditionDefectSearches"
-                    title="PD"
-                    icon={<SearchOutlined />}
-                  >
-                    <Menu.Item key="stockDefect" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/stock/defect">Estoque</Link>
-                    </Menu.Item>
+                </SubMenu>
+              )}
 
-                    <Menu.Item key="inputDefect" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/input/defect">Entradas</Link>
-                    </Menu.Item>
+            {(localStorage.getItem('access_level') === '1' ||
+              localStorage.getItem('access_level') === '8') && (
+                <SubMenu
+                  key="expedition"
+                  title="Expedição"
+                  icon={
+                    <span className="anticon anticon-bank">
+                      <FaWarehouse size={16} color="#fff" />
+                    </span>
+                  }
+                >
+                  {localStorage.getItem('access_level') === '1' && (
+                    <SubMenu
+                      key="expeditionCadastro"
+                      title="Cadastros"
+                      icon={<PlusOutlined />}
+                    >
+                      <Menu.Item key="22" icon={<RightSquareOutlined />}>
+                        <Link to="/expedition/warehouse">Almoxarifado</Link>
+                      </Menu.Item>
+                      <Menu.Item key="23" icon={<RightSquareOutlined />}>
+                        <Link to="/expedition/street">Rua</Link>
+                      </Menu.Item>
+                      <Menu.Item key="31" icon={<RightSquareOutlined />}>
+                        <Link to="/drop">Agenda do Drop</Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  )}
+                  {(localStorage.getItem('access_level') === '1' ||
+                    localStorage.getItem('access_level') === '8') && (
+                      <Menu.Item key="24" icon={<BarcodeOutlined />}>
+                        <Link to="/expedition/launch">Lançamento</Link>
+                      </Menu.Item>
+                    )}
+                  {(localStorage.getItem('access_level') === '1' ||
+                    localStorage.getItem('access_level') === '8') && (
+                      <SubMenu
+                        key="ExpeditionSearches"
+                        title="Consultas"
+                        icon={<SearchOutlined />}
+                      >
+                        <Menu.Item key="25" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/stock">Estoque</Link>
+                        </Menu.Item>
 
-                    <Menu.Item key="outputDefect" icon={<FileExcelOutlined />}>
-                      <Link to="/expedition/output/defect">Saídas</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-              </SubMenu>
-            )}
+                        <Menu.Item key="36" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/input">Entradas</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="34" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/output">Saídas</Link>
+                        </Menu.Item>
+                        <Menu.Item key="35" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/change">Troca de estoque</Link>
+                        </Menu.Item>
+                        <Menu.Item key="41" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/drop">Drop</Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    )}
+                  {(localStorage.getItem('access_level') === '1' ||
+                    localStorage.getItem('access_level') === '8') && (
+                      <SubMenu
+                        key="ExpeditionDefectSearches"
+                        title="PD"
+                        icon={<SearchOutlined />}
+                      >
+                        <Menu.Item key="stockDefect" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/stock/defect">Estoque</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="inputDefect" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/input/defect">Entradas</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="outputDefect" icon={<FileExcelOutlined />}>
+                          <Link to="/expedition/output/defect">Saídas</Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    )}
+                </SubMenu>
+              )}
 
             {localStorage.getItem('access_level') === '1' && (
               <SubMenu
@@ -966,143 +973,147 @@ class App extends React.Component {
 
             {(localStorage.getItem('access_level') === '1' ||
               localStorage.getItem('access_level') === '5') && (
-              <SubMenu
-                key="cover"
-                title="Controle de capas"
-                icon={<RightSquareOutlined />}
-              >
-                {localStorage.getItem('access_level') === '1' && (
-                  <SubMenu
-                    key="registerCover"
-                    title="Cadastros"
-                    icon={<PlusOutlined />}
-                  >
-                    <Menu.Item key="7" icon={<RightSquareOutlined />}>
-                      <Link to="/sub-product">Subproduto</Link>
-                    </Menu.Item>
-                    <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
-                      <Link to="/cover/warehouse">Estoques</Link>
-                    </Menu.Item>
-                    <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
-                      <Link to="/cover/street">Rua</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-
-                {(localStorage.getItem('access_level') === '1' ||
-                  localStorage.getItem('access_level') === '5') && (
-                  <Menu.Item key="37" icon={<BarcodeOutlined />}>
-                    <Link to="/cover/launch">Lançamento</Link>
-                  </Menu.Item>
-                )}
-                {(localStorage.getItem('access_level') === '1' ||
-                  localStorage.getItem('access_level') === '5') && (
-                  <SubMenu
-                    key="ExpeditionSearches"
-                    title="Consultas"
-                    icon={<SearchOutlined />}
-                  >
-                    <Menu.Item
-                      key="singleCoverStock"
-                      icon={<FileExcelOutlined />}
+                <SubMenu
+                  key="cover"
+                  title="Controle de capas"
+                  icon={<RightSquareOutlined />}
+                >
+                  {localStorage.getItem('access_level') === '1' && (
+                    <SubMenu
+                      key="registerCover"
+                      title="Cadastros"
+                      icon={<PlusOutlined />}
                     >
-                      <Link to="/single/cover/stock">Capas</Link>
-                    </Menu.Item>
-                    <Menu.Item key="38" icon={<FileExcelOutlined />}>
-                      <Link to="/cover/stock">Estoque</Link>
-                    </Menu.Item>
-                    <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
-                      <Link to="/cover/input">Entrada</Link>
-                    </Menu.Item>
-                    <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
-                      <Link to="/cover/output">Saida</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-              </SubMenu>
-            )}
+                      <Menu.Item key="7" icon={<RightSquareOutlined />}>
+                        <Link to="/sub-product">Subproduto</Link>
+                      </Menu.Item>
+                      <Menu.Item key="stockCover" icon={<RightSquareOutlined />}>
+                        <Link to="/cover/warehouse">Estoques</Link>
+                      </Menu.Item>
+                      <Menu.Item key="streetCover" icon={<RightSquareOutlined />}>
+                        <Link to="/cover/street">Rua</Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  )}
+
+                  {(localStorage.getItem('access_level') === '1' ||
+                    localStorage.getItem('access_level') === '5') && (
+                      <Menu.Item key="37" icon={<BarcodeOutlined />}>
+                        <Link to="/cover/launch">Lançamento</Link>
+                      </Menu.Item>
+                    )}
+                  {(localStorage.getItem('access_level') === '1' ||
+                    localStorage.getItem('access_level') === '5') && (
+                      <SubMenu
+                        key="ExpeditionSearches"
+                        title="Consultas"
+                        icon={<SearchOutlined />}
+                      >
+                        <Menu.Item
+                          key="singleCoverStock"
+                          icon={<FileExcelOutlined />}
+                        >
+                          <Link to="/single/cover/stock">Capas</Link>
+                        </Menu.Item>
+                        <Menu.Item key="38" icon={<FileExcelOutlined />}>
+                          <Link to="/cover/stock">Estoque</Link>
+                        </Menu.Item>
+                        <Menu.Item key="coverInput" icon={<FileExcelOutlined />}>
+                          <Link to="/cover/input">Entrada</Link>
+                        </Menu.Item>
+                        <Menu.Item key="coverOutput" icon={<FileExcelOutlined />}>
+                          <Link to="/cover/output">Saida</Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    )}
+                </SubMenu>
+              )}
 
             {(localStorage.getItem('access_level') === '1' ||
               localStorage.getItem('access_level') === '7') && (
-              <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
-                <Menu.Item
-                  key="mountSeccionadora"
-                  icon={<RightSquareOutlined />}
-                >
-                  <Link to="/seccionadora/mount">Seccionadora </Link>
-                </Menu.Item>
-                <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
-                  <Link to="/mount">Linha</Link>
-                </Menu.Item>
-                <Menu.Item
-                  key="platingStockMount"
-                  icon={<RightSquareOutlined />}
-                >
-                  <Link to="/plating/mount/stock">Estoque montes</Link>
-                </Menu.Item>
-                <Menu.Item
-                  key="platingOutputStockMount"
-                  icon={<RightSquareOutlined />}
-                >
-                  <Link to="/plating/mount/output/stock">
-                    Remover do estoque de montes
-                  </Link>
-                </Menu.Item>
+                <SubMenu key="planting" title="Chaparia" icon={<UserOutlined />}>
+                  <Menu.Item
+                    key="mountSeccionadora"
+                    icon={<RightSquareOutlined />}
+                  >
+                    <Link to="/seccionadora/mount">Seccionadora </Link>
+                  </Menu.Item>
+                  <Menu.Item key="planting1" icon={<RightSquareOutlined />}>
+                    <Link to="/mount">Linha</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="platingStockMount"
+                    icon={<RightSquareOutlined />}
+                  >
+                    <Link to="/plating/mount/stock">Estoque montes</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="platingOutputStockMount"
+                    icon={<RightSquareOutlined />}
+                  >
+                    <Link to="/plating/mount/output/stock">
+                      Remover do estoque de montes
+                    </Link>
+                  </Menu.Item>
 
-                {localStorage.getItem('access_level') === '1' && (
-                  <SubMenu
-                    key="platingSearches"
-                    title="Consultas"
-                    icon={<SearchOutlined />}
-                  >
-                    {/* <Menu.Item key="mountStock" icon={<RightSquareOutlined />}>
-                    <Link to="/stock/mount">Na Linha</Link>
-                  </Menu.Item> */}
-                    <Menu.Item
-                      key="mountProduction"
-                      icon={<RightSquareOutlined />}
+                  {localStorage.getItem('access_level') === '1' && (
+                    <SubMenu
+                      key="platingSearches"
+                      title="Consultas"
+                      icon={<SearchOutlined />}
                     >
-                      <Link to="/day/production/mount">produzido</Link>
-                    </Menu.Item>
-                    <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
-                      <Link to="/day/defect/mount">Defeitos</Link>
-                    </Menu.Item>
-                    <Menu.Item
-                      key="mountProductionByPCP"
-                      icon={<RightSquareOutlined />}
+
+                      <Menu.Item
+                        key="mountProduction"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/day/production/mount">produzido</Link>
+                      </Menu.Item>
+                      <Menu.Item key="mountDefect" icon={<RightSquareOutlined />}>
+                        <Link to="/day/defect/mount">Defeitos</Link>
+                      </Menu.Item>
+                      <Menu.Item
+                        key="mountProductionByPCP"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/mount/pcp/production">Produção por lote</Link>
+                      </Menu.Item>
+                      <Menu.Item
+                        key="searchTag"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/plating/search/tag">Histórico etiqueta</Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  )}
+                  {localStorage.getItem('access_level') === '1' && (
+                    <SubMenu
+                      key="platingCad"
+                      title="Cadastros"
+                      icon={<PlusOutlined />}
                     >
-                      <Link to="/mount/pcp/production">Produção por lote</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-                {localStorage.getItem('access_level') === '1' && (
-                  <SubMenu
-                    key="platingCad"
-                    title="Cadastros"
-                    icon={<PlusOutlined />}
-                  >
-                    <Menu.Item
-                      key="platingDefect"
-                      icon={<RightSquareOutlined />}
-                    >
-                      <Link to="/plating/defect">Defeitos</Link>
-                    </Menu.Item>
-                    <Menu.Item
-                      key="platingWarehouse"
-                      icon={<RightSquareOutlined />}
-                    >
-                      <Link to="/plating/warehouse">Armazém</Link>
-                    </Menu.Item>
-                    <Menu.Item
-                      key="platingStreet"
-                      icon={<RightSquareOutlined />}
-                    >
-                      <Link to="/plating/street">Rua</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                )}
-              </SubMenu>
-            )}
+                      <Menu.Item
+                        key="platingDefect"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/plating/defect">Defeitos</Link>
+                      </Menu.Item>
+                      <Menu.Item
+                        key="platingWarehouse"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/plating/warehouse">Armazém</Link>
+                      </Menu.Item>
+                      <Menu.Item
+                        key="platingStreet"
+                        icon={<RightSquareOutlined />}
+                      >
+                        <Link to="/plating/street">Rua</Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  )}
+                </SubMenu>
+              )}
             {localStorage.getItem('access_level') === '1' && (
               <SubMenu key="machines" title="Maquinas" icon={<ToolOutlined />}>
                 <Menu.Item key="machineCreate" icon={<RightSquareOutlined />}>
