@@ -241,6 +241,8 @@ export default function ProductionMount() {
     { label: 'Produto', key: 'productName' },
     { label: 'SubProduto', key: 'subProductName' },
     { label: 'Setor', key: 'sectorName' },
+    { label: 'Maquina', key: 'machineName' },
+    { label: 'Maquina ID', key: 'machineId' },
     { label: 'Hora Iniciado', key: 'start' },
     { label: 'Quantidade Iniciado', key: 'amountInput' },
     { label: 'Hora Finalizado', key: 'finish' },
