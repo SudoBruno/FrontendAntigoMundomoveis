@@ -134,6 +134,12 @@ export function PlatingTable({ sectorId }) {
           ...this.getColumnSearchProps('id'),
         },
         {
+          title: 'Código',
+          dataIndex: 'barCode',
+          key: 'barCode',
+          ...this.getColumnSearchProps('barCode'),
+        },
+        {
           title: 'Produto',
           dataIndex: 'productName',
           key: 'productName',

@@ -156,6 +156,14 @@ export default function PlatingSearchTag() {
           ...this.getColumnSearchProps('sector_name'),
         },
         {
+          title: 'Maquina',
+          dataIndex: 'machine_name',
+          key: 'machine_name',
+
+          sorter: (a, b) => this.compareByAlph(a.machine_name, b.machine_name),
+          ...this.getColumnSearchProps('machine_name'),
+        },
+        {
           title: 'Proximo setor',
           dataIndex: 'next_sector_name',
           key: 'next_sector_name',
