@@ -661,7 +661,7 @@ export default function PCP() {
                               key={option.id}
                               value={[option.id, option.name]}
                             >
-                              { product.code + option.name }
+                              { option.code + option.name }
                             </Option>
                           </>
                         );
