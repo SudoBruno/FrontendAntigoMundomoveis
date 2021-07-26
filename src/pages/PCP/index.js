@@ -649,7 +649,7 @@ export default function PCP() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={product.name + product.code}
+                      value={product.name}
                       onChange={(e) => HandleChange(e, index)}
 
                       // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
@@ -661,7 +661,7 @@ export default function PCP() {
                               key={option.id}
                               value={[option.id, option.name]}
                             >
-                              {option.name}
+                              { product.code + option.name }
                             </Option>
                           </>
                         );
