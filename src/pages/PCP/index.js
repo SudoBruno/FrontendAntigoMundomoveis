@@ -258,6 +258,7 @@ export default function PCP() {
       );
     }
   }
+
   const [status, setStatus] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [refreshKey, setRefreshKey] = useState(0);
@@ -648,7 +649,7 @@ export default function PCP() {
                       showSearch
                       placeholder="Selecione"
                       size="large"
-                      value={product.name}
+                      value={product.name + product.code}
                       onChange={(e) => HandleChange(e, index)}
 
                       // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
