@@ -168,11 +168,17 @@ export default function LaunchProduction() {
     }
   }
 
+  const [defects, setDefects] = useState([]);
+  const [defectName, setDefectName] = useState('');
+  const [defectId, setDefectId] = useState(0);
+  const [defectDescription, setDefectDescription] = useState('')
+
   const [modalConfigure, setModalConfigure] = useState({
     title: '',
     url: '',
-    hidden: true,
+    hiddenSelectEmployee: true,
     span: 12,
+    hiddenSelectDefect: true
   });
   const [barCodes, setBarCodes] = useState([]);
 
@@ -188,8 +194,9 @@ export default function LaunchProduction() {
     let modal = {
       title: 'Lançamento de Produção',
       url: '',
-      hidden: false,
+      hiddenSelectEmployee: false,
       span: 12,
+      hiddenSelectDefect: true
     };
     setModalConfigure(modal);
     setShow(true);
@@ -199,19 +206,20 @@ export default function LaunchProduction() {
     let modal = {
       title: 'Lançamento Agrupado',
       url: '',
-      hidden: false,
+      hiddenSelectEmployee: false,
       span: 12,
+      hiddenSelectDefect: true
     };
     setModalConfigure(modal);
     setShow(true);
   };
   const handleDefect = () => {
-    let modal = { title: 'Defeito', url: 'defect', hidden: true, span: 24 };
+    let modal = { title: 'Defeito', url: 'defect', hiddenSelectEmployee: true, span: 12, hiddenSelectDefect: false };
     setModalConfigure(modal);
     setShow(true);
   };
   const handleReversal = () => {
-    let modal = { title: 'Estorno', url: 'reversal', hidden: true, span: 24 };
+    let modal = { title: 'Estorno', url: 'reversal', hiddenSelectEmployee: true, span: 24, hiddenSelectDefect: true };
     setModalConfigure(modal);
     setShow(true);
   };
@@ -226,6 +234,9 @@ export default function LaunchProduction() {
   useEffect(() => {
     api.get('employee', {}).then((response) => {
       setEmployee(response.data);
+    });
+    api.get('defect', {}).then((response) => {
+      setDefects(response.data);
     });
   }, []);
 
@@ -242,6 +253,8 @@ export default function LaunchProduction() {
       code,
       employee_id,
       bar_codes: barCodes,
+      defectId,
+      defectDescription
     };
 
     LaunchCode(data);
@@ -279,6 +292,8 @@ export default function LaunchProduction() {
       code: e,
       employee_id,
       bar_codes: barCodes,
+      defectId,
+      defectDescription
     };
 
     if (modalConfigure.url === '') {
@@ -362,7 +377,7 @@ export default function LaunchProduction() {
         ]}
       >
         <Row gutter={5}>
-          <Col span={12} hidden={modalConfigure.hidden}>
+          <Col span={12} hidden={modalConfigure.hiddenSelectEmployee}>
             <Form.Item
               labelCol={{ span: 23 }}
               label="Funcionário:"
@@ -392,6 +407,52 @@ export default function LaunchProduction() {
               </Select>
             </Form.Item>
           </Col>
+          <Col span={12} hidden={modalConfigure.hiddenSelectDefect}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="defeito:"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                value={defectName}
+                onChange={(e) => {
+
+                  setDefectId(e[0]);
+                  setDefectName(e[1]);
+                }}
+
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              >
+                {defects.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={modalConfigure.span} hidden={modalConfigure.hiddenSelectDefect}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Descreva o defeito (Opcional):"
+              labelAlign={'left'}
+            >
+              <Input
+                name="defectDescription"
+                placeholder="Descreva o defeito (Opcional)"
+                type={'text'}
+                // value={product.amount}
+                onChange={(e) => setDefectDescription(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
           <Col span={modalConfigure.span}>
             <Form.Item
               labelCol={{ span: 23 }}
@@ -415,7 +476,7 @@ export default function LaunchProduction() {
         )}
 
         <Divider />
-        <BarcodeReader onScan={EditBarCode} onError={EditBarCode} />
+        {show && <BarcodeReader onScan={EditBarCode} onError={EditBarCode} />}
         <h1>{amount}</h1>
         <SearchTable />
       </Modal>
