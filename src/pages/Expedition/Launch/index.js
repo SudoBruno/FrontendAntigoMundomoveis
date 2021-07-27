@@ -516,35 +516,41 @@ export default function ExpeditionLaunch() {
               />
             </Form.Item>
           </Col>
-          <Col style={{ width: '80rem' }}>
-            <Form.Item
-              labelCol={{ span: 23 }}
-              label="Selecione o Defeito"
-              labelAlign={'left'}
-            >
-              <Select
-                showSearch
-                placeholder="Selecione"
-                size="large"
-                onChange={(e) => {
-                  setDefectId(e[0]);
-                  setDefectName(e[1]);
-                }}
-
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+          {modalConfigure.url === 'output/reversal' && (
+            <Col style={{ width: '80rem' }}>
+              <Form.Item
+                labelCol={{ span: 23 }}
+                label="Selecione o Defeito"
+                labelAlign={'left'}
               >
-                {defects.map((option) => {
-                  return (
-                    <>
-                      <Option key={option.id} value={[option.id, option.name]}>
-                        {option.name + ' - ' + option.level}
-                      </Option>
-                    </>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
+                <Select
+                  showSearch
+                  placeholder="Selecione"
+                  size="large"
+                  value={defectName}
+                  onChange={(e) => {
+                    setDefectId(e[0]);
+                    setDefectName(e[1]);
+                  }}
+
+                  // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                >
+                  {defects.map((option) => {
+                    return (
+                      <>
+                        <Option
+                          key={option.id}
+                          value={[option.id, option.name]}
+                        >
+                          {option.name + ' - ' + option.level}
+                        </Option>
+                      </>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+          )}
           {modalConfigure.url == 'output' && (
             <Col span={12}>
               <Form.Item
