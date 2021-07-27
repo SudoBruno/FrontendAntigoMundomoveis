@@ -254,12 +254,19 @@ export default function ExpeditionLaunch() {
   const [launched, setLaunched] = useState([]);
   const [expeditionInfo, setExpeditionInfo] = useState([]);
   const [amount, setAmount] = useState(0);
+  const [defects, setDefects] = useState([]);
+  const [defectId, setDefectId] = useState(0);
+  const [defectName, setDefectName] = useState('');
   const [drops, setDrops] = useState([]);
   const [drop, setDrop] = useState(1);
 
   useEffect(() => {
     api.get('drop-today', {}).then((response) => {
       setDrops(response.data);
+    });
+
+    api.get('defect', {}).then((response) => {
+      setDefects(response.data);
     });
   }, []);
 
@@ -288,7 +295,9 @@ export default function ExpeditionLaunch() {
       warehouse_id,
       street_id,
       drop,
+      defectId,
     };
+
     LaunchCode(data);
   }
   async function AlterWarehouse(e) {
@@ -324,6 +333,7 @@ export default function ExpeditionLaunch() {
       warehouse_id,
       street_id,
       drop,
+      defectId,
     };
 
     if (modalConfigure.url === '') {
@@ -506,7 +516,35 @@ export default function ExpeditionLaunch() {
               />
             </Form.Item>
           </Col>
+          <Col style={{ width: '80rem' }}>
+            <Form.Item
+              labelCol={{ span: 23 }}
+              label="Selecione o Defeito"
+              labelAlign={'left'}
+            >
+              <Select
+                showSearch
+                placeholder="Selecione"
+                size="large"
+                onChange={(e) => {
+                  setDefectId(e[0]);
+                  setDefectName(e[1]);
+                }}
 
+                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              >
+                {defects.map((option) => {
+                  return (
+                    <>
+                      <Option key={option.id} value={[option.id, option.name]}>
+                        {option.name + ' - ' + option.level}
+                      </Option>
+                    </>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
           {modalConfigure.url == 'output' && (
             <Col span={12}>
               <Form.Item
