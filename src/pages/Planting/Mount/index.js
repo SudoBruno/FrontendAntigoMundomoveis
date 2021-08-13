@@ -7,8 +7,9 @@ import api from '../../../services/api';
 import { Notification } from '../../../components/Notification';
 import './style.css';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { format, parseISO } from 'date-fns';
+import { compareDesc, format, parseISO } from 'date-fns';
 import moment from 'moment';
+
 
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -296,6 +297,17 @@ export default function PlantingMount() {
   }
 
   async function finishStopMachine() {
+
+    if (compareDesc(new Date(startDate), new Date(finishDate)) !== 1) {
+      Notification(
+        'error',
+        'Erro ao cadastrar parada de maquina',
+        'Datas invalidas'
+      );
+      return
+    }
+
+
     try {
       const response = await api.put(`machine-stop/${machineId}`, {
         reasonStopMachineId,

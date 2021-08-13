@@ -1,6 +1,6 @@
 import { ExclamationCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, Input, Layout, Modal, Row, Select } from 'antd';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, compareDesc } from 'date-fns';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import BarcodeReader from 'react-barcode-reader';
@@ -280,6 +280,15 @@ export default function Seccionadora() {
   }
 
   async function finishStopMachine() {
+    if (compareDesc(new Date(startDate), new Date(finishDate)) !== 1) {
+      Notification(
+        'error',
+        'Erro ao cadastrar parada de maquina',
+        'Datas invalidas'
+      );
+      return
+    }
+
     try {
       const response = await api.put(`machine-stop/${machineId}`, {
         reasonStopMachineId,
