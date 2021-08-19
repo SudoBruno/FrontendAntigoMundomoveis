@@ -311,9 +311,12 @@ export default function Product() {
       500
     );
     setHeaders([
-      { label: 'NOME', key: 'productName' },
-      { label: 'SETOR', key: 'sectorName' },
-      { label: 'PONTUAÇÃO', key: 'points' },
+      { label: 'Nome', key: 'productName' },
+      { label: 'Cod. interno', key: 'productReference' },
+      { label: 'Valor de mão de obra', key: 'productLaborCost' },
+      { label: 'Valor de materia prima', key: 'productMaterialCost' },
+      { label: 'Volumes', key: 'productVolumeQuantity' },
+      { label: 'SKU', key: 'productClientCode' },
     ]);
   }
 
