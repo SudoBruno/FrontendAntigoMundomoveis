@@ -178,7 +178,7 @@ export default function PCP() {
           render: (text, record) => {
             return (
               <React.Fragment>
-                <EditOutlined
+                {/* <EditOutlined
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     handleEdit(record);
@@ -191,7 +191,7 @@ export default function PCP() {
                   target="_blank"
                 >
                   <BarcodeOutlined style={{ marginLeft: 20 }} />
-                </Link>
+                </Link> */}
                 <>
                   {status == false &&
                     data[0] != undefined &&
@@ -617,7 +617,7 @@ export default function PCP() {
                   setProductionLineName(e[1]);
                 }}
 
-                // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+              // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
               >
                 {productionLines.map((option) => {
                   return (
@@ -652,7 +652,7 @@ export default function PCP() {
                       value={product.name}
                       onChange={(e) => HandleChange(e, index)}
 
-                      // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
+                    // getPopupContainer={() => document.getElementById("colCadastroLinhasDeProducao")}
                     >
                       {products.map((option) => {
                         return (
