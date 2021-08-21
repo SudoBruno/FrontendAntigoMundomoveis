@@ -2,7 +2,8 @@ node_modules
 .env
 yarn.lock
 yarn-error.log
-
+package-lock.json
+build
 
 access level:
 1 - ADM
