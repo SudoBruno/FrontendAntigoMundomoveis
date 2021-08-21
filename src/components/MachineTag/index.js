@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
-import { useBarcode } from '@createnextapp/react-barcode';
+
 
 import api from '../../services/api';
 import './style.css';
@@ -17,20 +17,13 @@ function MachineTag() {
     });
   }, [id]);
 
-  const { inputRef } = useBarcode({
-    value: id,
-    options: {
-      background: '#fff',
-      width: 2,
-      height: 50,
-    },
-  });
+
 
   return (
     <>
       <div className="machineTag">
         <h1 className="machineName">{machine.name}</h1>
-        <svg ref={inputRef} className="machineCode" />
+        {/* <svg ref={inputRef} className="machineCode" /> */}
       </div>
     </>
   );
